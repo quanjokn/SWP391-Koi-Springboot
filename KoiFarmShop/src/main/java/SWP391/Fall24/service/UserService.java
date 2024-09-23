@@ -5,6 +5,8 @@ import SWP391.Fall24.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService implements IUserService{
 
@@ -16,5 +18,38 @@ public class UserService implements IUserService{
         return iUserRepository.save(user);
     }
 
+    @Override
+    public void deleteUser(int id) {
+        iUserRepository.deleteById(id);
+    }
+
+    @Override
+    public Users updateUsers(int id, Users user) {
+        for(Users u: iUserRepository.findAll()){
+            if(u.getId() == id){
+                u.setName(user.getName());
+                u.setPassword(user.getPassword());
+                u.setEmail(user.getEmail());
+                u.setPhone(user.getPhone());
+                u.setAddress(user.getAddress());
+            }
+        }
+        return iUserRepository.getById(id);
+    }
+
+    @Override
+    public List<Users> getAllUsers() {
+        return iUserRepository.findAll();
+    }
+
+    @Override
+    public Users getUser(String username, String password) {
+        for(Users u1 : iUserRepository.findAll()){
+            if(u1.getUserName().equals(username) && u1.getPassword().equals(password)){
+                return u1;
+            }
+        }
+        return null;
+    }
 
 }
