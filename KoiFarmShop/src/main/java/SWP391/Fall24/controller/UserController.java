@@ -3,8 +3,8 @@ package SWP391.Fall24.controller;
 
 import SWP391.Fall24.pojo.Users;
 import SWP391.Fall24.service.UserService;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,14 +23,14 @@ public class UserController {
         return "Add user successfully";
     }
 
-    @PostMapping("/login/{username}/{password}")
-    @ResponseBody
-    public String login(@PathVariable String username, @PathVariable String password) {
-        if(userService.getUser(username, password) != null) {
-            return "Login successfully";
+    @PostMapping("/login")
+    public ResponseEntity<Users> login(@RequestBody Users user) {
+        if(userService.getUser(user.getUserName(), user.getPassword()) != null) {
+            return ResponseEntity.ok(userService.getUser(user.getUserName(), user.getPassword()));
         }
-        return "Login failed";
+        return null;
     }
+
 
     @GetMapping("/getAllUser")
     public List<Users> getAll() {
@@ -39,7 +39,7 @@ public class UserController {
 
     @PostMapping("/deleteUser/{id}")
     @ResponseBody
-    public String delete(@PathVariable int id) {
+    public String delete(@PathVariable("id") int id) {
         userService.deleteUser(id);
         return "Delete user successfully";
     }

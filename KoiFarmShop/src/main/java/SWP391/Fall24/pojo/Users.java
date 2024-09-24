@@ -27,16 +27,16 @@ public class Users {
     @Column(name = "role", nullable = false)
     private Role role;
 
-    @Column(length = 255)
+    @Column(length = 255, columnDefinition = "NVARCHAR(255)")
     private String name;
 
     @Column(length = 50, nullable = false)
     private String phone;
 
-    @Column(length = 255)
+    @Column(length = 255, columnDefinition = "NVARCHAR(255)")
     private String address;
 
-    @Column(length = 255, nullable = false)
+    @Column(length = 255, nullable = false, columnDefinition = "NVARCHAR(255)")
     private String email;
 
     @Column(nullable = false)

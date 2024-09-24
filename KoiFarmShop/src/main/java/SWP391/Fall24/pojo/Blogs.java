@@ -16,9 +16,11 @@ public class Blogs {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private int id;
+
+    @Column(columnDefinition = "NVARCHAR(4000)")
     private String title;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "NVARCHAR(4000)")
     private String description;
 
     @ManyToOne (cascade = CascadeType.ALL)

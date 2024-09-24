@@ -22,4 +22,5 @@ public class FishService implements IFishService {
     public Optional<Fishes> findById(int id) {
         return fishRepository.findById(id);
     }
+
 }

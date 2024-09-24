@@ -19,7 +19,7 @@ public class Origins {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50, nullable = false, columnDefinition = "NVARCHAR(255)")
     private String origin; // 'Purebred imported', 'Purebred Viet', 'F1'
 
     @OneToMany(cascade = CascadeType.ALL)

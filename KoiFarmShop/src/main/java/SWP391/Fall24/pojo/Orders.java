@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -33,13 +33,14 @@ public class Orders {
     private Set<OrderDetails> orderDetails = new HashSet<OrderDetails>();
 
     @Column(name = "date", nullable = false)
-    private Date date;
+    private LocalDate date;
 
     @Column(name = "total", nullable = false)
     private float total;
 
-    @Column(name = "status", nullable = false)
-    private String status; // 'Confirming' 'Deliverying' 'Completed'
+
+    @Column(name = "status", nullable = false, columnDefinition = "NVARCHAR(255)")
+    private OrderStatus status; // 'Confirming' 'Deliverying' 'Completed'
 
     @Override
     public boolean equals(Object o) {

@@ -4,38 +4,44 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Cart {
-    private Map<Integer, Item> cart;
+    private Map<Integer, Item> cart = new HashMap<>();
 
     // add product
     public void addItem(Item item) {
-        for(Map.Entry<Integer, Item> c : cart.entrySet()) {
-            if(c.getValue().getFishid() == item.getFishid()) {
-                c.getValue().setQuantity(c.getValue().getQuantity() + item.getQuantity());
+        boolean check = false;
+        for(Item c: cart.values()) {
+            if(c.getFishid() == item.getFishid()) {
+                c.setQuantity(c.getQuantity() + item.getQuantity());
+                check = true;
+                break;
             }
         }
-        cart.put(item.getFishid(), item);
+        if(!check) {
+            cart.put(item.getFishid(), item);
+        }
     }
 
     // delete item
-    public void removeItem(Item item) {
-        for(Map.Entry<Integer, Item> c : cart.entrySet()) {
-            if(c.getValue().getFishid() == item.getFishid()) {
-                cart.remove(item.getFishid());
+    public void removeItem(int fishid) {
+        for(Item c: cart.values()) {
+            if(c.getFishid() == fishid) {
+                cart.remove(fishid);
             }
         }
     }
 
     // update item
     public void update(Item item) {
-        for(Map.Entry<Integer, Item> c : cart.entrySet()) {
-            if(c.getValue().getFishid() == item.getFishid()) {
-                c.getValue().setQuantity(c.getValue().getQuantity() - item.getQuantity());
+        for(Item c: cart.values()) {
+            if(c.getFishid() == item.getFishid()) {
+                c.setQuantity(item.getQuantity());
             }
         }
     }

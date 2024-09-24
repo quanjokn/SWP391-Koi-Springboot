@@ -18,31 +18,31 @@ public class Batches {
     @JoinColumn(name = "fishID")
     private Fishes fish;
 
-    @Column(length = 255, nullable = false)
+    @Column(length = 255, nullable = false, columnDefinition = "NVARCHAR(255)")
     private String name;
 
-    @Column(length = 4000, nullable = false)
+    @Column(length = 4000, nullable = false, columnDefinition = "NVARCHAR(4000)")
     private String description;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
     private String sex;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
     private String age;
 
-    @Column(length = 255, nullable = false)
+    @Column(length = 255, nullable = false, columnDefinition = "NVARCHAR(255)")
     private String character;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50, nullable = false, columnDefinition = "NVARCHAR(255)")
     private String size;
 
     @Column(nullable = false)
     private float price;
 
-    @Column(length = 4000, nullable = false)
+    @Column(length = 255, nullable = false, columnDefinition = "NVARCHAR(255)")
     private String healthStatus;
 
-    @Column(length = 4000, nullable = false)
+    @Column(length = 4000, nullable = false, columnDefinition = "NVARCHAR(4000)")
     private String ration;
 
     @Column(length = 50, nullable = false)

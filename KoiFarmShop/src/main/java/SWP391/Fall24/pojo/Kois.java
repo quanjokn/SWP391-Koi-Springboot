@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 
 import java.util.Objects;
 
@@ -18,22 +19,27 @@ public class Kois {
     @JoinColumn(name = "fishID", referencedColumnName = "id")
     private Fishes fish;
 
-    @Column(length = 255, nullable = false)
+    @Nationalized
+    @Column(length = 255, nullable = false, columnDefinition = "NVARCHAR(255)")
     private String name;
 
     @Column(nullable = false)
     private int quantity;
 
-    @Column(length = 4000, nullable = false)
+    @Nationalized
+    @Column(length = 4000, nullable = false, columnDefinition = "NVARCHAR(4000)")
     private String description;
 
-    @Column(length = 50, nullable = false)
+    @Nationalized
+    @Column(length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
     private String sex;
 
-    @Column(length = 50, nullable = false)
+    @Nationalized
+    @Column(length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
     private String age;
 
-    @Column(length = 255, nullable = false)
+    @Nationalized
+    @Column(length = 255, nullable = false, columnDefinition = "NVARCHAR(255)")
     private String character;
 
     @Column(length = 50, nullable = false)
@@ -42,10 +48,11 @@ public class Kois {
     @Column(nullable = false)
     private float price;
 
-    @Column(length = 255, nullable = false)
+    @Nationalized
+    @Column(length = 255, nullable = false, columnDefinition = "NVARCHAR(255)")
     private String healthStatus;
 
-    @Column(length = 255, nullable = false)
+    @Column(length = 4000, nullable = false, columnDefinition = "NVARCHAR(4000)")
     private String ration;
 
     @Column(length = 50, nullable = false)

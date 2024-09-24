@@ -19,13 +19,13 @@ public class Promotions {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "NVARCHAR(4000)")
     private String name;
 
     @Column(nullable = false)
     private float discount;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "NVARCHAR(4000)")
     private String description;
 
     @OneToMany(cascade = CascadeType.ALL)

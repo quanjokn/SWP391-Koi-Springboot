@@ -20,7 +20,7 @@ public class Species {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50, nullable = false, columnDefinition = "NVARCHAR(255)")
     private String name; // 'Tancho'....
 
     @ManyToMany(mappedBy = "species")

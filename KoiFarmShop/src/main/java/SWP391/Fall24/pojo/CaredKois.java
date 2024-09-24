@@ -21,22 +21,22 @@ public class CaredKois {
     @JoinColumn(name = "serviceID", nullable = false)
     private CaringOrders caringOrder;
 
-    @Column(length = 255, nullable = false)
+    @Column(length = 255, nullable = false, columnDefinition = "NVARCHAR(255)")
     private String name;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
     private String sex;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
     private String age;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
     private String size;
 
-    @Column(length = 255, nullable = false)
+    @Column(length = 255, nullable = false, columnDefinition = "NVARCHAR(255)")
     private String healthStatus;
 
-    @Column(length = 255, nullable = false)
+    @Column(length = 255, nullable = false, columnDefinition = "NVARCHAR(255)")
     private String ration;
 
     @Column

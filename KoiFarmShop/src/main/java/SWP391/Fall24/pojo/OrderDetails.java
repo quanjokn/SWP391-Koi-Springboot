@@ -38,7 +38,7 @@ public class OrderDetails {
     @Column(nullable = false)
     private float rating;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "NVARCHAR(4000)")
     private String feedback;
 
     @Override

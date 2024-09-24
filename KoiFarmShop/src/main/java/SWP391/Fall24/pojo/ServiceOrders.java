@@ -26,7 +26,7 @@ public class ServiceOrders {
     @JoinColumn(name = "staffID",nullable = false)
     private Users staff;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
     private String category; // 'Care' or 'Consign'
 
     @Column
