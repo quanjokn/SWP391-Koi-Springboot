@@ -2,18 +2,23 @@ package SWP391.Fall24.controller;
 
 import SWP391.Fall24.dto.Cart;
 import SWP391.Fall24.dto.Item;
+import SWP391.Fall24.pojo.Orders;
+import SWP391.Fall24.pojo.Users;
 import SWP391.Fall24.service.IOrderService;
+import SWP391.Fall24.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/cart")
 public class CartController {
+
     private Cart cart = new Cart();
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/addToCart")
     public ResponseEntity<Cart> addToCart(@RequestBody Item item) {
@@ -29,7 +34,7 @@ public class CartController {
 
     @PostMapping("/remove")
     public ResponseEntity<Cart> removeItem(@RequestBody Item item) {
-        cart.removeItem(item.getFishid());
+        cart.removeItem(item);
         return ResponseEntity.ok(cart);
     }
 
@@ -37,9 +42,9 @@ public class CartController {
     private IOrderService iOrderService;
 
     @PostMapping("/order")
-    public Cart placeOrder() {
-        iOrderService.saveOrder(cart);
-        cart = new Cart();
-        return cart;
+    public ResponseEntity<Orders> placeOrder(@RequestBody Cart cart,@RequestParam int userId) {
+        Optional<Users> user = userService.findByID(userId);
+        Orders saveOrder = iOrderService.saveOrder(cart, user.orElse(null));
+        return ResponseEntity.ok(saveOrder);
     }
 }

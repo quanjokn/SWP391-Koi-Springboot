@@ -38,7 +38,6 @@ public class Orders {
     @Column(name = "total", nullable = false)
     private float total;
 
-
     @Column(name = "status", nullable = false, columnDefinition = "NVARCHAR(255)")
     private OrderStatus status; // 'Confirming' 'Deliverying' 'Completed'
 

@@ -4,6 +4,7 @@ package SWP391.Fall24.service;
 import SWP391.Fall24.pojo.Users;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IUserService {
 
@@ -16,4 +17,6 @@ public interface IUserService {
     public List<Users> getAllUsers();
 
     Users getUser(String username, String password);
+
+    Optional<Users> findByID(int id);
 }
