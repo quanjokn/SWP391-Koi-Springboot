@@ -1,10 +1,12 @@
 package SWP391.Fall24.service;
 
+import SWP391.Fall24.dto.FishDetail;
 import SWP391.Fall24.pojo.Fishes;
 import SWP391.Fall24.repository.IFishRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,13 +16,12 @@ public class FishService implements IFishService {
     private IFishRepository fishRepository;
 
     @Override
-    public List<Fishes> findAll() {
-        return fishRepository.findAll();
-    }
-
-    @Override
-    public Optional<Fishes> findById(int id) {
-        return fishRepository.findById(id);
+    public List<FishDetail> allFish() {
+        List<FishDetail> listAllFish = new LinkedList<>();
+        listAllFish.addAll(fishRepository.koiList());
+        listAllFish.addAll(fishRepository.batchList());
+        listAllFish.addAll(fishRepository.consignedKoiList());
+        return fishRepository.koiList();
     }
 
 }
