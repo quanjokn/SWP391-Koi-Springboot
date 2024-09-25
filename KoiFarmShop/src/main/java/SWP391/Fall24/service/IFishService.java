@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IFishService  {
-    public Optional<Fishes> findById(int id);
-
     public List<FishDetail> allFish();
 
 }

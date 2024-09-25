@@ -16,16 +16,6 @@ public class FishService implements IFishService {
     private IFishRepository fishRepository;
 
     @Override
-    public List<Fishes> findAll() {
-        return fishRepository.findAll();
-    }
-
-    @Override
-    public Optional<Fishes> findById(int id) {
-        return fishRepository.findById(id);
-    }
-
-    @Override
     public List<FishDetail> allFish() {
         List<FishDetail> listAllFish = new LinkedList<>();
         listAllFish.addAll(fishRepository.koiList());
