@@ -30,7 +30,7 @@ public class OrderService implements IOrderService {
         o.setDate(date);
         o.setStatus(OrderStatus.valueOf("Pending_confirmation"));
         o.setCustomer(user);
-
+ 
         return iOrderRepository.save(o);
     }
 }
