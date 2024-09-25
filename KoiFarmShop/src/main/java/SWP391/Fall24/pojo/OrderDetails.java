@@ -15,11 +15,13 @@ import java.util.Objects;
 
 public class OrderDetails {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "orderID")
     private Orders orders;
 
-    @Id
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fishID")
     private Fishes fishes;

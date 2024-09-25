@@ -33,11 +33,11 @@ public class UserController {
 
 
     @GetMapping("/getAllUser")
-    public List<Users> getAll() {
-        return userService.getAllUsers();
+    public ResponseEntity<List<Users>> getAll() {
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @PostMapping("/deleteUser/{id}")
+    @DeleteMapping("/deleteUser/{id}")
     @ResponseBody
     public String delete(@PathVariable("id") int id) {
         userService.deleteUser(id);

@@ -6,12 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService implements IUserService{
-
     @Autowired
     IUserRepository iUserRepository;
+
+    @Override
+    public Optional<Users> findByID(int id) {
+        return iUserRepository.findById(id);
+    }
 
     @Override
     public Users saveUsers(Users user) {
