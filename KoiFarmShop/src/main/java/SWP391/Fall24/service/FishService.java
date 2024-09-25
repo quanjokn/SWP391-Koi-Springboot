@@ -24,14 +24,4 @@ public class FishService implements IFishService {
         return fishRepository.koiList();
     }
 
-//    @Override
-//    public List<FishDetail> batchList() {
-//        return fishRepository.BatchList();
-//    }
-//
-//    @Override
-//    public List<FishDetail> consignedKoiList() {
-//        return fishRepository.ConsignedKoiList();
-//    }
-
 }
