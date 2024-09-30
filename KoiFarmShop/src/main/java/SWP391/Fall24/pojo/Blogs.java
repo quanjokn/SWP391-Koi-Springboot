@@ -32,7 +32,7 @@ public class Blogs {
     @Column(name = "title-2", columnDefinition = "NVARCHAR(4000)")
     private String title_2;
 
-    @Column(name = "content-2",   columnDefinition = "NVARCHAR(4000)")
+    @Column(name = "content-2", columnDefinition = "NVARCHAR(4000)")
     private String content_2;
 
     @ManyToOne (cascade = CascadeType.ALL)
