@@ -23,6 +23,18 @@ public class Blogs {
     @Column(name = "description", columnDefinition = "NVARCHAR(4000)")
     private String description;
 
+    @Column(name = "title-1", columnDefinition = "NVARCHAR(4000)")
+    private String title_1;
+
+    @Column(name = "content-1", columnDefinition = "NVARCHAR(4000)")
+    private String content_1;
+
+    @Column(name = "title-2", columnDefinition = "NVARCHAR(4000)")
+    private String title_2;
+
+    @Column(name = "content-2",  columnDefinition = "NVARCHAR(4000)")
+    private String content_2;
+
     @ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "staffID", nullable = false)
     private Users staff;

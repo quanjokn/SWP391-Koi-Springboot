@@ -1,11 +1,9 @@
 package SWP391.Fall24.controller;
 
-
 import SWP391.Fall24.dto.FishDetailDTO;
 import SWP391.Fall24.service.FishService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -32,4 +30,7 @@ public class FishController {
         }
         return Optional.empty();
     }
+
+
+
 }
