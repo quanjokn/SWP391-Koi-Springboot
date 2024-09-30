@@ -1,11 +1,9 @@
 package SWP391.Fall24.controller;
 
 
-import SWP391.Fall24.pojo.Fishes;
+import SWP391.Fall24.dto.FishDetailDTO;
 import SWP391.Fall24.service.FishService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,24 +11,26 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/fish")
+@CrossOrigin
 public class FishController {
     @Autowired
     private FishService fishService;
 
-//    @GetMapping("/getAllFish")
-//    private List<Fishes> getAllFish() {
-//        return fishService.findAll();
-//    }
+    @GetMapping("/fishes-list")
+    private List<FishDetailDTO> getAllFish() {
+        return fishService.allFish();
+    }
 
-//    @PostMapping("/getFish/{id}")
-//    public ResponseEntity<Fishes> getAllFish(@PathVariable int id) {
-//        return ResponseEntity.ok(fishService.getAllFishes(id));
-//    }
-
-    @PostMapping("/getFish/{id}")
+    @PostMapping("/fish-detail/{id}")
     @ResponseBody
-    private Optional<Fishes> getFish(@PathVariable("id") int id) {
-        return fishService.findById(id);
+    private Optional<FishDetailDTO> getFish(@PathVariable("id") int id) {
+        List<FishDetailDTO> allFish = fishService.allFish();
+        for(FishDetailDTO fd : allFish) {
+            if(fd.getId() == id) {
+                return Optional.of(fd);
+            }
+        }
+        return Optional.empty();
     }
 
 

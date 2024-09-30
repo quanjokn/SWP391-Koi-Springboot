@@ -1,16 +1,14 @@
 package SWP391.Fall24.service;
 
-import SWP391.Fall24.dto.Cart;
-import SWP391.Fall24.dto.Item;
+import SWP391.Fall24.dto.CartDTO;
+import SWP391.Fall24.dto.CartItemDTO;
 import SWP391.Fall24.pojo.OrderStatus;
 import SWP391.Fall24.pojo.Orders;
 import SWP391.Fall24.pojo.Users;
 import SWP391.Fall24.repository.IOrderRepository;
-import SWP391.Fall24.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
-import java.util.Optional;
 
 
 @Service
@@ -19,14 +17,12 @@ public class OrderService implements IOrderService {
     @Autowired
     private IOrderRepository iOrderRepository;
 
-
-
     @Override
-    public Orders saveOrder(Cart cart, Users user) {
+    public Orders saveOrder(CartDTO cartDTO, Users user) {
         Orders o = new Orders();
         float total = 0;
-        for(Item i: cart.getCart().values()){
-            total += i.getPrice() * i.getQuantity();
+        for(CartItemDTO i: cartDTO.getCartItems()){
+            total += i.getUnitPrice() * i.getQuantity();
         }
         LocalDate date = LocalDate.now();
 
@@ -34,7 +30,7 @@ public class OrderService implements IOrderService {
         o.setDate(date);
         o.setStatus(OrderStatus.valueOf("Pending_confirmation"));
         o.setCustomer(user);
-
+ 
         return iOrderRepository.save(o);
     }
 }

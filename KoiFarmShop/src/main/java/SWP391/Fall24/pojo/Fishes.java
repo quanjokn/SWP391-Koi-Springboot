@@ -23,15 +23,11 @@ public class Fishes {
     @Column(length = 50, nullable = false)
     private String category; // 'Batch'/'Koi'/'ConsignedKoi'
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "fishID")
-    private Set<OrderDetails> orderDetails = new HashSet<>();
-
     @ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "promotionID")
     private Promotions promotion;
 
-    @ManyToOne (cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "originID")
     private Origins origin;
 
@@ -46,11 +42,11 @@ public class Fishes {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Fishes fishes = (Fishes) o;
-        return id == fishes.id && Objects.equals(category, fishes.category) && Objects.equals(orderDetails, fishes.orderDetails) && Objects.equals(promotion, fishes.promotion) && Objects.equals(origin, fishes.origin) && Objects.equals(species, fishes.species);
+        return id == fishes.id && Objects.equals(category, fishes.category) && Objects.equals(promotion, fishes.promotion) && Objects.equals(origin, fishes.origin) && Objects.equals(species, fishes.species);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, category, orderDetails, promotion, origin, species);
+        return Objects.hash(id, category, promotion, origin, species);
     }
 }

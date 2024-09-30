@@ -17,29 +17,29 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "userName", nullable = false, unique = true)
+    @Column(name = "userName", unique = true)
     private String userName;
 
-    @Column(length = 255, nullable = false)
+    @Column(length = 255)
     private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    private Role role;
+    private Role role = Role.Customer;
 
-    @Column(length = 255, columnDefinition = "NVARCHAR(255)")
+    @Column(length = 255, nullable = true, columnDefinition = "NVARCHAR(255)")
     private String name;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50)
     private String phone;
 
-    @Column(length = 255, columnDefinition = "NVARCHAR(255)")
+    @Column(length = 255,nullable = true, columnDefinition = "NVARCHAR(255)")
     private String address;
 
-    @Column(length = 255, nullable = false, columnDefinition = "NVARCHAR(255)")
+    @Column(length = 255, columnDefinition = "NVARCHAR(255)")
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private boolean status = true;
 
     @Override

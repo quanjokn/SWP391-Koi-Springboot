@@ -1,5 +1,9 @@
 package SWP391.Fall24.service;
 
+import SWP391.Fall24.dto.request.LoginRequest;
+import SWP391.Fall24.dto.request.RequestRegistrationUser;
+import SWP391.Fall24.exception.AppException;
+import SWP391.Fall24.exception.ErrorCode;
 import SWP391.Fall24.pojo.Users;
 import SWP391.Fall24.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,48 +17,74 @@ public class UserService implements IUserService{
     @Autowired
     IUserRepository iUserRepository;
 
+    @Autowired
+    private EncryptionService encryptionService = new EncryptionService();
+
+    @Autowired
+    private JWTService jwtService = new JWTService();
+
     @Override
-    public Users findByID(int id) {
-        return iUserRepository.findById(id).orElseThrow(() -> new RuntimeException("User Not Found"));
+    public Optional<Users> findByID(int id) {
+
+        return Optional.ofNullable(iUserRepository.findById(id));
     }
 
     @Override
-    public Users saveUsers(Users user) {
-        return iUserRepository.save(user);
+    public String loginUser(LoginRequest loginRequest) {
+        Optional<Users> opUser = iUserRepository.findByUserNameIgnoreCase(loginRequest.getUserName());
+        if (opUser.isPresent()) {
+            Users user = opUser.get();
+            if (encryptionService.verifyPassword(loginRequest.getPassword(), user.getPassword())) {
+                return jwtService.generateJWT(user);
+            }
+        }
+        return null;
     }
+
+    @Override
+    public Users registerUser(RequestRegistrationUser requestRegistrationUser){
+        if(iUserRepository.findByUserNameIgnoreCase(requestRegistrationUser.getUserName()).isPresent()
+                && iUserRepository.findByEmailIgnoreCase(requestRegistrationUser.getEmail()).isPresent() ){
+            throw new AppException(ErrorCode.USER_EXIST);
+        }
+        Users newUser = new Users();
+        newUser.setUserName(requestRegistrationUser.getUserName());
+        newUser.setEmail(requestRegistrationUser.getEmail());
+        newUser.setPassword(encryptionService.encryptPassword(requestRegistrationUser.getPassword()));
+        newUser.setPhone(requestRegistrationUser.getPhone());
+        iUserRepository.save(newUser);
+        return newUser;
+    }
+
+
 
     @Override
     public void deleteUser(int id) {
         iUserRepository.deleteById(id);
     }
 
-    @Override
-    public Users updateUsers(int id, Users user) {
-        for(Users u: iUserRepository.findAll()){
-            if(u.getId() == id){
-                u.setName(user.getName());
-                u.setPassword(user.getPassword());
-                u.setEmail(user.getEmail());
-                u.setPhone(user.getPhone());
-                u.setAddress(user.getAddress());
-            }
-        }
-        return iUserRepository.findById(id).orElseThrow(() -> new RuntimeException("User Not Found"));
-    }
+//    @Override
+//    public Users updateUsers(int id, Users updatedUser) {
+//        Users u = iUserRepository.findById(id);
+//        u.setName(updatedUser.getName());
+//        u.setPassword(updatedUser.getPassword());
+//        u.setEmail(updatedUser.getEmail());
+//        u.setPhone(updatedUser.getPhone());
+//        u.setAddress(updatedUser.getAddress());
+//        iUserRepository.updateUsers(u);
+//        return u;
+//    }
 
     @Override
     public List<Users> getAllUsers() {
+
         return iUserRepository.findAll();
     }
 
     @Override
     public Users getUser(String username, String password) {
-        for(Users u1 : iUserRepository.findAll()){
-            if(u1.getUserName().equals(username) && u1.getPassword().equals(password)){
-                return u1;
-            }
-        }
-        return null;
+        return iUserRepository.getUsersByUserNameAndPassword(username, password);
     }
+
 
 }

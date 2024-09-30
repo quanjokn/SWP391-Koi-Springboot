@@ -22,10 +22,6 @@ public class Origins {
     @Column(length = 50, nullable = false, columnDefinition = "NVARCHAR(255)")
     private String origin; // 'Purebred imported', 'Purebred Viet', 'F1'
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "originID")
-    private Set<Fishes> fishes = new HashSet<>();
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

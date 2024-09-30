@@ -1,6 +1,8 @@
 package SWP391.Fall24.service;
 
 
+import SWP391.Fall24.dto.request.LoginRequest;
+import SWP391.Fall24.dto.request.RequestRegistrationUser;
 import SWP391.Fall24.pojo.Users;
 
 import java.util.List;
@@ -8,15 +10,18 @@ import java.util.Optional;
 
 public interface IUserService {
 
-    public Users saveUsers(Users user);
+    public Users registerUser(RequestRegistrationUser requestRegistrationUser);
 
     public void deleteUser(int id);
 
-    Users updateUsers(int id, Users user);
+//    public Users updateUsers(int id, Users user);
 
     public List<Users> getAllUsers();
 
-    Users getUser(String username, String password);
+    public Users getUser(String username, String password);
 
-    Users findByID(int id);
+    public Optional<Users> findByID(int id);
+
+    public String loginUser(LoginRequest loginRequest) ;
+
 }
