@@ -16,11 +16,12 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/fish")
+@CrossOrigin
 public class FishController {
     @Autowired
     private FishService fishService;
 
-    @GetMapping("/getListALlFish")
+    @GetMapping("/getAllFishes")
     private List<FishDetail> getAllFish() {
         return fishService.allFish();
     }
