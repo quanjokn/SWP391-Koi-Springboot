@@ -22,7 +22,7 @@ import java.util.Optional;
 
 public class JWTRequestFilter extends OncePerRequestFilter {
     @Autowired
-    UserCRUD userCRUD;
+    IUserRepository iUserRepository;
 
     @Autowired
     JWTService jwtService;
@@ -36,7 +36,7 @@ public class JWTRequestFilter extends OncePerRequestFilter {
         try {
             String userName = jwtService.getUserName(token);
             if(userName != null) {
-                Optional<Users> opUser = Optional.ofNullable(userCRUD.findByUserNameIgnoreCase(userName));
+                Optional<Users> opUser = iUserRepository.findByUserNameIgnoreCase(userName);
                 if(opUser.isPresent()) {
                     Users user = opUser.get();
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, new ArrayList());
