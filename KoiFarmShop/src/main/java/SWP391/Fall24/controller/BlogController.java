@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/posts")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 public class BlogController {
     @Autowired
     BlogService blogService;

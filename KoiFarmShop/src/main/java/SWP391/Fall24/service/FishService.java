@@ -28,5 +28,4 @@ public class FishService implements IFishService {
                 .filter(fishDetail -> fishDetail.getId() == fishId)
                 .findFirst();
     }
-
 }

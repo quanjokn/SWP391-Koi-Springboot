@@ -10,7 +10,6 @@ import java.util.List;
 
 @Repository
 public interface IFishRepository extends JpaRepository<Fishes, Integer> {
-
     @Query("select new SWP391.Fall24.dto.FishDetailDTO(f.id, k.name, k.quantity, k.description, k.sex, k.age, k.character, k.size, k.price, k.healthStatus, k.ration, k.photo, k.video, k.certificate, f.category, 0, 0, o.origin) " +
             "from Fishes f inner join Kois k on f.id = k.fish.id join Origins o on f.origin.id = o.id")
     public List<FishDetailDTO> koiList();

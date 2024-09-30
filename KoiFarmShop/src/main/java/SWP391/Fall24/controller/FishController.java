@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/fish")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 public class FishController {
     @Autowired
     private FishService fishService;
@@ -32,7 +32,4 @@ public class FishController {
         }
         return Optional.empty();
     }
-
-
-
 }
