@@ -27,7 +27,7 @@ public class Fishes {
     @JoinColumn(name = "promotionID")
     private Promotions promotion;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "originID")
     private Origins origin;
 
