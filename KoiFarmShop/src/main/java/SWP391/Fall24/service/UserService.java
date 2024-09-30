@@ -14,8 +14,8 @@ public class UserService implements IUserService{
     IUserRepository iUserRepository;
 
     @Override
-    public Optional<Users> findByID(int id) {
-        return iUserRepository.findById(id);
+    public Users findByID(int id) {
+        return iUserRepository.findById(id).orElseThrow(() -> new RuntimeException("User Not Found"));
     }
 
     @Override
@@ -39,7 +39,7 @@ public class UserService implements IUserService{
                 u.setAddress(user.getAddress());
             }
         }
-        return iUserRepository.getById(id);
+        return iUserRepository.findById(id).orElseThrow(() -> new RuntimeException("User Not Found"));
     }
 
     @Override

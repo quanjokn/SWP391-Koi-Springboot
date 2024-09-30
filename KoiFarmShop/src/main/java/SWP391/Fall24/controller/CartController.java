@@ -43,8 +43,8 @@ public class CartController {
 
     @PostMapping("/order")
     public ResponseEntity<Orders> placeOrder(@RequestBody Cart cart,@RequestParam int userId) {
-        Optional<Users> user = userService.findByID(userId);
-        Orders saveOrder = iOrderService.saveOrder(cart, user.orElse(null));
+        Users user = userService.findByID(userId);
+        Orders saveOrder = iOrderService.saveOrder(cart, user);
         return ResponseEntity.ok(saveOrder);
     }
 }

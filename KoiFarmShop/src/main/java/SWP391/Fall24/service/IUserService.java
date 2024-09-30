@@ -18,5 +18,5 @@ public interface IUserService {
 
     Users getUser(String username, String password);
 
-    Optional<Users> findByID(int id);
+    Users findByID(int id);
 }

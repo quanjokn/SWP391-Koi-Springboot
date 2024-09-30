@@ -1,6 +1,7 @@
 package SWP391.Fall24.dto;
 
 import SWP391.Fall24.pojo.Fishes;
+import SWP391.Fall24.pojo.Users;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Cart {
+
     private Map<Integer, Item> cart = new HashMap<>();
 
     // add product

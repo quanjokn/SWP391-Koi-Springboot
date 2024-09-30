@@ -6,9 +6,11 @@ import SWP391.Fall24.pojo.OrderStatus;
 import SWP391.Fall24.pojo.Orders;
 import SWP391.Fall24.pojo.Users;
 import SWP391.Fall24.repository.IOrderRepository;
+import SWP391.Fall24.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
+import java.util.Optional;
 
 
 @Service
@@ -16,6 +18,8 @@ public class OrderService implements IOrderService {
 
     @Autowired
     private IOrderRepository iOrderRepository;
+
+
 
     @Override
     public Orders saveOrder(Cart cart, Users user) {
@@ -30,7 +34,7 @@ public class OrderService implements IOrderService {
         o.setDate(date);
         o.setStatus(OrderStatus.valueOf("Pending_confirmation"));
         o.setCustomer(user);
- 
+
         return iOrderRepository.save(o);
     }
 }

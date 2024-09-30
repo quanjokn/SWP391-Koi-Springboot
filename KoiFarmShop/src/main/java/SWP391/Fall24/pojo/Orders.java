@@ -39,7 +39,7 @@ public class Orders {
     private float total;
 
     @Column(name = "status", nullable = false, columnDefinition = "NVARCHAR(255)")
-    private OrderStatus status; // 'Confirming' 'Deliverying' 'Completed'
+    private OrderStatus status; // Pending_confirmation, In_transit, Delivered;
 
     @Override
     public boolean equals(Object o) {
