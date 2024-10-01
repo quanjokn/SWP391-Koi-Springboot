@@ -11,10 +11,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 //@SpringBootApplication
-@SpringBootApplication(exclude = {
-		org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class,
-		org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration.class}
-)
+@SpringBootApplication
 @ComponentScan({"SWP391.Fall24.controller", "SWP391.Fall24.service"})
 @EnableJpaRepositories(basePackages = "SWP391.Fall24.repository")
 @EntityScan(basePackages = "SWP391.Fall24.pojo")
