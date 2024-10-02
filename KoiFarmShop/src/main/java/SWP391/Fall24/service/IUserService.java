@@ -1,6 +1,7 @@
 package SWP391.Fall24.service;
 
 
+import SWP391.Fall24.dto.request.ChangePasswordRequest;
 import SWP391.Fall24.dto.request.LoginRequest;
 import SWP391.Fall24.dto.request.RequestRegistrationUser;
 import SWP391.Fall24.dto.request.UpdateUserRequest;
@@ -24,5 +25,7 @@ public interface IUserService {
     public Optional<Users> findByID(int id);
 
     public String loginUser(LoginRequest loginRequest) ;
+
+    public Users changePassword(int id, ChangePasswordRequest changePasswordRequest);
 
 }

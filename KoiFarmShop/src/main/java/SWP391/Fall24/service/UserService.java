@@ -1,5 +1,6 @@
 package SWP391.Fall24.service;
 
+import SWP391.Fall24.dto.request.ChangePasswordRequest;
 import SWP391.Fall24.dto.request.LoginRequest;
 import SWP391.Fall24.dto.request.RequestRegistrationUser;
 import SWP391.Fall24.dto.request.UpdateUserRequest;
@@ -38,8 +39,28 @@ public class UserService implements IUserService{
             if (encryptionService.verifyPassword(loginRequest.getPassword(), user.getPassword())) {
                 return jwtService.generateJWT(user);
             }
+        }else {
+            throw new AppException(ErrorCode.FAIL_LOGIN);
         }
         return null;
+    }
+
+    @Override
+    public Users changePassword(int id, ChangePasswordRequest changePasswordRequest) {
+        Users user = iUserRepository.findById(id);
+        boolean verifyPassword = encryptionService.verifyPassword(changePasswordRequest.getOldPassword(), user.getPassword());
+        if(!verifyPassword) {
+            throw new AppException(ErrorCode.PASSWORD_ERROR);
+        }
+        boolean comparePasword = changePasswordRequest.getNewPassword().equals(changePasswordRequest.getConfirmPassword());
+        if(!comparePasword) {
+            throw new AppException(ErrorCode.COMFIRMED_PASSWORD_ERROR);
+        }
+        if(verifyPassword && comparePasword) {
+            user.setPassword(encryptionService.encryptPassword(changePasswordRequest.getNewPassword()));
+            iUserRepository.save(user);
+        }
+        return user;
     }
 
     @Override
