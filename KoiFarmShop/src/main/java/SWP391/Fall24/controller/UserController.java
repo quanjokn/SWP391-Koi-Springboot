@@ -3,6 +3,7 @@ package SWP391.Fall24.controller;
 
 import SWP391.Fall24.dto.request.LoginRequest;
 import SWP391.Fall24.dto.request.RequestRegistrationUser;
+import SWP391.Fall24.dto.request.UpdateUserRequest;
 import SWP391.Fall24.dto.response.ApiResponse;
 import SWP391.Fall24.dto.response.LoginResponse;
 import SWP391.Fall24.pojo.Users;
@@ -30,14 +31,6 @@ public class UserController {
                 .build();
     }
 
-//    @PostMapping("/login")
-//    public ResponseEntity<Users> login(@RequestBody Users user) {
-//        if(userService.getUser(user.getUserName(), user.getPassword()) != null) {
-//            return ResponseEntity.ok(userService.getUser(user.getUserName(), user.getPassword()));
-//        }
-//        return null;
-//    }
-
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> loginUser(@Valid @RequestBody LoginRequest loginRequest) {
         String jwt = userService.loginUser(loginRequest);
@@ -63,10 +56,10 @@ public class UserController {
         return "Delete user successfully";
     }
 
-//    @PostMapping("/updateUser/{id}")
-//    public Users update(@PathVariable int id, @RequestBody Users user) {
-//        return userService.updateUsers(id, user);
-//    }
+    @PostMapping("/updateUser/{id}")
+    public Users update(@PathVariable int id, @RequestBody UpdateUserRequest u) {
+        return userService.updateUsers(id, u);
+    }
 
     /**
      * Gets the profile of the currently logged-in user and returns it.

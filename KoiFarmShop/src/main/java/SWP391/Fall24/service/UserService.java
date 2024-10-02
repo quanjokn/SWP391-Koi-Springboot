@@ -2,6 +2,7 @@ package SWP391.Fall24.service;
 
 import SWP391.Fall24.dto.request.LoginRequest;
 import SWP391.Fall24.dto.request.RequestRegistrationUser;
+import SWP391.Fall24.dto.request.UpdateUserRequest;
 import SWP391.Fall24.exception.AppException;
 import SWP391.Fall24.exception.ErrorCode;
 import SWP391.Fall24.pojo.Users;
@@ -45,7 +46,7 @@ public class UserService implements IUserService{
     public Users registerUser(RequestRegistrationUser requestRegistrationUser){
         if(iUserRepository.findByUserNameIgnoreCase(requestRegistrationUser.getUserName()).isPresent()
                 && iUserRepository.findByEmailIgnoreCase(requestRegistrationUser.getEmail()).isPresent() ){
-            throw new AppException(ErrorCode.USER_EXIST);
+            throw new AppException(ErrorCode.USER_EXISTED);
         }
         Users newUser = new Users();
         newUser.setUserName(requestRegistrationUser.getUserName());
@@ -63,17 +64,16 @@ public class UserService implements IUserService{
         iUserRepository.deleteById(id);
     }
 
-//    @Override
-//    public Users updateUsers(int id, Users updatedUser) {
-//        Users u = iUserRepository.findById(id);
-//        u.setName(updatedUser.getName());
-//        u.setPassword(updatedUser.getPassword());
-//        u.setEmail(updatedUser.getEmail());
-//        u.setPhone(updatedUser.getPhone());
-//        u.setAddress(updatedUser.getAddress());
-//        iUserRepository.updateUsers(u);
-//        return u;
-//    }
+    @Override
+    public Users updateUsers(int id, UpdateUserRequest update) {
+        Users u = iUserRepository.findById(id);
+        u.setName(update.getName());
+        u.setEmail(update.getEmail());
+        u.setPhone(update.getPhone());
+        u.setAddress(update.getAddress());
+        iUserRepository.save(u);
+        return u;
+    }
 
     @Override
     public List<Users> getAllUsers() {

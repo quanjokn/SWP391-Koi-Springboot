@@ -1,9 +1,7 @@
 package SWP391.Fall24.pojo;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -14,6 +12,8 @@ import java.util.Set;
 @Data
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "Fishes")
 public class Fishes {
     @Id
@@ -37,16 +37,7 @@ public class Fishes {
     inverseJoinColumns = @JoinColumn(name = "speciesID"))
     private Set<Species> species = new HashSet<>();
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Fishes fishes = (Fishes) o;
-        return id == fishes.id && Objects.equals(category, fishes.category) && Objects.equals(promotion, fishes.promotion) && Objects.equals(origin, fishes.origin) && Objects.equals(species, fishes.species);
-    }
+    @Column
+    private float rating;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, category, promotion, origin, species);
-    }
 }

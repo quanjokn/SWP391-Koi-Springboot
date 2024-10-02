@@ -3,6 +3,7 @@ package SWP391.Fall24.service;
 
 import SWP391.Fall24.dto.request.LoginRequest;
 import SWP391.Fall24.dto.request.RequestRegistrationUser;
+import SWP391.Fall24.dto.request.UpdateUserRequest;
 import SWP391.Fall24.pojo.Users;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface IUserService {
 
     public void deleteUser(int id);
 
-//    public Users updateUsers(int id, Users user);
+    public Users updateUsers(int id, UpdateUserRequest update);
 
     public List<Users> getAllUsers();
 
