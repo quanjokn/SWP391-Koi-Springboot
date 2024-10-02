@@ -1,6 +1,7 @@
 package SWP391.Fall24.controller;
 
 
+import SWP391.Fall24.dto.request.ChangePasswordRequest;
 import SWP391.Fall24.dto.request.LoginRequest;
 import SWP391.Fall24.dto.request.RequestRegistrationUser;
 import SWP391.Fall24.dto.request.UpdateUserRequest;
@@ -43,7 +44,6 @@ public class UserController {
         }
     }
 
-
     @GetMapping("/getAllUser")
     public ResponseEntity<List<Users>> getAll() {
         return ResponseEntity.ok(userService.getAllUsers());
@@ -69,5 +69,10 @@ public class UserController {
     @GetMapping("/profile")
     public Users getLoggedInUser(@AuthenticationPrincipal Users user) {
         return user;
+    }
+
+    @PostMapping("/changePassword/{id}")
+    public Users changePassword(@PathVariable("id") int id, @RequestBody ChangePasswordRequest changePasswordRequest) {
+        return userService.changePassword(id, changePasswordRequest);
     }
 }
