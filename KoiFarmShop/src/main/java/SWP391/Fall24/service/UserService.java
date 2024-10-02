@@ -1,7 +1,9 @@
 package SWP391.Fall24.service;
 
+import SWP391.Fall24.dto.request.ChangePasswordRequest;
 import SWP391.Fall24.dto.request.LoginRequest;
 import SWP391.Fall24.dto.request.RequestRegistrationUser;
+import SWP391.Fall24.dto.request.UpdateUserRequest;
 import SWP391.Fall24.exception.AppException;
 import SWP391.Fall24.exception.ErrorCode;
 import SWP391.Fall24.pojo.Users;
@@ -37,15 +39,35 @@ public class UserService implements IUserService{
             if (encryptionService.verifyPassword(loginRequest.getPassword(), user.getPassword())) {
                 return jwtService.generateJWT(user);
             }
+        }else {
+            throw new AppException(ErrorCode.FAIL_LOGIN);
         }
         return null;
+    }
+
+    @Override
+    public Users changePassword(int id, ChangePasswordRequest changePasswordRequest) {
+        Users user = iUserRepository.findById(id);
+        boolean verifyPassword = encryptionService.verifyPassword(changePasswordRequest.getOldPassword(), user.getPassword());
+        if(!verifyPassword) {
+            throw new AppException(ErrorCode.PASSWORD_ERROR);
+        }
+        boolean comparePasword = changePasswordRequest.getNewPassword().equals(changePasswordRequest.getConfirmPassword());
+        if(!comparePasword) {
+            throw new AppException(ErrorCode.COMFIRMED_PASSWORD_ERROR);
+        }
+        if(verifyPassword && comparePasword) {
+            user.setPassword(encryptionService.encryptPassword(changePasswordRequest.getNewPassword()));
+            iUserRepository.save(user);
+        }
+        return user;
     }
 
     @Override
     public Users registerUser(RequestRegistrationUser requestRegistrationUser){
         if(iUserRepository.findByUserNameIgnoreCase(requestRegistrationUser.getUserName()).isPresent()
                 && iUserRepository.findByEmailIgnoreCase(requestRegistrationUser.getEmail()).isPresent() ){
-            throw new AppException(ErrorCode.USER_EXIST);
+            throw new AppException(ErrorCode.USER_EXISTED);
         }
         Users newUser = new Users();
         newUser.setUserName(requestRegistrationUser.getUserName());
@@ -63,17 +85,16 @@ public class UserService implements IUserService{
         iUserRepository.deleteById(id);
     }
 
-//    @Override
-//    public Users updateUsers(int id, Users updatedUser) {
-//        Users u = iUserRepository.findById(id);
-//        u.setName(updatedUser.getName());
-//        u.setPassword(updatedUser.getPassword());
-//        u.setEmail(updatedUser.getEmail());
-//        u.setPhone(updatedUser.getPhone());
-//        u.setAddress(updatedUser.getAddress());
-//        iUserRepository.updateUsers(u);
-//        return u;
-//    }
+    @Override
+    public Users updateUsers(int id, UpdateUserRequest update) {
+        Users u = iUserRepository.findById(id);
+        u.setName(update.getName());
+        u.setEmail(update.getEmail());
+        u.setPhone(update.getPhone());
+        u.setAddress(update.getAddress());
+        iUserRepository.save(u);
+        return u;
+    }
 
     @Override
     public List<Users> getAllUsers() {

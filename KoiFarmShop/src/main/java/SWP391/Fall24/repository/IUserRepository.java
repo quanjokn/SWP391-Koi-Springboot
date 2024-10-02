@@ -18,7 +18,8 @@ public interface IUserRepository extends JpaRepository<Users, Integer> {
 
     Optional<Users> findByEmailIgnoreCase(String email);
 
-//    void updateUsers(Users users);
-
     Users getUsersByUserNameAndPassword(String username, String password);
+
+
+
 }

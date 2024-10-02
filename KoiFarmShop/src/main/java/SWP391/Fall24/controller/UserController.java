@@ -1,8 +1,10 @@
 package SWP391.Fall24.controller;
 
 
+import SWP391.Fall24.dto.request.ChangePasswordRequest;
 import SWP391.Fall24.dto.request.LoginRequest;
 import SWP391.Fall24.dto.request.RequestRegistrationUser;
+import SWP391.Fall24.dto.request.UpdateUserRequest;
 import SWP391.Fall24.dto.response.ApiResponse;
 import SWP391.Fall24.dto.response.LoginResponse;
 import SWP391.Fall24.pojo.Users;
@@ -18,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -29,14 +31,6 @@ public class UserController {
                 .result(userService.registerUser(requestRegistrationUser))
                 .build();
     }
-
-//    @PostMapping("/login")
-//    public ResponseEntity<Users> login(@RequestBody Users user) {
-//        if(userService.getUser(user.getUserName(), user.getPassword()) != null) {
-//            return ResponseEntity.ok(userService.getUser(user.getUserName(), user.getPassword()));
-//        }
-//        return null;
-//    }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> loginUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -50,7 +44,6 @@ public class UserController {
         }
     }
 
-
     @GetMapping("/getAllUser")
     public ResponseEntity<List<Users>> getAll() {
         return ResponseEntity.ok(userService.getAllUsers());
@@ -63,10 +56,10 @@ public class UserController {
         return "Delete user successfully";
     }
 
-//    @PostMapping("/updateUser/{id}")
-//    public Users update(@PathVariable int id, @RequestBody Users user) {
-//        return userService.updateUsers(id, user);
-//    }
+    @PostMapping("/updateUser/{id}")
+    public Users update(@PathVariable int id, @RequestBody UpdateUserRequest u) {
+        return userService.updateUsers(id, u);
+    }
 
     /**
      * Gets the profile of the currently logged-in user and returns it.
@@ -76,5 +69,10 @@ public class UserController {
     @GetMapping("/profile")
     public Users getLoggedInUser(@AuthenticationPrincipal Users user) {
         return user;
+    }
+
+    @PostMapping("/changePassword/{id}")
+    public Users changePassword(@PathVariable("id") int id, @RequestBody ChangePasswordRequest changePasswordRequest) {
+        return userService.changePassword(id, changePasswordRequest);
     }
 }

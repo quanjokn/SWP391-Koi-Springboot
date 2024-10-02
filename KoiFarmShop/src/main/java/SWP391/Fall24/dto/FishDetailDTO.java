@@ -1,17 +1,13 @@
 package SWP391.Fall24.dto;
 
-import SWP391.Fall24.pojo.Origins;
-import SWP391.Fall24.pojo.Promotions;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Nationalized;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FishDetail {
+public class FishDetailDTO {
     private int id;
     private String name;
     private int quantity;

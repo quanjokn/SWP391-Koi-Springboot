@@ -1,7 +1,7 @@
 package SWP391.Fall24.service;
 
-import SWP391.Fall24.dto.Cart;
-import SWP391.Fall24.dto.Item;
+import SWP391.Fall24.dto.CartDTO;
+import SWP391.Fall24.dto.CartItemDTO;
 import SWP391.Fall24.pojo.OrderStatus;
 import SWP391.Fall24.pojo.Orders;
 import SWP391.Fall24.pojo.Users;
@@ -18,11 +18,11 @@ public class OrderService implements IOrderService {
     private IOrderRepository iOrderRepository;
 
     @Override
-    public Orders saveOrder(Cart cart, Users user) {
+    public Orders saveOrder(CartDTO cartDTO, Users user) {
         Orders o = new Orders();
         float total = 0;
-        for(Item i: cart.getCart().values()){
-            total += i.getPrice() * i.getQuantity();
+        for(CartItemDTO i: cartDTO.getCartItems()){
+            total += i.getUnitPrice() * i.getQuantity();
         }
         LocalDate date = LocalDate.now();
 

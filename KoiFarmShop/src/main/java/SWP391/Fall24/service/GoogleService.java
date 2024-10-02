@@ -25,9 +25,9 @@ public class GoogleService implements IGoogleService {
             u.setEmail(email);
             u.setName(name);
             u.setUserName(email);
-            u.setPassword("1");
+            u.setPassword("");
             u.setRole(Role.Customer);
-            u.setPhone("0123456789");
+            u.setPhone("");
             u.setStatus(true);
 
             return iGoogleRepository.save(u);
