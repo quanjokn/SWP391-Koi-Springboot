@@ -30,14 +30,6 @@ public class UserController {
                 .build();
     }
 
-//    @PostMapping("/login")
-//    public ResponseEntity<Users> login(@RequestBody Users user) {
-//        if(userService.getUser(user.getUserName(), user.getPassword()) != null) {
-//            return ResponseEntity.ok(userService.getUser(user.getUserName(), user.getPassword()));
-//        }
-//        return null;
-//    }
-
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> loginUser(@Valid @RequestBody LoginRequest loginRequest) {
         String jwt = userService.loginUser(loginRequest);

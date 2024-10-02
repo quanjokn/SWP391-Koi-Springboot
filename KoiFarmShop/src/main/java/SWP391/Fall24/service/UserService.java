@@ -45,7 +45,7 @@ public class UserService implements IUserService{
     public Users registerUser(RequestRegistrationUser requestRegistrationUser){
         if(iUserRepository.findByUserNameIgnoreCase(requestRegistrationUser.getUserName()).isPresent()
                 && iUserRepository.findByEmailIgnoreCase(requestRegistrationUser.getEmail()).isPresent() ){
-            throw new AppException(ErrorCode.USER_EXIST);
+            throw new AppException(ErrorCode.USER_EXISTED);
         }
         Users newUser = new Users();
         newUser.setUserName(requestRegistrationUser.getUserName());

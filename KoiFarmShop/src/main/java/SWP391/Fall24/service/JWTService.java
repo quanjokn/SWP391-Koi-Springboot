@@ -24,7 +24,7 @@ public class JWTService {
     /** The algorithm generated post construction. */
     private Algorithm algorithm;
     /** The JWT claim key for the username. */
-    private static final String USERNAME_KEY = "USERNAME";
+    private static final String USERNAME_KEY = "userName";
 
     /**
      * Post construction method.
