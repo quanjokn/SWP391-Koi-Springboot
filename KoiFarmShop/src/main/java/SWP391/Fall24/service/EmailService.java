@@ -24,6 +24,21 @@ public class EmailService {
         mailSender.send(mimeMessage);
     }
 
+    public void sendSimpleEmail(String toEmail,
+                                String subject,
+                                String body
+    ) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("koifarmshopswp391@gmail.com");
+        message.setTo(toEmail);
+        message.setText(body);
+        message.setSubject(subject);
+        mailSender.send(message);
+        System.out.println("Mail Send...");
+
+
+    }
+
     public String subjectOrder(String fullName) {
         return "Hi, " + fullName + ", thanks for your order from Shoe For Men Shop!";
     }
