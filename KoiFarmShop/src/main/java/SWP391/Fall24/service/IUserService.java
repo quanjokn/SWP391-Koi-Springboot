@@ -1,10 +1,7 @@
 package SWP391.Fall24.service;
 
 
-import SWP391.Fall24.dto.request.ChangePasswordRequest;
-import SWP391.Fall24.dto.request.LoginRequest;
-import SWP391.Fall24.dto.request.RequestRegistrationUser;
-import SWP391.Fall24.dto.request.UpdateUserRequest;
+import SWP391.Fall24.dto.request.*;
 import SWP391.Fall24.pojo.Users;
 
 import java.util.List;
@@ -29,4 +26,6 @@ public interface IUserService {
     public Users changePassword(int id, ChangePasswordRequest changePasswordRequest);
 
     Optional<Users> findByUserNameAndEmailIgnoreCase(String username, String email);
+
+    public String resetPassword(ForgotPasswordRequest forgotPasswordRequest);
 }

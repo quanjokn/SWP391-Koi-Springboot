@@ -11,6 +11,7 @@ public enum ErrorCode {
     PASSWORD_ERROR(1007, "Password error"),
     COMFIRMED_PASSWORD_ERROR(1008, "Comfirmed password error"),
     FAIL_LOGIN(1009, "Login failed"),
+    FAIL_OTP(1010, "OTP error"),
     ;
     private int code;
     private String message;
