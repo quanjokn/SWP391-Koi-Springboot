@@ -20,6 +20,6 @@ public interface IUserRepository extends JpaRepository<Users, Integer> {
 
     Users getUsersByUserNameAndPassword(String username, String password);
 
-
+    Optional<Users> findByUserNameAndEmailIgnoreCase(String username, String email);
 
 }

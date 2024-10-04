@@ -40,7 +40,7 @@ public class CaredKois {
     private String ration;
 
     @Column
-    private boolean status = true;
+    private String status;
 
 
     @Override

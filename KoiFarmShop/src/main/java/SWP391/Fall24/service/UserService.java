@@ -64,6 +64,11 @@ public class UserService implements IUserService{
     }
 
     @Override
+    public Optional<Users> findByUserNameAndEmailIgnoreCase(String username, String email) {
+        return iUserRepository.findByUserNameAndEmailIgnoreCase(username, email);
+    }
+
+    @Override
     public Users registerUser(RequestRegistrationUser requestRegistrationUser){
         if(iUserRepository.findByUserNameIgnoreCase(requestRegistrationUser.getUserName()).isPresent()
                 && iUserRepository.findByEmailIgnoreCase(requestRegistrationUser.getEmail()).isPresent() ){
@@ -98,7 +103,6 @@ public class UserService implements IUserService{
 
     @Override
     public List<Users> getAllUsers() {
-
         return iUserRepository.findAll();
     }
 

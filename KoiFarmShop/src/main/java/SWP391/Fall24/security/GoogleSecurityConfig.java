@@ -7,13 +7,11 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class GoogleSecurityConfig {
+
+
     @Bean
     public SecurityFilterChain securityFilterChainGoogleConfig (HttpSecurity http) throws Exception{
         http
-                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/","/login").permitAll()// cho phép truy cập không cần đăng nhập
-                        .anyRequest().authenticated()
-                )
                 .oauth2Login(oauth2 -> oauth2
                         .defaultSuccessUrl("/save",true)
                 );

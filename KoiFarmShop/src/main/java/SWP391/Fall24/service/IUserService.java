@@ -28,4 +28,5 @@ public interface IUserService {
 
     public Users changePassword(int id, ChangePasswordRequest changePasswordRequest);
 
+    Optional<Users> findByUserNameAndEmailIgnoreCase(String username, String email);
 }
