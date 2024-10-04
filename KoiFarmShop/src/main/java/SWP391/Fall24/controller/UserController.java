@@ -8,12 +8,15 @@ import SWP391.Fall24.dto.request.UpdateUserRequest;
 import SWP391.Fall24.dto.response.ApiResponse;
 import SWP391.Fall24.dto.response.LoginResponse;
 import SWP391.Fall24.pojo.Users;
+import SWP391.Fall24.service.EmailService;
+import SWP391.Fall24.service.GoogleService;
 import SWP391.Fall24.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,6 +47,8 @@ public class UserController {
         }
     }
 
+    @Autowired
+    private EmailService emailService;
     @GetMapping("/getAllUser")
     public ResponseEntity<List<Users>> getAll() {
         return ResponseEntity.ok(userService.getAllUsers());
