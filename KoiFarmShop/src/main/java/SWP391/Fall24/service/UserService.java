@@ -1,9 +1,6 @@
 package SWP391.Fall24.service;
 
-import SWP391.Fall24.dto.request.ChangePasswordRequest;
-import SWP391.Fall24.dto.request.LoginRequest;
-import SWP391.Fall24.dto.request.RequestRegistrationUser;
-import SWP391.Fall24.dto.request.UpdateUserRequest;
+import SWP391.Fall24.dto.request.*;
 import SWP391.Fall24.exception.AppException;
 import SWP391.Fall24.exception.ErrorCode;
 import SWP391.Fall24.pojo.Users;
@@ -63,9 +60,22 @@ public class UserService implements IUserService{
         return user;
     }
 
+
     @Override
     public Optional<Users> findByUserNameAndEmailIgnoreCase(String username, String email) {
         return iUserRepository.findByUserNameAndEmailIgnoreCase(username, email);
+    }
+
+    @Override
+    public String resetPassword(ForgotPasswordRequest forgotPasswordRequest) {
+        Optional<Users> u = iUserRepository.findByUserNameIgnoreCase(forgotPasswordRequest.getUserName());
+        if(u.isPresent()) {
+            Users user = u.get();
+            if(forgotPasswordRequest.getPassword().equals(forgotPasswordRequest.getConfirmPassword())) {
+                user.setPassword(encryptionService.encryptPassword(forgotPasswordRequest.getPassword()));
+                return "Reset password successfully";
+            } else throw new AppException(ErrorCode.COMFIRMED_PASSWORD_ERROR);
+        } else throw new AppException(ErrorCode.USER_NOT_EXISTED);
     }
 
     @Override
