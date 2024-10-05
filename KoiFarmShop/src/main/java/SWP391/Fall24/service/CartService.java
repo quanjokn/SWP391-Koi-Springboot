@@ -56,6 +56,7 @@ public class CartService implements ICartService {
             cartItem.setUnitPrice(fishDetail.getPrice());
             cartItem.setTotalPrice(fishDetail.getPrice() * cartItemDTO.getQuantity());
             cartItem.setCart(cart);
+            cartItem.setPhoto(fishDetail.getPhoto());
             cart.getCartItems().add(cartItem);
         }
 
@@ -131,6 +132,7 @@ public class CartService implements ICartService {
             dto.setQuantity(item.getQuantity());
             dto.setUnitPrice((float) item.getUnitPrice());
             dto.setTotalPrice((float) item.getTotalPrice());
+            dto.setPhoto(item.getPhoto());
             return dto;
         }).collect(Collectors.toList());
 

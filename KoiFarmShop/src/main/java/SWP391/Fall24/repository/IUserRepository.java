@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Repository
@@ -13,6 +14,8 @@ import java.util.Optional;
 public interface IUserRepository extends JpaRepository<Users, Integer> {
 
     Users findById(int id);
+
+    Optional<Users> findUsersById(int id);
 
     Optional<Users> findByUserNameIgnoreCase(String username);
 

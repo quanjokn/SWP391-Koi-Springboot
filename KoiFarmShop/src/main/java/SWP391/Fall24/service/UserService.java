@@ -73,6 +73,7 @@ public class UserService implements IUserService{
             Users user = u.get();
             if(forgotPasswordRequest.getPassword().equals(forgotPasswordRequest.getConfirmPassword())) {
                 user.setPassword(encryptionService.encryptPassword(forgotPasswordRequest.getPassword()));
+                iUserRepository.save(user);
                 return "Reset password successfully";
             } else throw new AppException(ErrorCode.COMFIRMED_PASSWORD_ERROR);
         } else throw new AppException(ErrorCode.USER_NOT_EXISTED);

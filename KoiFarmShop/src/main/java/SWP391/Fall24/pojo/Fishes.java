@@ -38,6 +38,6 @@ public class Fishes {
     private Set<Species> species = new HashSet<>();
 
     @Column
-    private float rating;
+    private Float rating;
 
 }

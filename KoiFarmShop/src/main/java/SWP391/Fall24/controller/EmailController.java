@@ -1,6 +1,5 @@
 package SWP391.Fall24.controller;
 
-import SWP391.Fall24.dto.request.ChangePasswordRequest;
 import SWP391.Fall24.dto.request.ForgotPasswordRequest;
 import SWP391.Fall24.exception.AppException;
 import SWP391.Fall24.exception.ErrorCode;
