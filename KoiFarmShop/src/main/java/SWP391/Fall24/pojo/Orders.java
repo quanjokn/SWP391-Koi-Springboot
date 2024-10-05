@@ -41,6 +41,8 @@ public class Orders {
     @Column(name = "status", nullable = false, columnDefinition = "NVARCHAR(255)")
     private OrderStatus status; // 'Confirming' 'Deliverying' 'Completed'
 
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
