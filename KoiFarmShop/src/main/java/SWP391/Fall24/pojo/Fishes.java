@@ -20,6 +20,7 @@ public class Fishes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+
     @Column(length = 50, nullable = false)
     private String category; // 'Batch'/'Koi'/'ConsignedKoi'
 

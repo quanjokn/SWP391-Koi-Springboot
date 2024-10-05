@@ -2,10 +2,15 @@ package SWP391.Fall24.controller;
 
 import SWP391.Fall24.dto.CartDTO;
 import SWP391.Fall24.dto.CartItemDTO;
+import SWP391.Fall24.exception.AppException;
+import SWP391.Fall24.exception.ErrorCode;
+import SWP391.Fall24.pojo.Cart;
 import SWP391.Fall24.pojo.Orders;
 import SWP391.Fall24.pojo.Users;
+import SWP391.Fall24.repository.ICartRepository;
 import SWP391.Fall24.service.CartService;
 import SWP391.Fall24.service.IOrderService;
+import SWP391.Fall24.service.OrderService;
 import SWP391.Fall24.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +23,13 @@ import java.util.Optional;
 @RequestMapping("/cart")
 @CrossOrigin(origins = "http://localhost:3000")
 public class CartController {
-    @Autowired
-    private UserService userService;
+
     @Autowired
     private CartService cartService;
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<CartDTO> getCart(@PathVariable int userId) {
+
+    @PostMapping("/{userId}")
+    public ResponseEntity<CartDTO> getCart(@PathVariable("userId") int userId) {
         CartDTO cart = cartService.findCartByUserId(userId); // Giả sử bạn có một service để lấy giỏ hàng
         if (cart == null) {
             // Nếu giỏ hàng chưa tồn tại cho user này, tạo mới một CartDTO
@@ -52,15 +57,6 @@ public class CartController {
         CartDTO updatedCart = cartService.removeFromCart(userId, fishId);
         return ResponseEntity.ok(updatedCart);
     }
+    
 
-
-    @Autowired
-    private IOrderService iOrderService;
-
-    @PostMapping("/order")
-    public ResponseEntity<Orders> placeOrder(@RequestBody CartDTO cart, @RequestParam int userId) {
-        Optional<Users> user = userService.findByID(userId);
-        Orders saveOrder = iOrderService.saveOrder(cart, user.orElse(null));
-        return ResponseEntity.ok(saveOrder);
-    }
 }

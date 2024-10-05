@@ -12,6 +12,7 @@ public enum ErrorCode {
     COMFIRMED_PASSWORD_ERROR(1008, "Comfirmed password error"),
     FAIL_LOGIN(1009, "Login failed"),
     FAIL_OTP(1010, "OTP error"),
+    FISH_NOT_EXISTED(10011, "Fish not existed"),
     ;
     private int code;
     private String message;
