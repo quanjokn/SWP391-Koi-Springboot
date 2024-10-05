@@ -28,7 +28,7 @@ public class OrderController {
     @Autowired
     private ICartRepository icartRepository;
 
-    @GetMapping("/order/{userId}")
+    @PostMapping("/order/{userId}")
     public ResponseEntity<String> placeOrder( @PathVariable("userId") int userId) {
         Optional<Users> u = userService.findByID(userId);
         if(u.isPresent()) {
