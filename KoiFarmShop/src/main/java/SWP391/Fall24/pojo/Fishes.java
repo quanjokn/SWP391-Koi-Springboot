@@ -20,6 +20,7 @@ public class Fishes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+
     @Column(length = 50, nullable = false)
     private String category; // 'Batch'/'Koi'/'ConsignedKoi'
 
@@ -38,6 +39,6 @@ public class Fishes {
     private Set<Species> species = new HashSet<>();
 
     @Column
-    private float rating;
+    private Float rating;
 
 }

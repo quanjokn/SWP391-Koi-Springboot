@@ -24,8 +24,8 @@ public class CartItem {
     @ManyToOne
     @JoinColumn(name = "fish_id")
     private Fishes fish;
-
     private int quantity;
-    private float unitPrice;
-    private float totalPrice;
+    private Float unitPrice;
+    private Float totalPrice;
+
 }

@@ -26,23 +26,28 @@ public class OrderDetails {
     @JoinColumn(name = "fishID")
     private Fishes fishes;
 
+    @Column(name = "name" ,columnDefinition = "NVARCHAR(255)")
+    private String fishName;
+
     @Column(nullable = false)
     private int quantity;
 
     @Column(nullable = false)
     private float price;
 
-    @Column(nullable = false)
+    @Column
     private float discount = 0;
 
     @Column(nullable = false)
     private float total;
 
-    @Column(nullable = false)
+    @Column
     private float rating;
 
-    @Column(nullable = false, columnDefinition = "NVARCHAR(4000)")
+    @Column(columnDefinition = "NVARCHAR(4000)")
     private String feedback;
+
+
 
     @Override
     public boolean equals(Object o) {

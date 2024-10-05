@@ -118,6 +118,10 @@ public class CartService implements ICartService {
         return convertToCartDTO(cart);
     }
 
+    @Override
+    public Cart getCart(int userId) {
+        return cartRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("Cart not found"));
+    }
 
 
     public CartDTO convertToCartDTO(Cart cart) {
