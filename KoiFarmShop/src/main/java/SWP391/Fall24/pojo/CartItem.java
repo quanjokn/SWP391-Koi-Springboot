@@ -25,7 +25,8 @@ public class CartItem {
     @JoinColumn(name = "fish_id")
     private Fishes fish;
     private int quantity;
-    private Float unitPrice;
-    private Float totalPrice;
 
+    private float unitPrice;
+    private float totalPrice;
+    private String photo;
 }

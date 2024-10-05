@@ -13,6 +13,7 @@ public class CartItemDTO {
     private int quantity;
     private float unitPrice;
     private float totalPrice;
+    private String photo;
 
     public CartItemDTO(int fishId, int quantity, float unitPrice, float totalPrice) {
         this.fishId = fishId;

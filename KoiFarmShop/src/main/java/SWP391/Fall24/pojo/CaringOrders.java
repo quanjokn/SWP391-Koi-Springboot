@@ -17,9 +17,8 @@ import java.util.Set;
 @Table(name = "CaringOrders")
 public class CaringOrders {
     @Id
-    @OneToOne
-    @JoinColumn (name = "serviceID", referencedColumnName = "id")
-    private ServiceOrders serviceOrder;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Column(name = "startDate", nullable = false)
     private LocalDate startDate;
@@ -30,24 +29,19 @@ public class CaringOrders {
     @Column(name = "totalPrice", nullable = false)
     private float totalPrice;
 
-    @Column(name = "customerID", nullable = false)
-    private int customerID;
+    @ManyToOne
+    @JoinColumn(name = "customerID", referencedColumnName = "id")
+    private Users customer;
 
-    @OneToMany (cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "staffID", nullable = true, referencedColumnName = "id")
+    private Users staff;
+
+    @OneToMany
     @JoinColumn(name = "serviceID")
-    private Set<CaredKois> caredKois = new HashSet<CaredKois>();
+    private Set<CaredKois> caredKois = new HashSet<>();
 
+    @Column
+    private boolean status = false;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CaringOrders that = (CaringOrders) o;
-        return Float.compare(totalPrice, that.totalPrice) == 0 && customerID == that.customerID && Objects.equals(serviceOrder, that.serviceOrder) && Objects.equals(startDate, that.startDate) && Objects.equals(endDate, that.endDate) && Objects.equals(caredKois, that.caredKois);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(serviceOrder, startDate, endDate, totalPrice, customerID, caredKois);
-    }
 }

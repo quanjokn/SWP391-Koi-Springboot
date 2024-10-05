@@ -2,6 +2,7 @@ package SWP391.Fall24.pojo;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,12 +18,16 @@ import java.util.Set;
 @Table(name = "ConsignOrders")
 public class ConsignOrders {
     @Id
-    @OneToOne (cascade = CascadeType.ALL)
-    @JoinColumn(name = "serviceID", referencedColumnName = "id")
-    private ServiceOrders serviceOrder;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-    @Column(nullable = false)
-    private int customerID;
+    @ManyToOne (cascade = CascadeType.ALL)
+    @JoinColumn(name = "customerID",nullable = false)
+    private Users user;
+
+    @ManyToOne (cascade = CascadeType.ALL)
+    @JoinColumn(name = "staffID",nullable = false)
+    private Users staff;
 
     @Column(name = "date", nullable = false)
     private LocalDate date;
@@ -36,16 +41,7 @@ public class ConsignOrders {
     @OneToMany(mappedBy = "consignOrder")
     private Set<ConsignedKois> consignedKois = new HashSet<ConsignedKois>();
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ConsignOrders that = (ConsignOrders) o;
-        return customerID == that.customerID && Float.compare(totalPrice, that.totalPrice) == 0 && Float.compare(commission, that.commission) == 0 && Objects.equals(serviceOrder, that.serviceOrder) && Objects.equals(date, that.date) && Objects.equals(consignedKois, that.consignedKois);
-    }
+    @Column
+    private boolean status = false;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(serviceOrder, customerID, date, totalPrice, commission, consignedKois);
-    }
 }

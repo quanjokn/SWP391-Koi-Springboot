@@ -3,6 +3,7 @@ package SWP391.Fall24.repository;
 import SWP391.Fall24.dto.CartItemDTO;
 import SWP391.Fall24.pojo.CartItem;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
