@@ -57,19 +57,6 @@ public class CartController {
         CartDTO updatedCart = cartService.removeFromCart(userId, fishId);
         return ResponseEntity.ok(updatedCart);
     }
-
-
-
-
-//    @PostMapping("/order/{userId}")
-//    public ResponseEntity<Orders> placeOrder(@RequestBody CartDTO cart, @PathVariable("userId") int userId) {
-//        Optional<Users> u = userService.findByID(userId);
-//        if(u.isPresent()) {
-//            Users user = u.get();
-//            Orders saveOrder = orderService.saveOrder(cart, user);
-//            return ResponseEntity.ok(saveOrder);
-//        } else
-//            throw new AppException(ErrorCode.USER_NOT_EXISTED);
-//    }
+    
 
 }

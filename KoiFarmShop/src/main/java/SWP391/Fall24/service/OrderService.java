@@ -28,43 +28,7 @@ public class OrderService implements IOrderService {
     @Autowired
     private IFishRepository iFishRepository;
 
-//    @Override
-//    public Orders saveOrderOld(CartDTO cartDTO, Users user) {
-//        Orders o = new Orders();
-//        float total = 0;
-//        for(CartItemDTO i: cartDTO.getCartItems()){
-//            total += i.getUnitPrice() * i.getQuantity();
-//        }
-//        LocalDate date = LocalDate.now();
-//
-//        o.setTotal(total);
-//        o.setDate(date);
-//        o.setStatus(OrderStatus.valueOf("Pending_confirmation"));
-//        o.setCustomer(user);
-//        Orders savedOrder = iOrderRepository.save(o);
-//
-//        for(CartItemDTO c: cartDTO.getCartItems()){
-//            Optional<Fishes> optionalFish = iFishRepository.findById(c.getFishId());
-//            if(optionalFish.isPresent()){
-//                Fishes fish = optionalFish.get();
-//                OrderDetails od = new OrderDetails();
-//
-//                od.setOrders(savedOrder);
-//                od.setFishes(fish);
-//                od.setQuantity(c.getQuantity());
-//                od.setPrice(c.getUnitPrice());
-//                od.setTotal(c.getTotalPrice());
-//                od.setDiscount(0);
-//                od.setFeedback("fdsfa");
-//                od.setRating(3);
-//                iOrderDetailRepository.save(od);
-//
-//            } else
-//                throw new AppException(ErrorCode.FISH_NOT_EXISTED);
-//    }
-//       return savedOrder;
-//
-//    }
+
 
     @Override
     public OrderDTO getOrderDetails(int orderId) {

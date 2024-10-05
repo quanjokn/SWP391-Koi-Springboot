@@ -11,7 +11,6 @@ import SWP391.Fall24.pojo.Users;
 import java.util.List;
 
 public interface IOrderService {
-//    public Orders saveOrderOld(CartDTO cartDTO, Users user);
 
     public OrderDTO getOrderDetails(int cartId);
     public void saveOrder(Cart cart, Users user);
