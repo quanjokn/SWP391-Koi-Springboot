@@ -13,5 +13,5 @@ import java.util.List;
 public interface IOrderService {
 
     public OrderDTO getOrderDetails(int cartId);
-    public void saveOrder(Cart cart, Users user);
+    public int saveOrder(Cart cart, Users user);
 }

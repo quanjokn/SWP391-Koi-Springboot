@@ -28,15 +28,16 @@ public class OrderController {
     @Autowired
     private ICartRepository icartRepository;
 
-    @GetMapping("/order/{userId}")
-    public ResponseEntity<String> placeOrder( @PathVariable("userId") int userId) {
+    @PostMapping("/placeOrder/{userId}")
+    public ResponseEntity<OrderDTO> placeOrder( @PathVariable("userId") int userId) {
         Optional<Users> u = userService.findByID(userId);
         if(u.isPresent()) {
             Users user = u.get();
             Optional<Cart> opCart = icartRepository.findByUserId(userId);
             Cart cart = opCart.get();
-             orderService.saveOrder(cart, user);
-            return new ResponseEntity<>(HttpStatus.OK);
+            System.out.println(cart.getId());
+            int orderId = orderService.saveOrder(cart, user);
+            return this.getOrderDetail(orderId);
         } else
             throw new AppException(ErrorCode.USER_NOT_EXISTED);
     }
