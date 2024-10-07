@@ -35,7 +35,6 @@ public class OrderController {
             Users user = u.get();
             Optional<Cart> opCart = icartRepository.findByUserId(userId);
             Cart cart = opCart.get();
-            System.out.println(cart.getId());
             int orderId = orderService.saveOrder(cart, user);
             return this.getOrderDetail(orderId);
         } else

@@ -5,8 +5,6 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Objects;
-
 @Data
 @Getter
 @Setter
@@ -18,41 +16,28 @@ public class CaredKois {
     private int id;
 
     @ManyToOne (cascade = CascadeType.ALL)
-    @JoinColumn(name = "serviceID", nullable = false)
+    @JoinColumn(name = "serviceID")
     private CaringOrders caringOrder;
 
-    @Column(length = 255, nullable = false, columnDefinition = "NVARCHAR(255)")
+    @Column(length = 1000, columnDefinition = "NVARCHAR(1000)")
     private String name;
 
-    @Column(length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
+    @Column(length = 1000, columnDefinition = "NVARCHAR(1000)")
     private String sex;
 
-    @Column(length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
+    @Column(length = 1000, columnDefinition = "NVARCHAR(1000)")
     private String age;
 
-    @Column(length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
+    @Column(length = 1000, columnDefinition = "NVARCHAR(1000)")
     private String size;
 
-    @Column(length = 255, nullable = false, columnDefinition = "NVARCHAR(255)")
+    @Column(length = 1000, columnDefinition = "NVARCHAR(1000)")
     private String healthStatus;
 
-    @Column(length = 255, nullable = false, columnDefinition = "NVARCHAR(255)")
+    @Column(length = 1000, columnDefinition = "NVARCHAR(1000)")
     private String ration;
 
     @Column
-    private String status;
+    private boolean status = false;
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CaredKois caredKois = (CaredKois) o;
-        return id == caredKois.id && status == caredKois.status && Objects.equals(caringOrder, caredKois.caringOrder) && Objects.equals(name, caredKois.name) && Objects.equals(sex, caredKois.sex) && Objects.equals(age, caredKois.age) && Objects.equals(size, caredKois.size) && Objects.equals(healthStatus, caredKois.healthStatus) && Objects.equals(ration, caredKois.ration);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, caringOrder, name, sex, age, size, healthStatus, ration, status);
-    }
 }
