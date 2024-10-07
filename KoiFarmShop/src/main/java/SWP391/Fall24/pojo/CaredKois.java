@@ -38,6 +38,9 @@ public class CaredKois {
     private String ration;
 
     @Column
+    private String photo;
+
+    @Column
     private boolean status = false;
 
 }

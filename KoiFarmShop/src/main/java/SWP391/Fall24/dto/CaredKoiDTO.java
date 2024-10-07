@@ -14,4 +14,5 @@ public class CaredKoiDTO {
     private String size;
     private String healthStatus;
     private String ration;
+    private String photo;
 }

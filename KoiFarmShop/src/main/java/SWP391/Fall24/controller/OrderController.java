@@ -4,10 +4,8 @@ import SWP391.Fall24.dto.OrderDTO;
 import SWP391.Fall24.exception.AppException;
 import SWP391.Fall24.exception.ErrorCode;
 import SWP391.Fall24.pojo.Cart;
-import SWP391.Fall24.pojo.OrderDetails;
 import SWP391.Fall24.pojo.Users;
 import SWP391.Fall24.repository.ICartRepository;
-import SWP391.Fall24.service.CartService;
 import SWP391.Fall24.service.OrderService;
 import SWP391.Fall24.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +33,7 @@ public class OrderController {
             Users user = u.get();
             Optional<Cart> opCart = icartRepository.findByUserId(userId);
             Cart cart = opCart.get();
-             orderService.saveOrder(cart, user);
+            orderService.saveOrder(cart, user);
             return new ResponseEntity<>(HttpStatus.OK);
         } else
             throw new AppException(ErrorCode.USER_NOT_EXISTED);
