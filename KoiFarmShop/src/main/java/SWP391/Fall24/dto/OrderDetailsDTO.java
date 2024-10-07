@@ -12,12 +12,14 @@ public class OrderDetailsDTO {
     private int quantity;
     private float unitPrice;
     private float totalPrice;
+    private String photo;
 
-    public OrderDetailsDTO(int fishId, String fishName, int quantity, float unitPrice , float totalPrice) {
+    public OrderDetailsDTO(int fishId, String fishName, int quantity, float unitPrice , float totalPrice , String photo) {
         this.fishId = fishId;
         this.fishName = fishName;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
         this.totalPrice = totalPrice;
+        this.photo = photo;
     }
 }
