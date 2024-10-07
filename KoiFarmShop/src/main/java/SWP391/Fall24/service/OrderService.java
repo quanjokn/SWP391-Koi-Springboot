@@ -46,7 +46,7 @@ public class OrderService implements IOrderService {
         }
         List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
         for (OrderDetails od : orderDetails) {
-            OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO(od.getFishes().getId(), od.getFishName(), od.getQuantity(), od.getPrice() ,od.getTotal());
+            OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO(od.getFishes().getId(), od.getFishName(), od.getQuantity(), od.getPrice() ,od.getTotal() ,od.getPhoto());
             orderDetailsDTOList.add(orderDetailsDTO);
         }
         OrderDTO orderDTO  = new OrderDTO();
@@ -75,7 +75,7 @@ public class OrderService implements IOrderService {
         Orders savedOrder = iOrderRepository.save(o);
         List<CartItem> listCartItems = iCartItemRepository.findByCardId(cart.getId());
 
-        iCartRepository.deleteById(cart.getId());
+
 
         List<FishDetailDTO> fishDetailDTOList = fishService.allFish();
 
@@ -84,9 +84,11 @@ public class OrderService implements IOrderService {
             OrderDetails od = new OrderDetails();
             od.setOrders(savedOrder);
             String fishName="";
+            String photo = "";
             for(FishDetailDTO f: fishDetailDTOList){
                 if(f.getId()==c.getFish().getId()){
                     fishName = f.getName();
+                    photo = f.getPhoto();
                 }
             }
             od.setFishes(c.getFish());
@@ -94,8 +96,11 @@ public class OrderService implements IOrderService {
             od.setQuantity(c.getQuantity());
             od.setPrice(c.getUnitPrice());
             od.setTotal(c.getTotalPrice());
+            od.setPhoto(photo);
             iOrderDetailRepository.save(od);
+
         }
+        iCartRepository.deleteById(cart.getId());
         return o.getId();
     }
 
