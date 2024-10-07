@@ -20,12 +20,11 @@ public class Fishes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-
     @Column(length = 50, nullable = false)
     private String category; // 'Batch'/'Koi'/'ConsignedKoi'
 
     @ManyToOne (cascade = CascadeType.ALL)
-    @JoinColumn(name = "promotionID")
+    @JoinColumn(name = "promotionID", nullable = true)
     private Promotions promotion;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -38,7 +37,7 @@ public class Fishes {
     inverseJoinColumns = @JoinColumn(name = "speciesID"))
     private Set<Species> species = new HashSet<>();
 
-    @Column
+    @Column(name = "rating")
     private Float rating;
 
 }

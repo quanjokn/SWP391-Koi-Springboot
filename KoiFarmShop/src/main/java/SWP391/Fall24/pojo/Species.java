@@ -2,9 +2,7 @@ package SWP391.Fall24.pojo;
 
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -14,6 +12,8 @@ import java.util.Set;
 @Setter
 @Getter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "Species")
 public class Species {
     @Id
@@ -25,6 +25,10 @@ public class Species {
 
     @ManyToMany(mappedBy = "species")
     private Set<Fishes> fishes = new HashSet<>();
+
+    public Species(String name) {
+        this.name = name;
+    }
 
     @Override
     public boolean equals(Object o) {

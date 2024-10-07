@@ -52,6 +52,7 @@ public class CaringOrderService implements ICaringOrderService{
                 ck.setSize(koi.getSize());
                 ck.setHealthStatus(koi.getHealthStatus());
                 ck.setRation(koi.getRation());
+                ck.setPhoto("/images/"+koi.getPhoto());
                 // save to CaredKois table
                 caredKoiRepository.save(ck);
             }
