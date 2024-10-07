@@ -47,6 +47,9 @@ public class OrderDetails {
     @Column(columnDefinition = "NVARCHAR(4000)")
     private String feedback;
 
+    @Column(name = "photo" ,columnDefinition = "VARCHAR(255)")
+    private String photo;
+
 
 
     @Override

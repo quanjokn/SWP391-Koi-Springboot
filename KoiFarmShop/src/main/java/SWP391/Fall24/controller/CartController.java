@@ -57,6 +57,6 @@ public class CartController {
         CartDTO updatedCart = cartService.removeFromCart(userId, fishId);
         return ResponseEntity.ok(updatedCart);
     }
-    
+
 
 }

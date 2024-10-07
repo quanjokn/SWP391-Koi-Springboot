@@ -25,9 +25,11 @@ public class OrderService implements IOrderService {
     private IOrderRepository iOrderRepository;
     @Autowired
     private IOrderDetailRepository iOrderDetailRepository;
-    @Autowired
-    private IFishRepository iFishRepository;
 
+    @Autowired
+    private ICartRepository iCartRepository;
+    @Autowired
+    private FishService fishService;
 
 
     @Override
@@ -44,11 +46,12 @@ public class OrderService implements IOrderService {
         }
         List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
         for (OrderDetails od : orderDetails) {
-            OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO(od.getFishes().getId(), od.getFishName(), od.getQuantity(), od.getPrice() ,od.getTotal());
+            OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO(od.getFishes().getId(), od.getFishName(), od.getQuantity(), od.getPrice() ,od.getTotal() ,od.getPhoto());
             orderDetailsDTOList.add(orderDetailsDTO);
         }
         OrderDTO orderDTO  = new OrderDTO();
-        orderDTO.setId(orderId);
+        orderDTO.setOrderId(orderId);
+        orderDTO.setUsers(order.getCustomer());
         orderDTO.setDate(LocalDate.now());
         orderDTO.setTotalOrderPrice(totalPrice);
         orderDTO.setStatus(Pending_confirmation);
@@ -62,7 +65,7 @@ public class OrderService implements IOrderService {
     private ICartItemRepository iCartItemRepository;
 
     @Override
-    public void saveOrder(Cart cart, Users user) {
+    public int saveOrder(Cart cart, Users user) {
         Orders o = new Orders();
         LocalDate date = LocalDate.now();
 
@@ -73,17 +76,20 @@ public class OrderService implements IOrderService {
         Orders savedOrder = iOrderRepository.save(o);
         List<CartItem> listCartItems = iCartItemRepository.findByCardId(cart.getId());
 
-        List<FishDetailDTO> fishDetailDTO = iFishRepository.batchList();
-        fishDetailDTO.addAll(iFishRepository.koiList());
-        fishDetailDTO.addAll(iFishRepository.consignedKoiList());
+
+
+        List<FishDetailDTO> fishDetailDTOList = fishService.allFish();
+
 
         for(CartItem c: listCartItems){
             OrderDetails od = new OrderDetails();
             od.setOrders(savedOrder);
             String fishName="";
-            for(FishDetailDTO f: fishDetailDTO){
+            String photo = "";
+            for(FishDetailDTO f: fishDetailDTOList){
                 if(f.getId()==c.getFish().getId()){
                     fishName = f.getName();
+                    photo = f.getPhoto();
                 }
             }
             od.setFishes(c.getFish());
@@ -91,9 +97,14 @@ public class OrderService implements IOrderService {
             od.setQuantity(c.getQuantity());
             od.setPrice(c.getUnitPrice());
             od.setTotal(c.getTotalPrice());
+            od.setPhoto(photo);
             iOrderDetailRepository.save(od);
+
         }
+        iCartRepository.deleteById(cart.getId());
+        return o.getId();
     }
+
 
 }
 
