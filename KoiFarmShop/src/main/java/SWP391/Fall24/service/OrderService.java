@@ -50,7 +50,8 @@ public class OrderService implements IOrderService {
             orderDetailsDTOList.add(orderDetailsDTO);
         }
         OrderDTO orderDTO  = new OrderDTO();
-        orderDTO.setId(orderId);
+        orderDTO.setOrderId(orderId);
+        orderDTO.setUsers(order.getCustomer());
         orderDTO.setDate(LocalDate.now());
         orderDTO.setTotalOrderPrice(totalPrice);
         orderDTO.setStatus(Pending_confirmation);
