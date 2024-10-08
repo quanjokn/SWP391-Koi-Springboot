@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.type.descriptor.jdbc.NVarcharJdbcType;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -22,24 +23,27 @@ public class ConsignOrders {
     private int id;
 
     @ManyToOne (cascade = CascadeType.ALL)
-    @JoinColumn(name = "customerID",nullable = false)
+    @JoinColumn(name = "customerID")
     private Users user;
 
     @ManyToOne (cascade = CascadeType.ALL)
-    @JoinColumn(name = "staffID",nullable = false)
+    @JoinColumn(name = "staffID", nullable = true)
     private Users staff;
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "date", nullable = true)
     private LocalDate date;
 
-    @Column(name = "totalPrice", nullable = false)
+    @Column(name = "totalPrice", nullable = true)
     private float totalPrice;
 
-    @Column(name = "commission", nullable = false)
+    @Column(name = "commission", nullable = true)
     private float commission;
 
     @OneToMany(mappedBy = "consignOrder")
-    private Set<ConsignedKois> consignedKois = new HashSet<ConsignedKois>();
+    private Set<ConsignedKois> consignedKois = new HashSet<>();
+
+    @Column(columnDefinition = "NVARCHAR(4000)", nullable = true, length = 4000)
+    private String note;
 
     @Column
     private boolean status = false;

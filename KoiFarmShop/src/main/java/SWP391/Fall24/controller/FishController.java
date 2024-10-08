@@ -1,5 +1,6 @@
 package SWP391.Fall24.controller;
 
+import SWP391.Fall24.dto.ConsignedKoiDTO;
 import SWP391.Fall24.dto.FishDetailDTO;
 import SWP391.Fall24.repository.IEvaluationRepository;
 import SWP391.Fall24.repository.IFishRepository;
@@ -18,10 +19,7 @@ public class FishController {
 
     @Autowired
     private IEvaluationRepository evaluationRepository;
-
-    @Autowired
-    private IFishRepository fishRepository;
-
+  
     @GetMapping("/fishes-list")
     private List<FishDetailDTO> getAllFish() {
         return fishService.allFish();
@@ -43,7 +41,4 @@ public class FishController {
         }
         return Optional.empty();
     }
-
-
-
 }

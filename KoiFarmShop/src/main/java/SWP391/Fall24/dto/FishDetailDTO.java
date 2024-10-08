@@ -29,7 +29,7 @@ public class FishDetailDTO {
     private float discount = 0;
     private float promotionPrice = price * (1-discount);
     private String origin;
-
+  
     @JsonProperty("evaluation")
     private List<Evaluations> evaluation;
 
