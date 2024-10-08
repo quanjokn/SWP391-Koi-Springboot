@@ -34,7 +34,7 @@ public class FeedbackController {
             if (fd.getId() == fishId) {
                 Optional<FishDetailDTO> fishDetailDTO = Optional.of(fd);
                 if (fishDetailDTO.isPresent()) {
-                    FishDetailDTO fish    = fishDetailDTO.get();
+                    FishDetailDTO fish = fishDetailDTO.get();
                     fish.setEvaluation(feedbackService.getAllFeedback(fish.getId()));
                 }
                 return fishDetailDTO;
