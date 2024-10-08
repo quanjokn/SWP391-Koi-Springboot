@@ -1,6 +1,9 @@
 package SWP391.Fall24.service;
 
 import SWP391.Fall24.dto.FishDetailDTO;
+import SWP391.Fall24.exception.AppException;
+import SWP391.Fall24.exception.ErrorCode;
+import SWP391.Fall24.pojo.Fishes;
 import SWP391.Fall24.repository.IFishRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +25,14 @@ public class FishService implements IFishService {
         listAllFish.addAll(fishRepository.consignedKoiList());
         return listAllFish;
     }
+
+    @Override
+    public Fishes findFishById(int fishId) {
+        Optional<Fishes> fish = fishRepository.findById(fishId);
+        return fish.isPresent() ? fish.get() :null;
+
+    }
+
     public Optional<FishDetailDTO> findFishDetailByFishId(int fishId) {
         List<FishDetailDTO> allFishDetails = allFish();  // Lấy toàn bộ danh sách FishDetailDTO
         return allFishDetails.stream()

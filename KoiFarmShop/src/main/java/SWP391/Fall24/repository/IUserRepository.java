@@ -25,4 +25,6 @@ public interface IUserRepository extends JpaRepository<Users, Integer> {
 
     Optional<Users> findByUserNameAndEmailIgnoreCase(String username, String email);
 
+
+
 }
