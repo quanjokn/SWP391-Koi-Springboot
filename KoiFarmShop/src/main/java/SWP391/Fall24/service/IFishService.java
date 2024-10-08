@@ -9,6 +9,8 @@ import java.util.List;
 public interface IFishService  {
 
     public List<FishDetailDTO> allFish();
+  
+    public Fishes findFishById(int fishId);
 
     Fishes addFish(ConsignedKoiDTO fish);
 }

@@ -2,6 +2,8 @@ package SWP391.Fall24.service;
 
 import SWP391.Fall24.dto.ConsignedKoiDTO;
 import SWP391.Fall24.dto.FishDetailDTO;
+import SWP391.Fall24.exception.AppException;
+import SWP391.Fall24.exception.ErrorCode;
 import SWP391.Fall24.pojo.Fishes;
 import SWP391.Fall24.pojo.Promotions;
 import SWP391.Fall24.pojo.Species;
@@ -34,6 +36,12 @@ public class FishService implements IFishService {
     }
 
     @Override
+    public Fishes findFishById(int fishId) {
+        Optional<Fishes> fish = fishRepository.findById(fishId);
+        return fish.isPresent() ? fish.get() :null;
+    }
+  
+    @Override
     public Fishes addFish(ConsignedKoiDTO addF) {
         Fishes newF = new Fishes();
         newF.setCategory(addF.getCategory());
@@ -61,7 +69,7 @@ public class FishService implements IFishService {
     }
 
     public Optional<FishDetailDTO> findFishDetailByFishId(int fishId) {
-        List<FishDetailDTO> allFishDetails = this.allFish();  // Lấy toàn bộ danh sách FishDetailDTO
+        List<FishDetailDTO> allFishDetails = this.allFish(); 
         return allFishDetails.stream()
                 .filter(fishDetail -> fishDetail.getId() == fishId)
                 .findFirst();
