@@ -1,5 +1,6 @@
 package SWP391.Fall24.pojo;
 
+import SWP391.Fall24.pojo.Enum.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -39,7 +40,7 @@ public class Orders {
     private float total;
 
     @Column(name = "status", nullable = false, columnDefinition = "NVARCHAR(255)")
-    private OrderStatus status; // 'Confirming' 'Deliverying' 'Completed'
+    private OrderStatus status = OrderStatus.Pending_confirmation;
 
 
 

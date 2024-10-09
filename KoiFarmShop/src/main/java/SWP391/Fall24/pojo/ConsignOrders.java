@@ -1,5 +1,6 @@
 package SWP391.Fall24.pojo;
 
+import SWP391.Fall24.pojo.Enum.ConsignOrderStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Generated;
@@ -45,7 +46,7 @@ public class ConsignOrders {
     @Column(columnDefinition = "NVARCHAR(4000)", nullable = true, length = 4000)
     private String note;
 
-    @Column
-    private boolean status = false;
+    @Column(name = "status")
+    private ConsignOrderStatus status = ConsignOrderStatus.Pending_confirmation;
 
 }

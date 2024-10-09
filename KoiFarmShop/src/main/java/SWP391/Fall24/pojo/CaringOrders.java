@@ -1,5 +1,6 @@
 package SWP391.Fall24.pojo;
 
+import SWP391.Fall24.pojo.Enum.CaringOrderStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -7,7 +8,6 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Data
@@ -42,6 +42,6 @@ public class CaringOrders {
     private Set<CaredKois> caredKois = new HashSet<>();
 
     @Column
-    private boolean status = false;
+    private CaringOrderStatus status = CaringOrderStatus.Pending_confirmation;
 
 }

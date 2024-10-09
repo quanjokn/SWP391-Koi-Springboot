@@ -8,13 +8,14 @@ import SWP391.Fall24.dto.request.UpdateUserRequest;
 import SWP391.Fall24.dto.response.ApiResponse;
 import SWP391.Fall24.dto.response.LoginResponse;
 import SWP391.Fall24.pojo.Users;
-import SWP391.Fall24.service.EmailService;
 import SWP391.Fall24.service.UserService;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 @CrossOrigin(origins = "http://localhost:3000")
+@Slf4j
 public class UserController {
     @Autowired
     private UserService userService;
@@ -45,11 +47,13 @@ public class UserController {
         }
     }
 
-    @Autowired
-    private EmailService emailService;
-
     @GetMapping("/getAllUser")
     public ResponseEntity<List<Users>> getAll() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        log.info("UserName: {}", authentication.getName());
+        authentication.getAuthorities().forEach(grantedAuthority -> log.info(grantedAuthority.getAuthority()));
+
         return ResponseEntity.ok(userService.getAllUsers());
     }
 

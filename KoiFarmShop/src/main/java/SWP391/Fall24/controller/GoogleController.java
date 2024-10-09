@@ -1,5 +1,5 @@
-package SWP391.Fall24.controller;
-
+//package SWP391.Fall24.controller;
+//
 //import SWP391.Fall24.pojo.Users;
 //import SWP391.Fall24.service.GoogleService;
 //import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +7,7 @@ package SWP391.Fall24.controller;
 //import org.springframework.stereotype.Controller;
 //import org.springframework.web.bind.annotation.CrossOrigin;
 //import org.springframework.web.bind.annotation.GetMapping;
-
+//
 //@Controller
 //@CrossOrigin(origins = "http://localhost:3000")
 //public class GoogleController {
