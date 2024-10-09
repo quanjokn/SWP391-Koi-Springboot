@@ -36,9 +36,8 @@ public class UserService implements IUserService{
             if (encryptionService.verifyPassword(loginRequest.getPassword(), user.getPassword())) {
                 return jwtService.generateJWT(user);
             }
-        }else {
+        }else
             throw new AppException(ErrorCode.FAIL_LOGIN);
-        }
         return null;
     }
 

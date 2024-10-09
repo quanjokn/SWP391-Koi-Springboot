@@ -1,21 +1,17 @@
 package SWP391.Fall24.service;
 
 import SWP391.Fall24.dto.*;
-import SWP391.Fall24.exception.AppException;
-import SWP391.Fall24.exception.ErrorCode;
 import SWP391.Fall24.pojo.*;
+import SWP391.Fall24.pojo.Enum.OrderStatus;
 import SWP391.Fall24.repository.*;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-import static SWP391.Fall24.pojo.OrderStatus.Pending_confirmation;
+import static SWP391.Fall24.pojo.Enum.OrderStatus.Pending_confirmation;
 
 
 @Service

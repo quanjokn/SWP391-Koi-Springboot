@@ -1,5 +1,6 @@
 package SWP391.Fall24.pojo;
 
+import SWP391.Fall24.pojo.Enum.Role;
 import jakarta.persistence.*;
 import lombok.*;
 

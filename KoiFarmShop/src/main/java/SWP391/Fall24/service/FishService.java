@@ -3,7 +3,6 @@ package SWP391.Fall24.service;
 import SWP391.Fall24.dto.ConsignedKoiDTO;
 import SWP391.Fall24.dto.FishDetailDTO;
 import SWP391.Fall24.pojo.Fishes;
-import SWP391.Fall24.pojo.Promotions;
 import SWP391.Fall24.pojo.Species;
 import SWP391.Fall24.repository.IFishRepository;
 import SWP391.Fall24.repository.IOriginRepository;
