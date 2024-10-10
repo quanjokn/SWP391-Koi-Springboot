@@ -74,7 +74,6 @@ public class OrderService implements IOrderService {
 
         o.setTotal(cart.getTotalPrice());
         o.setDate(date);
-//        o.setStatus(OrderStatus.Completed.toString());
         o.setCustomer(user);
         o.setPayment(placeOrderDTO.getPaymentMethod());
         Orders savedOrder = iOrderRepository.save(o);
@@ -137,11 +136,11 @@ public class OrderService implements IOrderService {
     }
 
     public Orders prepareOrder(int orderId ) {
-//        Optional<Users> opStaff = iUserRepository.findUsersById(staffId);
+
         Optional<Orders> opOrder = iOrderRepository.findById(orderId);
         Orders order = opOrder.get();
         order.setStatus(OrderStatus.Preparing.toString());
-//        order.setStaff(opStaff.get());
+
 
         List<OrderDetails> orderDetailsList = iOrderDetailRepository.findByOrdersId(orderId);
         for(OrderDetails od: orderDetailsList){
@@ -163,11 +162,10 @@ public class OrderService implements IOrderService {
     }
 
     public Orders rejectOrder(int orderId ){
-//        Optional<Users> opStaff = iUserRepository.findUsersById(staffId);
         Optional<Orders> opOrders = iOrderRepository.findById(orderId);
         Orders order = opOrders.get();
         order.setStatus(OrderStatus.Rejected.toString());
-//        order.setStaff(opStaff.get());
+
         iOrderRepository.save(order);
         return order;
     }

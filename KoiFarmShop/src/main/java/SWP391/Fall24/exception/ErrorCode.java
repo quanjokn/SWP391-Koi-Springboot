@@ -9,10 +9,12 @@ public enum ErrorCode {
     USER_NOT_EXISTED(1005, "User not existed"),
     UNAUTHENTICATED(1006, "Unauthenticated"),
     PASSWORD_ERROR(1007, "Password error"),
-    COMFIRMED_PASSWORD_ERROR(1008, "Comfirmed password error"),
+    CONFIRMED_PASSWORD_ERROR(1008, "Comfirmed password error"),
     FAIL_LOGIN(1009, "Login failed"),
     FAIL_OTP(1010, "OTP error"),
-    FISH_NOT_EXISTED(10011, "Fish not existed"),
+    FISH_NOT_EXISTED(1011, "Fish not existed"),
+    ORDER_NOT_EXISTED(1011, "Order not existed"),
+    FAIL_RETURN_CONSIGNED_KOI(1012, "Fail to return consigned koi from consign order")
     ;
     private int code;
     private String message;

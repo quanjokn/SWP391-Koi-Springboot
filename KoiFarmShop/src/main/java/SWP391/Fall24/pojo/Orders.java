@@ -42,12 +42,11 @@ public class Orders {
     @Column(name = "status", nullable = true )
     private String status = (OrderStatus.Pending_confirmation).toString();
 
-    @Column(columnDefinition = "NVARCHAR(4000)", nullable = true, length = 4000)
-    private String note;
-
     @Column(name = "payment")
     private String payment;
 
+    @Column(columnDefinition = "NVARCHAR(4000)", nullable = true, length = 4000)
+    private String note;
 
     @Override
     public boolean equals(Object o) {
