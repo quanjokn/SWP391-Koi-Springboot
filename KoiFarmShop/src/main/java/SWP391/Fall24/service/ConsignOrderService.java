@@ -105,10 +105,14 @@ public class ConsignOrderService implements IConsignOrderService {
         List<ConsignedKoiDTO> consignDTO = iFishRepository.allConsignedKoi(orderID);
 
         consignDTO.forEach(response->{
+            // set species
             Set<String> setSpecies = new HashSet<>();
             List<Species> speciesNames = speciesRepository.getListName(response.getFishID());
             speciesNames.forEach(s -> setSpecies.add(s.getName()));
             response.setSpecies(setSpecies);
+            // set status
+            ConsignedKois koi = iConsignedKoiRepository.findConsignedKoisById(response.getFishID()).orElseThrow(()-> new AppException(ErrorCode.FISH_NOT_EXISTED));
+            koi.setStatus(response.getStatus());
         });
 
         orderRequest.setConsignList(consignDTO);
@@ -116,4 +120,48 @@ public class ConsignOrderService implements IConsignOrderService {
         return consignOrderResponse;
     }
 
+    @Override
+    public String receiveConsignOrder(int orderID, int staffID){
+        Users staff = iUserRepository.findUsersById(staffID).orElseThrow(()-> new AppException(ErrorCode.USER_NOT_EXISTED));
+        ConsignOrders order = iConsignOrderRepository.findById(orderID).orElseThrow(()-> new AppException(ErrorCode.ORDER_NOT_EXISTED));
+        order.setStaff(staff);
+        order.setStatus(ConsignOrderStatus.Receiving.toString());
+        iConsignOrderRepository.save(order);
+        return "Consign order "+orderID+" received by "+staff.getName();
+    }
+
+
+    @Override
+    public String approvalResponse(ConsignApprovalRequest consignApprovalRequest, int staffID) {
+        Optional<ConsignOrders> consignOrders = iConsignOrderRepository.findById(consignApprovalRequest.getOrderID());
+        Optional<Users> opStaff = iUserRepository.findUsersById(staffID);
+        if(consignOrders.isPresent()) {
+            ConsignOrders consignOrder = consignOrders.get();
+            if(opStaff.isPresent()) {
+                consignOrder.setStatus(ConsignOrderStatus.Responded.toString());
+                consignOrder.setNote(consignApprovalRequest.getNote());
+                iConsignOrderRepository.save(consignOrder);
+                // set consignFish status
+                ConsignOrderResponse consignOrderResponse = this.getDetail(consignApprovalRequest.getOrderID());
+                HashMap<Integer, Boolean> decision = consignApprovalRequest.getDecision();
+                decision.forEach((fishID, result)->{
+                    ConsignedKois koi = iConsignedKoiRepository.findConsignedKoisById(fishID).orElseThrow(()->new AppException(ErrorCode.FISH_NOT_EXISTED));
+                    if(result) koi.setStatus(ConsignedKoiStatus.Accepted_Selling.toString());
+                    else koi.setStatus(ConsignedKoiStatus.Rejected.toString());
+                    iConsignedKoiRepository.save(koi);
+                });
+            } else throw new AppException(ErrorCode.USER_NOT_EXISTED);
+        } else throw new AppException(ErrorCode.ORDER_NOT_EXISTED);
+        return "Responded consign order "+consignApprovalRequest.getOrderID()+" by "+opStaff.get().getName();
+    }
+
+    @Override
+    public List<ConsignOrders> findByStatus(String status) {
+        List<ConsignOrders> list = iConsignOrderRepository.findAll();
+        List<ConsignOrders> consignOrders = new ArrayList<>();
+        list.forEach(order->{
+            if(order.getStatus().equals(status)) consignOrders.add(order);
+        });
+        return consignOrders;
+    }
 }

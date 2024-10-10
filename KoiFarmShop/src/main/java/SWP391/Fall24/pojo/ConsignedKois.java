@@ -27,7 +27,7 @@ public class ConsignedKois {
     private String name;
 
     @Column(name = "quantity", nullable = true)
-    private int quantity = 1;
+    private Integer quantity = 1;
 
     @Column(length = 4000, columnDefinition = "NVARCHAR(4000)")
     private String description;
