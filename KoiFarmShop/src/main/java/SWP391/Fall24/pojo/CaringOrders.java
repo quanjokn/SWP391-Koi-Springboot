@@ -41,7 +41,10 @@ public class CaringOrders {
     @JoinColumn(name = "serviceID")
     private Set<CaredKois> caredKois = new HashSet<>();
 
-    @Column
-    private CaringOrderStatus status = CaringOrderStatus.Pending_confirmation;
+    @Column(name = "status", nullable = true)
+    private String status = CaringOrderStatus.Pending_confirmation.toString();
+
+    @Column(columnDefinition = "NVARCHAR(4000)", nullable = true, length = 4000)
+    private String note;
 
 }
