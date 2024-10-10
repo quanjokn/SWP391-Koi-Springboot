@@ -31,7 +31,7 @@ public class FishService implements IFishService {
         List<FishDetailDTO> listAllFish = new LinkedList<>();
         listAllFish.addAll(fishRepository.koiList());
         listAllFish.addAll(fishRepository.batchList());
-        listAllFish.addAll(fishRepository.consignedKoiList(ConsignedKoiStatus.Selling.toString()));
+        listAllFish.addAll(fishRepository.consignedKoiList(ConsignedKoiStatus.Accepted_Selling.toString()));
         return listAllFish;
     }
 
