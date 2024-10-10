@@ -1,6 +1,7 @@
 package SWP391.Fall24.controller;
 
 import SWP391.Fall24.dto.OrderDTO;
+import SWP391.Fall24.dto.PlaceOrderDTO;
 import SWP391.Fall24.exception.AppException;
 import SWP391.Fall24.exception.ErrorCode;
 import SWP391.Fall24.pojo.Cart;
@@ -24,18 +25,19 @@ public class OrderController {
     @Autowired
     private ICartRepository icartRepository;
 
-    @PostMapping("/placeOrder/{userId}")
-    public ResponseEntity<OrderDTO> placeOrder( @PathVariable("userId") int userId) {
-        Optional<Users> u = userService.findByID(userId);
+    @PostMapping("/placeOrder")
+    public ResponseEntity<OrderDTO> placeOrder(@RequestBody PlaceOrderDTO placeOrderDTO) throws AppException {
+        Optional<Users> u = userService.findByID(placeOrderDTO.getUserId());
         if(u.isPresent()) {
             Users user = u.get();
-            Optional<Cart> opCart = icartRepository.findByUserId(userId);
+            Optional<Cart> opCart = icartRepository.findByUserId(placeOrderDTO.getUserId());
             Cart cart = opCart.get();
-            int orderId = orderService.saveOrder(cart, user);
+            int orderId = orderService.saveOrder(cart, user , placeOrderDTO);
             return this.getOrderDetail(orderId);
         } else
             throw new AppException(ErrorCode.USER_NOT_EXISTED);
     }
+
 
     @PostMapping("/{orderId}")
     public ResponseEntity<OrderDTO> getOrderDetail(@PathVariable("orderId") int orderId) {

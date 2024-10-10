@@ -28,8 +28,6 @@ public class FeedbackService implements IFeedbackService {
     IUserRepository iUserRepository;
     @Autowired
     FishService  fishService;
-    @Autowired
-    IFishRepository  iFishRepository;
 
     @Override
     public String saveFeedback(FeedbackDetailDTO feedbackDetailDTO , int orderId , int fishId ) {

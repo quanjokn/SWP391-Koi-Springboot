@@ -15,6 +15,10 @@ import java.util.Objects;
 @Table(name = "Kois")
 public class Kois {
     @Id
+    @Column(name = "id" )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
     @OneToOne
     @JoinColumn(name = "fishID", referencedColumnName = "id")
     private Fishes fish;

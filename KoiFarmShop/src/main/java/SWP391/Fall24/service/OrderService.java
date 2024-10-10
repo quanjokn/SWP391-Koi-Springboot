@@ -4,6 +4,7 @@ import SWP391.Fall24.dto.*;
 import SWP391.Fall24.pojo.*;
 import SWP391.Fall24.pojo.Enum.OrderStatus;
 import SWP391.Fall24.repository.*;
+import org.hibernate.query.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static SWP391.Fall24.pojo.Enum.OrderStatus.Pending_confirmation;
+import static SWP391.Fall24.pojo.Enum.Role.Staff;
 
 
 @Service
@@ -26,7 +28,13 @@ public class OrderService implements IOrderService {
     private ICartRepository iCartRepository;
     @Autowired
     private FishService fishService;
+    @Autowired
+    private ICartItemRepository iCartItemRepository;
 
+    @Autowired
+    private IUserRepository iUserRepository;
+    @Autowired
+    private IKoiRepository iKoiRepository;
 
     @Override
     public OrderDTO getOrderDetails(int orderId) {
@@ -50,24 +58,24 @@ public class OrderService implements IOrderService {
         orderDTO.setUsers(order.getCustomer());
         orderDTO.setDate(LocalDate.now());
         orderDTO.setTotalOrderPrice(totalPrice);
-        orderDTO.setStatus(Pending_confirmation);
+        orderDTO.setStatus(OrderStatus.Pending_confirmation.toString());
         orderDTO.setTotalQuantity(totalQuantity);
         orderDTO.setOrderDetailsDTO(orderDetailsDTOList);
 
         return orderDTO;
     }
 
-    @Autowired
-    private ICartItemRepository iCartItemRepository;
+
 
     @Override
-    public int saveOrder(Cart cart, Users user) {
+    public int saveOrder(Cart cart, Users user , PlaceOrderDTO placeOrderDTO) {
         Orders o = new Orders();
         LocalDate date = LocalDate.now();
 
         o.setTotal(cart.getTotalPrice());
         o.setDate(date);
         o.setCustomer(user);
+        o.setPayment(placeOrderDTO.getPaymentMethod());
         Orders savedOrder = iOrderRepository.save(o);
         List<CartItem> listCartItems = iCartItemRepository.findByCardId(cart.getId());
 
@@ -98,6 +106,73 @@ public class OrderService implements IOrderService {
         }
         iCartRepository.deleteById(cart.getId());
         return o.getId();
+    }
+
+    @Override
+    public List<Orders> getAllOrders() {
+        List<Orders> listOrders = iOrderRepository.findAll();
+        List<Orders> orders = new ArrayList<>();
+        for (Orders order : listOrders) {
+            if(order.getStatus().equals(OrderStatus.Pending_confirmation.toString())){
+                orders.add(order);
+            }
+        }
+        return orders;
+    }
+    public List<Orders> getStaffOrders(int staffId) {
+        List<Orders> ordersList = iOrderRepository.findByStaffId(staffId);
+        return ordersList;
+    }
+
+
+    public Orders receiveOrder(int orderId , int staffId){
+        Optional<Orders> opOrder = iOrderRepository.findById(orderId);
+        Optional<Users> opStaff = iUserRepository.findUsersById(staffId);
+        Orders order = opOrder.get();
+        order.setStatus(OrderStatus.Receiving.toString());
+        order.setStaff(opStaff.get());
+        iOrderRepository.save(order);
+        return order;
+    }
+
+    public Orders prepareOrder(int orderId ) {
+
+        Optional<Orders> opOrder = iOrderRepository.findById(orderId);
+        Orders order = opOrder.get();
+        order.setStatus(OrderStatus.Preparing.toString());
+
+
+        List<OrderDetails> orderDetailsList = iOrderDetailRepository.findByOrdersId(orderId);
+        for(OrderDetails od: orderDetailsList){
+            int fishId = od.getFishes().getId();
+            Optional<Kois> opKois = iKoiRepository.findByFishId(fishId);
+            Kois kois = opKois.get();
+            kois.setQuantity(kois.getQuantity()-od.getQuantity());
+            iKoiRepository.save(kois);
+        }
+        return order;
+    }
+
+    public Orders acceptedOrder(int orderId) {
+        Optional<Orders> opOrder = iOrderRepository.findById(orderId);
+        Orders order = opOrder.get();
+        order.setStatus(OrderStatus.Completed.toString());
+        iOrderRepository.save(order);
+        return order;
+    }
+
+    public Orders rejectOrder(int orderId ){
+        Optional<Orders> opOrders = iOrderRepository.findById(orderId);
+        Orders order = opOrders.get();
+        order.setStatus(OrderStatus.Rejected.toString());
+
+        iOrderRepository.save(order);
+        return order;
+    }
+
+    public List<OrderDetails> getUserOrderDetails(int orderId) {
+        List<OrderDetails> orderDetailsList = iOrderDetailRepository.findByOrdersId(orderId);
+        return orderDetailsList;
     }
 
 

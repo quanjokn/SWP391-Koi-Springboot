@@ -39,8 +39,11 @@ public class Orders {
     @Column(name = "total", nullable = false)
     private float total;
 
-    @Column(name = "status", nullable = true)
-    private String status = OrderStatus.Pending_confirmation.toString();
+    @Column(name = "status", nullable = true )
+    private String status = (OrderStatus.Pending_confirmation).toString();
+
+    @Column(name = "payment")
+    private String payment;
 
     @Column(columnDefinition = "NVARCHAR(4000)", nullable = true, length = 4000)
     private String note;
