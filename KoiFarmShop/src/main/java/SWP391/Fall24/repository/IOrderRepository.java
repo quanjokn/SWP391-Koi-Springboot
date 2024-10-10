@@ -15,4 +15,10 @@ import java.util.Optional;
 public interface IOrderRepository extends JpaRepository<Orders, Integer> {
     Optional<Orders> findById(int orderId);
 
+    //for staff
+
+    List<Orders> findAll();
+
+    List<Orders> findByStaffId(int staffId);
+
 }
