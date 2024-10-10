@@ -67,7 +67,6 @@ public class OrderService implements IOrderService {
 
         o.setTotal(cart.getTotalPrice());
         o.setDate(date);
-        o.setStatus(OrderStatus.valueOf("Pending_confirmation"));
         o.setCustomer(user);
         Orders savedOrder = iOrderRepository.save(o);
         List<CartItem> listCartItems = iCartItemRepository.findByCardId(cart.getId());

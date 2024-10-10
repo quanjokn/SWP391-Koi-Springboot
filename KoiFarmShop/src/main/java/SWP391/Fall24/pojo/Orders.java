@@ -39,10 +39,11 @@ public class Orders {
     @Column(name = "total", nullable = false)
     private float total;
 
-    @Column(name = "status", nullable = false, columnDefinition = "NVARCHAR(255)")
-    private OrderStatus status = OrderStatus.Pending_confirmation;
+    @Column(name = "status", nullable = true)
+    private String status = OrderStatus.Pending_confirmation.toString();
 
-
+    @Column(columnDefinition = "NVARCHAR(4000)", nullable = true, length = 4000)
+    private String note;
 
     @Override
     public boolean equals(Object o) {
