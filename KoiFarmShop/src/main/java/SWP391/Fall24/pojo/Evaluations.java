@@ -17,6 +17,7 @@ public class Evaluations {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fishID", referencedColumnName = "id")

@@ -1,11 +1,15 @@
 package SWP391.Fall24.service;
 
 import SWP391.Fall24.dto.CaredKoiDTO;
+import SWP391.Fall24.dto.request.CareApprovalRequest;
 import SWP391.Fall24.dto.request.CaringOrderRequest;
+import SWP391.Fall24.dto.response.CaringOrderResponse;
 import SWP391.Fall24.exception.AppException;
 import SWP391.Fall24.exception.ErrorCode;
 import SWP391.Fall24.pojo.CaredKois;
 import SWP391.Fall24.pojo.CaringOrders;
+import SWP391.Fall24.pojo.Enum.CaredKoiStatus;
+import SWP391.Fall24.pojo.Enum.CaringOrderStatus;
 import SWP391.Fall24.pojo.Users;
 import SWP391.Fall24.repository.ICaredKoiRepository;
 import SWP391.Fall24.repository.ICaringOrderRepository;
@@ -13,8 +17,7 @@ import SWP391.Fall24.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class CaringOrderService implements ICaringOrderService{
@@ -27,6 +30,7 @@ public class CaringOrderService implements ICaringOrderService{
 
     @Autowired
     private ICaredKoiRepository caredKoiRepository;
+
 
     @Override
     public String createCaringOrder(CaringOrderRequest request, int userId) {
@@ -53,10 +57,82 @@ public class CaringOrderService implements ICaringOrderService{
                 ck.setHealthStatus(koi.getHealthStatus());
                 ck.setRation(koi.getRation());
                 ck.setPhoto("/images/"+koi.getPhoto());
+                ck.setStatus(CaredKoiStatus.Pending_confirmation.toString());
                 // save to CaredKois table
                 caredKoiRepository.save(ck);
             }
             return "Create caring order successfully";
         } else throw new AppException(ErrorCode.USER_NOT_EXISTED);
+    }
+
+    @Override
+    public CaringOrderResponse getDetail(int orderID) {
+        CaringOrderResponse caringOrderResponse = new CaringOrderResponse();
+        CaringOrders caringOrder = caringOrderRepository.findById(orderID);
+        List<CaredKois> caredKois = caredKoiRepository.findByCaringOrderId(orderID);
+        caringOrderResponse.setCaringOrder(caringOrder);
+        caringOrderResponse.setCaredKois(caredKois);
+        return caringOrderResponse;
+    }
+
+    @Override
+    public String approvalCaringOrder(CareApprovalRequest approvalRequest){
+        CaringOrders caringOrder = caringOrderRepository.findById(approvalRequest.getOrderID());
+        if(caringOrder.getStaff().getId()==approvalRequest.getStaffID()){
+            caringOrder.setStatus(CaringOrderStatus.Responded.toString());
+            caringOrder.setNote(approvalRequest.getNote());
+            caringOrderRepository.save(caringOrder);
+            List<CaredKois> caredKois = caredKoiRepository.findByCaringOrder(caringOrder);
+            HashMap<Integer, Boolean> approval = approvalRequest.getDecision();
+            caredKois.forEach(koi->{
+                approval.forEach((fishID, decision)->{
+                    if(fishID==koi.getId()){
+                        if(decision){
+                            koi.setStatus(CaredKoiStatus.Accepted_caring.toString());
+                        } else koi.setStatus(CaredKoiStatus.Rejected.toString());
+                        caredKoiRepository.save(koi);
+                    }
+                });
+            });
+        } else throw new AppException(ErrorCode.OUT_OF_ROLE);
+        return "Approval caring order successfully";
+    }
+
+    @Override
+    public List<CaringOrders> getCaringOrdersByStatus(String status) {
+        List<CaringOrders> result = new ArrayList<>();
+        List<CaringOrders> all = caringOrderRepository.findAll();
+        all.forEach(order->{
+            if(order.getStatus().equals(status)) {
+                result.add(order);
+            }
+        });
+        return result;
+    }
+
+    @Override
+    public String receivingCaringOrder(int staffID, int orderID) {
+        String result = "";
+        Optional<Users> staff = userRepository.findUsersById(staffID);
+        CaringOrders order = caringOrderRepository.findById(orderID);
+        if(staff.isPresent()) {
+            Users staffUser = staff.get();
+            order.setStaff(staffUser);
+            order.setStatus(CaringOrderStatus.Receiving.toString());
+            caringOrderRepository.save(order);
+            result = "Caring order #"+orderID+" is received by "+staffUser.getUserName();
+        } else throw new AppException(ErrorCode.USER_NOT_EXISTED);
+        return result;
+    }
+
+    @Override
+    public List<CaringOrders> getReceivingOrder(int staffID) {
+        List<CaringOrders> result = new ArrayList<>();
+        this.getCaringOrdersByStatus(CaringOrderStatus.Receiving.toString()).forEach(order->{
+            if(order.getStaff().getId()==staffID){
+                result.add(order);
+            }
+        });
+        return result;
     }
 }

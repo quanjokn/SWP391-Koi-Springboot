@@ -11,7 +11,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ConsignedKoiDTO {
-    private int id;
+    private int fishID;
     private String name;
     private int quantity;
     private String description;
@@ -30,6 +30,35 @@ public class ConsignedKoiDTO {
     private float promotionPrice = price * (1-discount);
     private int origin;
 
+    // ConsignedKoiStatus
+    private String status;
+
     @JsonProperty("species")
     private Set<String> species;
+
+    public ConsignedKoiDTO(Set species) {
+        this.species = species;
+    }
+
+    public ConsignedKoiDTO(int fishID, String name, String description, int quantity, String sex, String age, String character, float price, String size, String healthStatus, String ration, String photo, String video, String certificate, String category, float discount, float promotionPrice, int origin, String status) {
+        this.fishID = fishID;
+        this.name = name;
+        this.description = description;
+        this.quantity = quantity;
+        this.sex = sex;
+        this.age = age;
+        this.character = character;
+        this.price = price;
+        this.size = size;
+        this.healthStatus = healthStatus;
+        this.ration = ration;
+        this.photo = photo;
+        this.video = video;
+        this.certificate = certificate;
+        this.category = category;
+        this.discount = discount;
+        this.promotionPrice = promotionPrice;
+        this.origin = origin;
+        this.status = status;
+    }
 }
