@@ -1,6 +1,7 @@
 package SWP391.Fall24.pojo;
 
 import SWP391.Fall24.pojo.Enum.CaringOrderStatus;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -15,6 +16,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "CaringOrders")
+
 public class CaringOrders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,14 +31,17 @@ public class CaringOrders {
     @Column(name = "totalPrice", nullable = false)
     private float totalPrice;
 
+    @JsonProperty("customer")
     @ManyToOne
     @JoinColumn(name = "customerID", referencedColumnName = "id")
     private Users customer;
 
+    @JsonProperty("staff")
     @ManyToOne
     @JoinColumn(name = "staffID", nullable = true, referencedColumnName = "id")
     private Users staff;
 
+    @JsonProperty("caredKois")
     @OneToMany
     @JoinColumn(name = "serviceID")
     private Set<CaredKois> caredKois = new HashSet<>();
