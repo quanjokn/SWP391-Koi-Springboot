@@ -18,22 +18,27 @@ public class ConsignOrderManagementController {
     private ConsignOrderService consignOrderService;
 
     @GetMapping("/allPendingOrder")
-    private List<ConsignOrders> getListConsignOrder() {
+    public List<ConsignOrders> getListConsignOrder() {
         return consignOrderService.findByStatus(ConsignOrderStatus.Pending_confirmation.toString());
     }
 
     @PostMapping("/receive/{orderID}/{staffID}")
-    private String receiveConsignOrder(@PathVariable("orderID") int orderID, @PathVariable("staffID") int staffID) {
+    public String receiveConsignOrder(@PathVariable("orderID") int orderID, @PathVariable("staffID") int staffID) {
         return consignOrderService.receiveConsignOrder(orderID, staffID);
     }
 
+    @PostMapping("/allReceivingOrder/{staffID}")
+    public List<ConsignOrders> getAllReceivingOrder(@PathVariable("staffID") int staffID) {
+        return consignOrderService.getReceivingOrder(staffID);
+    }
+
     @PostMapping("/approval/{staffID}")
-    private String consignOrderApproval(@RequestBody ConsignApprovalRequest consignApprovalRequest, @PathVariable("staffID") int staffID) {
+    public String consignOrderApproval(@RequestBody ConsignApprovalRequest consignApprovalRequest, @PathVariable("staffID") int staffID) {
         return consignOrderService.approvalResponse(consignApprovalRequest, staffID);
     }
 
     @PostMapping("/detail/{orderID}")
-    private ConsignOrderResponse getDetail(@PathVariable("orderID") int orderID) {
+    public ConsignOrderResponse getDetail(@PathVariable("orderID") int orderID) {
         return consignOrderService.getDetail(orderID);
     }
 }

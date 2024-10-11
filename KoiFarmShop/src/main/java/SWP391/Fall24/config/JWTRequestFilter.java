@@ -1,4 +1,4 @@
-package SWP391.Fall24.security;
+package SWP391.Fall24.config;
 
 import SWP391.Fall24.pojo.Users;
 import SWP391.Fall24.repository.IUserRepository;

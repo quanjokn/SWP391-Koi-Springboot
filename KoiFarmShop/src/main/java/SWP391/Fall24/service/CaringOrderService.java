@@ -82,7 +82,7 @@ public class CaringOrderService implements ICaringOrderService{
             caringOrder.setStatus(CaringOrderStatus.Responded.toString());
             caringOrder.setNote(approvalRequest.getNote());
             caringOrderRepository.save(caringOrder);
-            List<CaredKois> caredKois = caredKoiRepository.findByCaringOrderId(approvalRequest.getOrderID());
+            List<CaredKois> caredKois = caredKoiRepository.findByCaringOrder(caringOrder);
             HashMap<Integer, Boolean> approval = approvalRequest.getDecision();
             caredKois.forEach(koi->{
                 approval.forEach((fishID, decision)->{
@@ -91,7 +91,7 @@ public class CaringOrderService implements ICaringOrderService{
                             koi.setStatus(CaredKoiStatus.Accepted_caring.toString());
                         } else koi.setStatus(CaredKoiStatus.Rejected.toString());
                         caredKoiRepository.save(koi);
-                    } else throw new AppException(ErrorCode.FAIL_RETURN_CARED_KOI);
+                    }
                 });
             });
         } else throw new AppException(ErrorCode.OUT_OF_ROLE);
@@ -118,9 +118,21 @@ public class CaringOrderService implements ICaringOrderService{
         if(staff.isPresent()) {
             Users staffUser = staff.get();
             order.setStaff(staffUser);
+            order.setStatus(CaringOrderStatus.Receiving.toString());
             caringOrderRepository.save(order);
             result = "Caring order #"+orderID+" is received by "+staffUser.getUserName();
         } else throw new AppException(ErrorCode.USER_NOT_EXISTED);
+        return result;
+    }
+
+    @Override
+    public List<CaringOrders> getReceivingOrder(int staffID) {
+        List<CaringOrders> result = new ArrayList<>();
+        this.getCaringOrdersByStatus(CaringOrderStatus.Receiving.toString()).forEach(order->{
+            if(order.getStaff().getId()==staffID){
+                result.add(order);
+            }
+        });
         return result;
     }
 }

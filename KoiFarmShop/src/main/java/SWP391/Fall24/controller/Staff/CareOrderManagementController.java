@@ -26,6 +26,11 @@ public class CareOrderManagementController {
         return caringOrderService.getCaringOrdersByStatus(CaringOrderStatus.Pending_confirmation.toString());
     }
 
+    @PostMapping("/allReceivingOrder/{staffID}")
+    public List<CaringOrders> getAllReceiving(@PathVariable("staffID") int staffID){
+        return caringOrderService.getReceivingOrder(staffID);
+    }
+
     @PostMapping("/detail/{orderID}")
     public CaringOrderResponse detailCaringOrder(@PathVariable("orderID") int orderID) {
         return caringOrderService.getDetail(orderID);
