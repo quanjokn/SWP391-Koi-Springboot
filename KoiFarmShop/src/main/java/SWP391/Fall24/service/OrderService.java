@@ -110,6 +110,11 @@ public class OrderService implements IOrderService {
         List<Orders> orders = iOrderRepository.findByCustomerId(userId);
         return orders;
     }
+    @Override
+    public List<OrderDetails> getOrderDetailsForStaff(int orderId) {
+        List<OrderDetails> orderDetailsList = iOrderDetailRepository.findByOrdersId(orderId);
+        return orderDetailsList;
+    }
 
     @Override
     public List<Orders> getAllOrders() {
