@@ -17,4 +17,6 @@ public interface ICaringOrderService {
     List<CaringOrders> getCaringOrdersByStatus(String status);
 
     String receivingCaringOrder(int staffID, int orderID);
+
+    List<CaringOrders> getReceivingOrder(int staffID);
 }

@@ -78,11 +78,7 @@ public class OrderService implements IOrderService {
         o.setPayment(placeOrderDTO.getPaymentMethod());
         Orders savedOrder = iOrderRepository.save(o);
         List<CartItem> listCartItems = iCartItemRepository.findByCardId(cart.getId());
-
-
-
         List<FishDetailDTO> fishDetailDTOList = fishService.allFish();
-
 
         for(CartItem c: listCartItems){
             OrderDetails od = new OrderDetails();

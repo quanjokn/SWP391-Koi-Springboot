@@ -20,4 +20,6 @@ public interface IConsignOrderService{
     String approvalResponse(ConsignApprovalRequest approvalRequest, int staffID);
 
     List<ConsignOrders> findByStatus(String status);
+
+    List<ConsignOrders> getReceivingOrder(int staffID);
 }
