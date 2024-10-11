@@ -14,7 +14,9 @@ public enum ErrorCode {
     FAIL_OTP(1010, "OTP error"),
     FISH_NOT_EXISTED(1011, "Fish not existed"),
     ORDER_NOT_EXISTED(1011, "Order not existed"),
-    FAIL_RETURN_CONSIGNED_KOI(1012, "Fail to return consigned koi from consign order")
+    FAIL_RETURN_CONSIGNED_KOI(1012, "Fail to set status consigned koi from consign order"),
+    FAIL_RETURN_CARED_KOI(1012, "Fail to set status for cared koi from consign order"),
+    OUT_OF_ROLE(1013, "This staff does not have permission to resolve order")
     ;
     private int code;
     private String message;

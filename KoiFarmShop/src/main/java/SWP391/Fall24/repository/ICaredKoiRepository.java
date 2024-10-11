@@ -8,4 +8,7 @@ import java.util.List;
 
 @Repository
 public interface ICaredKoiRepository extends JpaRepository<CaredKois, Integer> {
+    List<CaredKois> findAll();
+
+    List<CaredKois> findByCaringOrderId(int caringOrderId);
 }
