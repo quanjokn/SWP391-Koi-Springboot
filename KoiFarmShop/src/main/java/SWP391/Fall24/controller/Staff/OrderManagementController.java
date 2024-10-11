@@ -42,8 +42,7 @@ public class OrderManagementController {
 
    @PostMapping("/updateStatus")
     public String updateOrderStatus(@RequestBody OrderManagementDTO orderManagementDTO) {
-        String status = orderManagementDTO.getStatus();
-
+       String status = orderManagementDTO.getStatus();
        if(status.equals(OrderStatus.Rejected.toString())){
           Orders orders =orderService.rejectOrder(orderManagementDTO);
        }
@@ -51,6 +50,4 @@ public class OrderManagementController {
         Orders orders = orderService.handleOrder(orderManagementDTO.getOrderId() ,OrderStatus.valueOf(status));
        return null;
    }
-
-
 }
