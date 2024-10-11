@@ -1,5 +1,6 @@
 package SWP391.Fall24.controller.Staff;
 
+import SWP391.Fall24.dto.OrderDTO;
 import SWP391.Fall24.dto.OrderManagementDTO;
 import SWP391.Fall24.pojo.Enum.OrderStatus;
 import SWP391.Fall24.pojo.OrderDetails;
@@ -11,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/staff")
@@ -37,6 +37,12 @@ public class OrderManagementController {
     public String receiveOrder(@PathVariable int orderId, @PathVariable int staffId) {
         Orders orders = orderService.receiveOrder(orderId,staffId);
         return null;
+    }
+
+    @PostMapping("/orderDetail/{orderId}")
+    public OrderDTO getOrderDetailForStaff(@PathVariable int orderId) {
+        OrderDTO orderDetails = orderService.getOrderDetails(orderId);
+        return orderDetails;
     }
 
 

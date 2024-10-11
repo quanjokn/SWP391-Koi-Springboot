@@ -14,6 +14,7 @@ public interface IOrderService {
     public OrderDTO getOrderDetails(int orderId);
     public int saveOrder(Cart cart, Users user , PlaceOrderDTO placeOrderDTO);
     public List<Orders> findOrderByUserId(int userId);
+    public List<OrderDetails> getOrderDetailsForStaff(int orderId);
     public List<Orders> getAllOrders();
     public List<Orders> getStaffOrders(int staffId);
     public Orders receiveOrder(int orderId , int staffId);
