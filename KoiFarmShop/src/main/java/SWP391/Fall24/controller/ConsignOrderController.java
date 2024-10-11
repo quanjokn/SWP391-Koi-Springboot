@@ -41,4 +41,6 @@ public class ConsignOrderController {
     private ConsignOrderResponse getDetail(@PathVariable("orderID") int orderID) {
         return consignOrderService.getDetail(orderID);
     }
+
+    
 }
