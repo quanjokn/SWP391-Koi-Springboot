@@ -1,5 +1,6 @@
 package SWP391.Fall24.controller.Staff;
 
+import SWP391.Fall24.dto.OrderManagementDTO;
 import SWP391.Fall24.pojo.Enum.OrderStatus;
 import SWP391.Fall24.pojo.OrderDetails;
 import SWP391.Fall24.pojo.Orders;
@@ -9,7 +10,6 @@ import SWP391.Fall24.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,37 +33,21 @@ public class OrderManagementController {
         return orderService.getStaffOrders(staffId);
     }
 
-    @PostMapping("/reveiving/{orderId}/{staffId}")
+    @PostMapping("/receiving/{orderId}/{staffId}")
     public String receiveOrder(@PathVariable int orderId, @PathVariable int staffId) {
         Orders orders = orderService.receiveOrder(orderId,staffId);
         return null;
     }
 
-    @PostMapping("/orderDetail/{orderId}")
-    public List<OrderDetails> getOrderDetails(@PathVariable("orderId") int orderId) {
-        List<OrderDetails> orderDetailsList = orderService.getUserOrderDetails(orderId);
-        return orderDetailsList;
-    }
 
+   @PostMapping("/updateStatus")
+    public String updateOrderStatus(@RequestBody OrderManagementDTO orderManagementDTO) {
+       String status = orderManagementDTO.getStatus();
+       if(status.equals(OrderStatus.Rejected.toString())){
+          Orders orders =orderService.rejectOrder(orderManagementDTO);
+       }
 
-    @PostMapping("/prepareting/{orderId}")
-    public String prepareOrder(@PathVariable("orderId") int orderId) {
-        Orders orders = orderService.prepareOrder(orderId);
-        return null;
-    }
-    @PostMapping("/accepting/{orderId}")
-    public String acceptOrder(@PathVariable("orderId") int orderId) {
-        Orders orders = orderService.acceptedOrder(orderId);
-        return null;
-    }
-
-
-    @PostMapping("rejected/{orderId}")
-    public String rejectedOrder(@PathVariable("orderId") int orderId ) {
-        Optional<Orders> opOrder = iOrderRepository.findById(orderId);
-        if(opOrder.get().getStatus().equals(OrderStatus.Pending_confirmation.toString())){
-            Orders orders = orderService.rejectOrder(orderId);
-        }
-        return null;
-    }
+        Orders orders = orderService.handleOrder(orderManagementDTO.getOrderId() ,OrderStatus.valueOf(status));
+       return null;
+   }
 }

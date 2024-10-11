@@ -4,7 +4,6 @@ import SWP391.Fall24.dto.ConsignedKoiDTO;
 import SWP391.Fall24.dto.FishDetailDTO;
 import SWP391.Fall24.exception.AppException;
 import SWP391.Fall24.exception.ErrorCode;
-import SWP391.Fall24.pojo.Enum.ConsignedKoiStatus;
 import SWP391.Fall24.pojo.Fishes;
 import SWP391.Fall24.pojo.Species;
 import SWP391.Fall24.repository.IFishRepository;
@@ -31,7 +30,7 @@ public class FishService implements IFishService {
         List<FishDetailDTO> listAllFish = new LinkedList<>();
         listAllFish.addAll(fishRepository.koiList());
         listAllFish.addAll(fishRepository.batchList());
-        listAllFish.addAll(fishRepository.consignedKoiList(ConsignedKoiStatus.Accepted_Selling.toString()));
+        listAllFish.addAll(fishRepository.consignedKoiList());
         return listAllFish;
     }
 

@@ -50,7 +50,7 @@ public class UserService implements IUserService{
         }
         boolean comparePasword = changePasswordRequest.getNewPassword().equals(changePasswordRequest.getConfirmPassword());
         if(!comparePasword) {
-            throw new AppException(ErrorCode.CONFIRMED_PASSWORD_ERROR);
+            throw new AppException(ErrorCode.COMFIRMED_PASSWORD_ERROR);
         }
         if(verifyPassword && comparePasword) {
             user.setPassword(encryptionService.encryptPassword(changePasswordRequest.getNewPassword()));
@@ -74,7 +74,7 @@ public class UserService implements IUserService{
                 user.setPassword(encryptionService.encryptPassword(forgotPasswordRequest.getPassword()));
                 iUserRepository.save(user);
                 return "Reset password successfully";
-            } else throw new AppException(ErrorCode.CONFIRMED_PASSWORD_ERROR);
+            } else throw new AppException(ErrorCode.COMFIRMED_PASSWORD_ERROR);
         } else throw new AppException(ErrorCode.USER_NOT_EXISTED);
     }
 

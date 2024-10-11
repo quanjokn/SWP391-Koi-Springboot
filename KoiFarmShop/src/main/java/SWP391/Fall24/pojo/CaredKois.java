@@ -1,6 +1,5 @@
 package SWP391.Fall24.pojo;
 
-import SWP391.Fall24.pojo.Enum.CaredKoiStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -41,7 +40,7 @@ public class CaredKois {
     @Column
     private String photo;
 
-    @Column(name = "status", nullable = true)
-    private String status = CaredKoiStatus.Pending_confirmation.toString();
+    @Column
+    private boolean status = false;
 
 }

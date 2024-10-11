@@ -46,7 +46,7 @@ public class ConsignOrders {
     @Column(columnDefinition = "NVARCHAR(4000)", nullable = true, length = 4000)
     private String note;
 
-    @Column(name = "status", nullable = true)
-    private String status = ConsignOrderStatus.Pending_confirmation.toString();
+    @Column(name = "status")
+    private ConsignOrderStatus status = ConsignOrderStatus.Pending_confirmation;
 
 }
