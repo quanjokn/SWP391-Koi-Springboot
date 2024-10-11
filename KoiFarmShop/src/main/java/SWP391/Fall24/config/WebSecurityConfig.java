@@ -1,4 +1,4 @@
-package SWP391.Fall24.security;
+package SWP391.Fall24.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

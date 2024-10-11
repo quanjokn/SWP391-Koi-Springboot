@@ -1,5 +1,6 @@
 package SWP391.Fall24.pojo;
 
+import SWP391.Fall24.pojo.Enum.ConsignedKoiStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -24,6 +25,9 @@ public class ConsignedKois {
 
     @Column(length = 255, columnDefinition = "NVARCHAR(255)")
     private String name;
+
+    @Column(name = "quantity", nullable = true)
+    private Integer quantity = 1;
 
     @Column(length = 4000, columnDefinition = "NVARCHAR(4000)")
     private String description;
@@ -59,7 +63,7 @@ public class ConsignedKois {
     private String certificate;
 
     @Column(name = "status")
-    private boolean status = true;
+    private String status = ConsignedKoiStatus.Pending_confirmation.toString();
 
     @Column(name = "customerID")
     private int customerID;

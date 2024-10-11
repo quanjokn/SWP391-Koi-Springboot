@@ -1,14 +1,10 @@
 package SWP391.Fall24.controller;
 
-import SWP391.Fall24.dto.FeedbackDTO;
 import SWP391.Fall24.dto.FeedbackDetailDTO;
 import SWP391.Fall24.dto.FishDetailDTO;
-import SWP391.Fall24.exception.AppException;
-import SWP391.Fall24.pojo.Evaluations;
 import SWP391.Fall24.service.FeedbackService;
 import SWP391.Fall24.service.FishService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,7 +35,6 @@ public class FeedbackController {
                 }
                 return fishDetailDTO;
             }
-
         }
         return Optional.empty();
     }
