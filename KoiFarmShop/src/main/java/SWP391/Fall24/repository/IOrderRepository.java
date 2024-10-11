@@ -21,4 +21,5 @@ public interface IOrderRepository extends JpaRepository<Orders, Integer> {
 
     List<Orders> findByStaffId(int staffId);
 
+    List<Orders> findByCustomerId(int userId);
 }
