@@ -139,7 +139,6 @@ public class OrderService implements IOrderService {
         Optional<Orders> opOrder = iOrderRepository.findById(orderId);
         Optional<Users> opStaff = iUserRepository.findUsersById(staffId);
         Orders order = opOrder.get();
-        order.setStatus(OrderStatus.Receiving.toString());
         order.setStaff(opStaff.get());
         iOrderRepository.save(order);
         return order;
