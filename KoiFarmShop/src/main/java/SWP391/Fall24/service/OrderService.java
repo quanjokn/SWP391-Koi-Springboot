@@ -120,8 +120,9 @@ public class OrderService implements IOrderService {
     public List<Orders> getAllOrders() {
         List<Orders> listOrders = iOrderRepository.findAll();
         List<Orders> orders = new ArrayList<>();
+
         for (Orders order : listOrders) {
-            if(order.getStatus().equals(OrderStatus.Pending_confirmation.toString())){
+            if(order.getStaff()==null){
                 orders.add(order);
             }
         }

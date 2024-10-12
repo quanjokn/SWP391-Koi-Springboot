@@ -5,6 +5,7 @@ import SWP391.Fall24.dto.PlaceOrderDTO;
 import SWP391.Fall24.exception.AppException;
 import SWP391.Fall24.exception.ErrorCode;
 import SWP391.Fall24.pojo.Cart;
+import SWP391.Fall24.pojo.Orders;
 import SWP391.Fall24.pojo.Users;
 import SWP391.Fall24.repository.ICartRepository;
 import SWP391.Fall24.service.OrderService;
@@ -12,10 +13,12 @@ import SWP391.Fall24.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/orderDetail")
+@RequestMapping("/order")
 @CrossOrigin(origins = "http://localhost:3000")
 public class OrderController {
     @Autowired
@@ -37,9 +40,13 @@ public class OrderController {
         } else
             throw new AppException(ErrorCode.USER_NOT_EXISTED);
     }
+    @PostMapping("/orderList/{userId}")
+    public List<Orders> getOrderList(@PathVariable int userId)  {
+        List<Orders> ordersList = orderService.findOrderByUserId(userId);
+        return ordersList;
+    }
 
-
-    @PostMapping("/{orderId}")
+    @PostMapping("/orderDetail/{orderId}")
     public ResponseEntity<OrderDTO> getOrderDetail(@PathVariable("orderId") int orderId) {
         OrderDTO orderDTO = orderService.getOrderDetails(orderId);
         return ResponseEntity.ok(orderDTO);
