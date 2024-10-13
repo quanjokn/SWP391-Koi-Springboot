@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface ICaringOrderRepository extends JpaRepository<CaringOrders, Integer> {
     CaringOrders findById(int orderID);
+    List<CaringOrders> findByCustomerId(int userId);
 }

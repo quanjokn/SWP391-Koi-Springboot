@@ -1,6 +1,7 @@
 package SWP391.Fall24.service;
 
 import SWP391.Fall24.dto.*;
+import SWP391.Fall24.dto.Staff.AllOrderDTO;
 import SWP391.Fall24.pojo.Cart;
 import SWP391.Fall24.pojo.Enum.OrderStatus;
 import SWP391.Fall24.pojo.OrderDetails;
@@ -20,5 +21,6 @@ public interface IOrderService {
     public Orders receiveOrder(int orderId , int staffId);
     public Orders handleOrder(int orderId , OrderStatus status);
     public Orders rejectOrder(OrderManagementDTO orderManagementDTO);
+    public List<AllOrderDTO> getAllOrdersForStaff(int userId);
 
 }
