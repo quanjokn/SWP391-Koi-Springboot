@@ -2,6 +2,7 @@ package SWP391.Fall24.controller.Staff;
 
 import SWP391.Fall24.dto.OrderDTO;
 import SWP391.Fall24.dto.OrderManagementDTO;
+import SWP391.Fall24.dto.Staff.AllOrderDTO;
 import SWP391.Fall24.pojo.Enum.OrderStatus;
 import SWP391.Fall24.pojo.OrderDetails;
 import SWP391.Fall24.pojo.Orders;
@@ -46,7 +47,6 @@ public class OrderManagementController {
         return orderDetails;
     }
 
-
     @PostMapping("/updateStatus")
     public String updateOrderStatus(@RequestBody OrderManagementDTO orderManagementDTO) {
         String status = orderManagementDTO.getStatus();
@@ -59,6 +59,12 @@ public class OrderManagementController {
 
 
         return null;
+    }
+
+    @PostMapping("/getAllOrder/{userId}")
+    public List<AllOrderDTO> getAllOrder(@PathVariable ("userId") int userId) {
+        List<AllOrderDTO> allOrderDTOList = orderService.getAllOrdersForStaff(userId);
+        return allOrderDTOList;
     }
 
 

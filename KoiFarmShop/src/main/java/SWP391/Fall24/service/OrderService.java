@@ -1,6 +1,7 @@
 package SWP391.Fall24.service;
 
 import SWP391.Fall24.dto.*;
+import SWP391.Fall24.dto.Staff.AllOrderDTO;
 import SWP391.Fall24.exception.AppException;
 import SWP391.Fall24.exception.ErrorCode;
 import SWP391.Fall24.pojo.*;
@@ -33,6 +34,10 @@ public class OrderService implements IOrderService {
     private IUserRepository iUserRepository;
     @Autowired
     private IKoiRepository iKoiRepository;
+    @Autowired
+    private IConsignOrderRepository iConsignOrderRepository;
+    @Autowired
+    private ICaringOrderRepository iCaringOrderRepository;
 
     @Override
     public OrderDTO getOrderDetails(int orderId) {
@@ -175,8 +180,22 @@ public class OrderService implements IOrderService {
         return order;
     }
 
+    @Override
+    public List<AllOrderDTO> getAllOrdersForStaff(int userId) {
+        Optional<Users> users = iUserRepository.findUsersById(userId);
+        List<Orders> orders = iOrderRepository.findByCustomerId(userId);
+        List<ConsignOrders> consignOrders = iConsignOrderRepository.findAllByUser(users.get());
+        List<CaringOrders> caringOrders = iCaringOrderRepository.findByCustomerId(userId);
 
+        AllOrderDTO allOrderDTO = new AllOrderDTO();
+        allOrderDTO.setOrder(orders);
+        allOrderDTO.setConsignOrders(consignOrders);
+        allOrderDTO.setCaringOrders(caringOrders);
 
+        List<AllOrderDTO> allOrderDTOList = new ArrayList<>();
+        allOrderDTOList.add(allOrderDTO);
+        return allOrderDTOList;
+    }
 
 
 }
