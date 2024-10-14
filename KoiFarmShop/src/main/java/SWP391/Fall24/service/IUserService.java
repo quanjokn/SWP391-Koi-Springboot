@@ -30,6 +30,7 @@ public interface IUserService {
 
     public String resetPassword(ForgotPasswordRequest forgotPasswordRequest);
 
+    String processOAuthPostLogin(String email, String name);
 
     //For manager
     public UserResponseDTO getAllAccount();
@@ -37,4 +38,5 @@ public interface IUserService {
     public Users createUser(Users user);
 
     public Users updateUserForManager(int userId ,Users user);
+
 }

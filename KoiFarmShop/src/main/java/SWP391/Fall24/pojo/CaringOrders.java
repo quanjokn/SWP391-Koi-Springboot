@@ -52,4 +52,6 @@ public class CaringOrders {
     @Column(columnDefinition = "NVARCHAR(4000)", nullable = true, length = 4000)
     private String note;
 
+    @Column(name = "date")
+    private LocalDate date;
 }

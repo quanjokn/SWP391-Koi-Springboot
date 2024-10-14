@@ -15,8 +15,10 @@ import SWP391.Fall24.repository.ICaredKoiRepository;
 import SWP391.Fall24.repository.ICaringOrderRepository;
 import SWP391.Fall24.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -43,6 +45,8 @@ public class CaringOrderService implements ICaringOrderService{
             order.setEndDate(request.getEndDate());
             order.setTotalPrice(request.getTotalPrice());
             order.setCustomer(user);
+            LocalDate today = LocalDate.now();
+            order.setDate(today);
             CaringOrders caringOrder = caringOrderRepository.save(order);
             // create cared Koi in CaredKoi
             List<CaredKoiDTO> listKoi = request.getCaredKoiList();

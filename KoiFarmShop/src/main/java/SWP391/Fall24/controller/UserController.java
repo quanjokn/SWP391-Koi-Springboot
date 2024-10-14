@@ -8,9 +8,11 @@ import SWP391.Fall24.dto.response.ApiResponse;
 import SWP391.Fall24.dto.response.LoginResponse;
 import SWP391.Fall24.pojo.Users;
 import SWP391.Fall24.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -46,32 +48,18 @@ public class UserController {
         }
     }
 
-    @GetMapping("/getAllUser")
-    public ResponseEntity<List<Users>> getAll() {
-        var authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        log.info("UserName: {}", authentication.getName());
-        authentication.getAuthorities().forEach(grantedAuthority -> log.info(grantedAuthority.getAuthority()));
-
-        return ResponseEntity.ok(userService.getAllUsers());
-    }
-
-    @DeleteMapping("/deleteUser/{id}")
-    public String delete(@PathVariable("id") int id) {
-        userService.deleteUser(id);
-        return "Delete user successfully";
-    }
+//    @GetMapping("/loginGoogle")
+//    public ResponseEntity<LoginResponse> loginGoogle(HttpServletRequest request) {
+//        LoginResponse response = new LoginResponse();
+//        response.setJwt(request.getSession().getAttribute("JWT").toString());
+//        return ResponseEntity.ok(response);
+//    }
 
     @PostMapping("/updateUser/{id}")
     public Users update(@PathVariable int id, @RequestBody UpdateUserRequest u) {
         return userService.updateUsers(id, u);
     }
 
-    /**
-     * Gets the profile of the currently logged-in user and returns it.
-     * @param user The authentication principal object.
-     * @return The user profile.
-     */
     @GetMapping("/profile")
     public Users getLoggedInUser(@AuthenticationPrincipal Users user) {
         return user;

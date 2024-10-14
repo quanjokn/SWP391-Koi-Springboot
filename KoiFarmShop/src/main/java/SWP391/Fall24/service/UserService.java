@@ -97,8 +97,6 @@ public class UserService implements IUserService{
         return newUser;
     }
 
-
-
     @Override
     public void deleteUser(int id) {
         iUserRepository.deleteById(id);
@@ -125,6 +123,21 @@ public class UserService implements IUserService{
         return iUserRepository.getUsersByUserNameAndPassword(username, password);
     }
 
+    public String processOAuthPostLogin(String email, String name) {
+        Optional<Users> u = iUserRepository.findByUserNameIgnoreCase(email);
+        if(!u.isPresent()) {
+            Users user = new Users();
+            user.setUserName(email);
+            user.setPassword("");
+            user.setEmail(email);
+            user.setRole(Role.Customer);
+            user.setName(name);
+            user.setStatus(true);
+            iUserRepository.save(user);
+            return jwtService.generateJWT(user);
+        }
+        return jwtService.generateJWT(u.get());
+    }
 
     //For manager
     @Override
@@ -162,6 +175,5 @@ public class UserService implements IUserService{
             return iUserRepository.save(userUpdate);
         }
     }
-
 
 }
