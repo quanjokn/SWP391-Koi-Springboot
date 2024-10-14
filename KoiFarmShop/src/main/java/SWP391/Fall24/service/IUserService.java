@@ -28,4 +28,6 @@ public interface IUserService {
     Optional<Users> findByUserNameAndEmailIgnoreCase(String username, String email);
 
     public String resetPassword(ForgotPasswordRequest forgotPasswordRequest);
+
+    String processOAuthPostLogin(String email, String name);
 }

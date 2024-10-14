@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -46,6 +47,13 @@ public class UserController {
             return ResponseEntity.ok(response);
         }
     }
+
+//    @GetMapping("/loginGoogle")
+//    public ResponseEntity<LoginResponse> loginGoogle(HttpServletRequest request) {
+//        LoginResponse response = new LoginResponse();
+//        response.setJwt(request.getSession().getAttribute("JWT").toString());
+//        return ResponseEntity.ok(response);
+//    }
 
     @PostMapping("/updateUser/{id}")
     public Users update(@PathVariable int id, @RequestBody UpdateUserRequest u) {

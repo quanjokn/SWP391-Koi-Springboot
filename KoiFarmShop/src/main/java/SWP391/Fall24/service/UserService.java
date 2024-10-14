@@ -3,6 +3,7 @@ package SWP391.Fall24.service;
 import SWP391.Fall24.dto.request.*;
 import SWP391.Fall24.exception.AppException;
 import SWP391.Fall24.exception.ErrorCode;
+import SWP391.Fall24.pojo.Enum.Role;
 import SWP391.Fall24.pojo.Users;
 import SWP391.Fall24.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,4 +121,19 @@ public class UserService implements IUserService{
     }
 
 
+    public String processOAuthPostLogin(String email, String name) {
+        Optional<Users> u = iUserRepository.findByUserNameIgnoreCase(email);
+        if(!u.isPresent()) {
+            Users user = new Users();
+            user.setUserName(email);
+            user.setPassword("");
+            user.setEmail(email);
+            user.setRole(Role.Customer);
+            user.setName(name);
+            user.setStatus(true);
+            iUserRepository.save(user);
+            return jwtService.generateJWT(user);
+        }
+        return jwtService.generateJWT(u.get());
+    }
 }
