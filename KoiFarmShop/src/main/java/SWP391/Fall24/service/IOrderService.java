@@ -21,6 +21,6 @@ public interface IOrderService {
     public Orders receiveOrder(int orderId , int staffId);
     public Orders handleOrder(int orderId , OrderStatus status);
     public Orders rejectOrder(OrderManagementDTO orderManagementDTO);
-    public List<AllOrderDTO> getAllOrdersForStaff(int userId);
+    public AllOrderDTO getAllOrdersForStaff(int userId);
 
 }

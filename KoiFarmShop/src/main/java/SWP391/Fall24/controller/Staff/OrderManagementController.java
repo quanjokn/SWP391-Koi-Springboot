@@ -62,8 +62,8 @@ public class OrderManagementController {
     }
 
     @PostMapping("/getAllOrder/{userId}")
-    public List<AllOrderDTO> getAllOrder(@PathVariable ("userId") int userId) {
-        List<AllOrderDTO> allOrderDTOList = orderService.getAllOrdersForStaff(userId);
+    public AllOrderDTO getAllOrder(@PathVariable ("userId") int userId) {
+        AllOrderDTO allOrderDTOList = orderService.getAllOrdersForStaff(userId);
         return allOrderDTOList;
     }
 
