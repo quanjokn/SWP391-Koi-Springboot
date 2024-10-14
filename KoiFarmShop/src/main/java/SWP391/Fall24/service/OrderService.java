@@ -35,9 +35,10 @@ public class OrderService implements IOrderService {
     @Autowired
     private IKoiRepository iKoiRepository;
     @Autowired
-    private IConsignOrderRepository iConsignOrderRepository;
+    private IConsignOrderService consignOrderService;
     @Autowired
-    private ICaringOrderRepository iCaringOrderRepository;
+    private ICaringOrderService caringOrderService;
+
 
     @Override
     public OrderDTO getOrderDetails(int orderId) {
@@ -181,20 +182,17 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<AllOrderDTO> getAllOrdersForStaff(int userId) {
-        Optional<Users> users = iUserRepository.findUsersById(userId);
-        List<Orders> orders = iOrderRepository.findByCustomerId(userId);
-        List<ConsignOrders> consignOrders = iConsignOrderRepository.findAllByUser(users.get());
-        List<CaringOrders> caringOrders = iCaringOrderRepository.findByCustomerId(userId);
+    public AllOrderDTO getAllOrdersForStaff(int userId) {
+        List<Orders> orders = this.getStaffOrders(userId);
+        List<ConsignOrders> consignOrders = consignOrderService.getReceivingOrder(userId);
+        List<CaringOrders> caringOrders = caringOrderService.getReceivingOrder(userId);
 
         AllOrderDTO allOrderDTO = new AllOrderDTO();
         allOrderDTO.setOrder(orders);
         allOrderDTO.setConsignOrders(consignOrders);
         allOrderDTO.setCaringOrders(caringOrders);
 
-        List<AllOrderDTO> allOrderDTOList = new ArrayList<>();
-        allOrderDTOList.add(allOrderDTO);
-        return allOrderDTOList;
+        return allOrderDTO;
     }
 
 
