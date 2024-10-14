@@ -1,5 +1,6 @@
 package SWP391.Fall24.service;
 
+import SWP391.Fall24.dto.Manager.UserResponseDTO;
 import SWP391.Fall24.dto.request.*;
 import SWP391.Fall24.exception.AppException;
 import SWP391.Fall24.exception.ErrorCode;
@@ -79,6 +80,8 @@ public class UserService implements IUserService{
         } else throw new AppException(ErrorCode.USER_NOT_EXISTED);
     }
 
+
+
     @Override
     public Users registerUser(RequestRegistrationUser requestRegistrationUser){
         if(iUserRepository.findByUserNameIgnoreCase(requestRegistrationUser.getUserName()).isPresent()
@@ -120,7 +123,6 @@ public class UserService implements IUserService{
         return iUserRepository.getUsersByUserNameAndPassword(username, password);
     }
 
-
     public String processOAuthPostLogin(String email, String name) {
         Optional<Users> u = iUserRepository.findByUserNameIgnoreCase(email);
         if(!u.isPresent()) {
@@ -136,4 +138,42 @@ public class UserService implements IUserService{
         }
         return jwtService.generateJWT(u.get());
     }
+
+    //For manager
+    @Override
+    public UserResponseDTO getAllAccount() {
+        List<Users> customers = iUserRepository.findByRole(Role.Customer);
+        List<Users> staff = iUserRepository.findByRole(Role.Staff);
+
+        UserResponseDTO userResponseDTO = new UserResponseDTO();
+        userResponseDTO.setCustomers(customers);
+        userResponseDTO.setStaff(staff);
+        return userResponseDTO;
+    }
+    @Override
+    public Users createUser(Users user) {
+        if (user.getRole() == null || !(user.getRole() == Role.Customer || user.getRole() == Role.Staff)) {
+            throw new IllegalArgumentException("Invalid role");
+        }
+        return iUserRepository.save(user);
+    }
+
+    @Override
+    public Users updateUserForManager(int userId, Users user) {
+        Users userUpdate = iUserRepository.findById(userId);
+        if(userUpdate==null) {
+            throw new AppException(ErrorCode.USER_NOT_EXISTED);
+        }else{
+            userUpdate.setUserName(user.getUserName());
+            userUpdate.setPassword(user.getPassword());
+            userUpdate.setName(user.getName());
+            userUpdate.setEmail(user.getEmail());
+            userUpdate.setPhone(user.getPhone());
+            userUpdate.setAddress(user.getAddress());
+            userUpdate.setRole(user.getRole());
+            userUpdate.setStatus(user.isStatus());
+            return iUserRepository.save(userUpdate);
+        }
+    }
+
 }

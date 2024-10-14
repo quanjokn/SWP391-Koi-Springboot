@@ -2,8 +2,8 @@ package SWP391.Fall24.controller.Staff;
 
 import SWP391.Fall24.dto.OrderDTO;
 import SWP391.Fall24.dto.OrderManagementDTO;
+import SWP391.Fall24.dto.Staff.AllOrderDTO;
 import SWP391.Fall24.pojo.Enum.OrderStatus;
-import SWP391.Fall24.pojo.OrderDetails;
 import SWP391.Fall24.pojo.Orders;
 
 import SWP391.Fall24.repository.IOrderRepository;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/orderManagement")
+@RequestMapping("/staff")
 @CrossOrigin(origins = "http://localhost:3000")
 public class OrderManagementController {
 
@@ -29,6 +29,7 @@ public class OrderManagementController {
 
         return ordersList;
     }
+
     @PostMapping("/{staffId}")
     public List<Orders> getStaffOrder(@PathVariable ("staffId") int staffId){
         return orderService.getStaffOrders(staffId);
@@ -46,7 +47,6 @@ public class OrderManagementController {
         return orderDetails;
     }
 
-
     @PostMapping("/updateStatus")
     public String updateOrderStatus(@RequestBody OrderManagementDTO orderManagementDTO) {
         String status = orderManagementDTO.getStatus();
@@ -57,6 +57,12 @@ public class OrderManagementController {
             orderService.handleOrder(orderManagementDTO.getOrderId() ,OrderStatus.valueOf(status));
         }
         return null;
+    }
+
+    @PostMapping("/getAllOrder/{staffId}")
+    public AllOrderDTO getAllOrder(@PathVariable ("staffId") int staffId) {
+        AllOrderDTO allOrderDTOList = orderService.getAllOrdersForStaff(staffId);
+        return allOrderDTOList;
     }
 
 }

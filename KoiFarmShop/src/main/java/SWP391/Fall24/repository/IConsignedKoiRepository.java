@@ -14,4 +14,5 @@ public interface IConsignedKoiRepository extends JpaRepository<ConsignedKois, Fi
     List<ConsignedKois> findByConsignOrder(ConsignOrders consignOrder);
 
     Optional<ConsignedKois> findConsignedKoisById(Integer consignOrderId);
+
 }

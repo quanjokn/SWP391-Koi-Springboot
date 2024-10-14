@@ -1,6 +1,7 @@
 package SWP391.Fall24.service;
 
 import SWP391.Fall24.dto.*;
+import SWP391.Fall24.dto.Staff.AllOrderDTO;
 import SWP391.Fall24.exception.AppException;
 import SWP391.Fall24.exception.ErrorCode;
 import SWP391.Fall24.pojo.*;
@@ -33,6 +34,11 @@ public class OrderService implements IOrderService {
     private IUserRepository iUserRepository;
     @Autowired
     private IKoiRepository iKoiRepository;
+    @Autowired
+    private IConsignOrderService consignOrderService;
+    @Autowired
+    private ICaringOrderService caringOrderService;
+
 
     @Override
     public OrderDTO getOrderDetails(int orderId) {
@@ -120,8 +126,9 @@ public class OrderService implements IOrderService {
     public List<Orders> getAllOrders() {
         List<Orders> listOrders = iOrderRepository.findAll();
         List<Orders> orders = new ArrayList<>();
+
         for (Orders order : listOrders) {
-            if(order.getStatus().equals(OrderStatus.Pending_confirmation.toString())){
+            if(order.getStaff()==null){
                 orders.add(order);
             }
         }
@@ -139,7 +146,6 @@ public class OrderService implements IOrderService {
         Optional<Orders> opOrder = iOrderRepository.findById(orderId);
         Optional<Users> opStaff = iUserRepository.findUsersById(staffId);
         Orders order = opOrder.get();
-        order.setStatus(OrderStatus.Receiving.toString());
         order.setStaff(opStaff.get());
         iOrderRepository.save(order);
         return order;
@@ -175,8 +181,19 @@ public class OrderService implements IOrderService {
         return order;
     }
 
+    @Override
+    public AllOrderDTO getAllOrdersForStaff(int staffId) {
+        List<Orders> orders = this.getStaffOrders(staffId);
+        List<ConsignOrders> consignOrders = consignOrderService.getReceivingOrder(staffId);
+        List<CaringOrders> caringOrders = caringOrderService.getReceivingOrder(staffId);
 
+        AllOrderDTO allOrderDTO = new AllOrderDTO();
+        allOrderDTO.setOrder(orders);
+        allOrderDTO.setConsignOrders(consignOrders);
+        allOrderDTO.setCaringOrders(caringOrders);
 
+        return allOrderDTO;
+    }
 
 
 }
