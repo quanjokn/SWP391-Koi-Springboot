@@ -1,6 +1,7 @@
 package SWP391.Fall24.service;
 
 
+import SWP391.Fall24.dto.Manager.UserResponseDTO;
 import SWP391.Fall24.dto.request.*;
 import SWP391.Fall24.pojo.Users;
 
@@ -28,4 +29,12 @@ public interface IUserService {
     Optional<Users> findByUserNameAndEmailIgnoreCase(String username, String email);
 
     public String resetPassword(ForgotPasswordRequest forgotPasswordRequest);
+
+
+    //For manager
+    public UserResponseDTO getAllAccount();
+
+    public Users createUser(Users user);
+
+    public Users updateUserForManager(int userId ,Users user);
 }
