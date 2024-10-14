@@ -1,6 +1,7 @@
 package SWP391.Fall24.pojo;
 
 import SWP391.Fall24.pojo.Enum.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,6 +22,7 @@ public class Users {
     @Column(name = "userName", unique = true)
     private String userName;
 
+    @JsonIgnore
     @Column(length = 255)
     private String password;
 

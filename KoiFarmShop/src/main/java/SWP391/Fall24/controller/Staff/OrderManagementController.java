@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/staff")
+@RequestMapping("/orderManagement")
+@CrossOrigin(origins = "http://localhost:3000")
 public class OrderManagementController {
 
     @Autowired
@@ -51,14 +52,11 @@ public class OrderManagementController {
         String status = orderManagementDTO.getStatus();
 
         if(status.equals(OrderStatus.Rejected.toString())){
-            Orders orders =orderService.rejectOrder(orderManagementDTO);
+            orderService.rejectOrder(orderManagementDTO);
         }else{
-            Orders orders = orderService.handleOrder(orderManagementDTO.getOrderId() ,OrderStatus.valueOf(status));
+            orderService.handleOrder(orderManagementDTO.getOrderId() ,OrderStatus.valueOf(status));
         }
-
-
         return null;
     }
-
 
 }
