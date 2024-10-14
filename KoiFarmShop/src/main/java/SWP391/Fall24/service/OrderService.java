@@ -182,10 +182,10 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public AllOrderDTO getAllOrdersForStaff(int userId) {
-        List<Orders> orders = this.getStaffOrders(userId);
-        List<ConsignOrders> consignOrders = consignOrderService.getReceivingOrder(userId);
-        List<CaringOrders> caringOrders = caringOrderService.getReceivingOrder(userId);
+    public AllOrderDTO getAllOrdersForStaff(int staffId) {
+        List<Orders> orders = this.getStaffOrders(staffId);
+        List<ConsignOrders> consignOrders = consignOrderService.getReceivingOrder(staffId);
+        List<CaringOrders> caringOrders = caringOrderService.getReceivingOrder(staffId);
 
         AllOrderDTO allOrderDTO = new AllOrderDTO();
         allOrderDTO.setOrder(orders);

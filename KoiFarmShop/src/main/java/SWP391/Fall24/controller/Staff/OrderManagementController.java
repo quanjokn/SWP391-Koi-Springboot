@@ -4,7 +4,6 @@ import SWP391.Fall24.dto.OrderDTO;
 import SWP391.Fall24.dto.OrderManagementDTO;
 import SWP391.Fall24.dto.Staff.AllOrderDTO;
 import SWP391.Fall24.pojo.Enum.OrderStatus;
-import SWP391.Fall24.pojo.OrderDetails;
 import SWP391.Fall24.pojo.Orders;
 
 import SWP391.Fall24.repository.IOrderRepository;
@@ -30,6 +29,7 @@ public class OrderManagementController {
 
         return ordersList;
     }
+
     @PostMapping("/{staffId}")
     public List<Orders> getStaffOrder(@PathVariable ("staffId") int staffId){
         return orderService.getStaffOrders(staffId);
@@ -61,9 +61,9 @@ public class OrderManagementController {
         return null;
     }
 
-    @PostMapping("/getAllOrder/{userId}")
-    public AllOrderDTO getAllOrder(@PathVariable ("userId") int userId) {
-        AllOrderDTO allOrderDTOList = orderService.getAllOrdersForStaff(userId);
+    @PostMapping("/getAllOrder/{staffId}")
+    public AllOrderDTO getAllOrder(@PathVariable ("staffId") int staffId) {
+        AllOrderDTO allOrderDTOList = orderService.getAllOrdersForStaff(staffId);
         return allOrderDTOList;
     }
 

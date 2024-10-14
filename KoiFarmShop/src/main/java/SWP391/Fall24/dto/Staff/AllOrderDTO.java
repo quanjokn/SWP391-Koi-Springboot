@@ -14,10 +14,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AllOrderDTO {
-    @JsonProperty("orders")
+//    @JsonProperty("orders")
     public List<Orders> order;
-    @JsonProperty("consignOrders")
+//    @JsonProperty("consignOrders")
     public List<ConsignOrders> consignOrders;
-    @JsonProperty("caringOrders")
+//    @JsonProperty("caringOrders")
     public List<CaringOrders> caringOrders;
 }
