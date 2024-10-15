@@ -42,9 +42,14 @@ public class CareOrderManagementController {
         return caringOrderService.receivingCaringOrder(staffID, orderID);
     }
 
-
     @PostMapping("/approval")
     public String approveCaringOrder(@RequestBody CareApprovalRequest approvalRequest) {
         return caringOrderService.approvalCaringOrder(approvalRequest);
     }
+
+    @PostMapping("/complete/{staffID}/{orderID}")
+    public String completeCaringOrder(@PathVariable("orderID") int orderID, @PathVariable("staffID") int staffID) {
+        return caringOrderService.completeOrder(staffID, orderID);
+    }
+
 }
