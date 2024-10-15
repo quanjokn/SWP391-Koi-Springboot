@@ -1,6 +1,5 @@
 package SWP391.Fall24.config;
 
-import SWP391.Fall24.pojo.Enum.Role;
 import SWP391.Fall24.pojo.Users;
 import SWP391.Fall24.repository.IUserRepository;
 import SWP391.Fall24.service.JWTService;
@@ -10,7 +9,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
