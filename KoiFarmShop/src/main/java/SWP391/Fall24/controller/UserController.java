@@ -8,18 +8,13 @@ import SWP391.Fall24.dto.response.ApiResponse;
 import SWP391.Fall24.dto.response.LoginResponse;
 import SWP391.Fall24.pojo.Users;
 import SWP391.Fall24.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -47,13 +42,6 @@ public class UserController {
             return ResponseEntity.ok(response);
         }
     }
-
-//    @GetMapping("/loginGoogle")
-//    public ResponseEntity<LoginResponse> loginGoogle(HttpServletRequest request) {
-//        LoginResponse response = new LoginResponse();
-//        response.setJwt(request.getSession().getAttribute("JWT").toString());
-//        return ResponseEntity.ok(response);
-//    }
 
     @PostMapping("/updateUser/{id}")
     public Users update(@PathVariable int id, @RequestBody UpdateUserRequest u) {
