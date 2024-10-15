@@ -27,7 +27,8 @@ public class WebSecurityConfig {
 
     private String[] PUBLIC_ENDPOINTS = {"/posts/**", "/caringOrder/**", "/cart/**",
                                         "/consignOrder/**", "/email/**", "/fish/**",
-                                        "/orderDetail/**", "/user/**", "/order/**", "/feedback/**"};
+                                        "/orderDetail/**", "/user/**", "/order/**", "/feedback/**",
+                                        "/api/payment/**"};
 
     private String[] STAFF_ENDPOINTS = {"/orderManagement/**", "/consignManagement/**", "/caringManagement/**"};
 

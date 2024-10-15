@@ -20,5 +20,6 @@ public interface ICaringOrderService {
 
     List<CaringOrders> getReceivingOrder(int staffID);
 
+    String completeOrder(int staffID, int orderID);
 
 }
