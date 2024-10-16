@@ -37,7 +37,7 @@ public class ConsignOrderService implements IConsignOrderService {
     private ISpeciesRepository speciesRepository;
 
     @Autowired
-    private IConsignedKoiRepository consignedKoiRepository;
+    private IConsignedKoiRepository iConsignedKoiRepository;
 
     @Override
     public ConsignOrderResponse createOrder(ConsignOrderRequest consignOrderRequest, int userId) {
@@ -141,7 +141,7 @@ public class ConsignOrderService implements IConsignOrderService {
         if(consignOrders.isPresent()) {
             ConsignOrders consignOrder = consignOrders.get();
             if(opStaff.isPresent()) {
-                HashMap<Integer, Boolean> approval = approvalRequest.getDecision();
+                HashMap<Integer, Boolean> approval = consignApprovalRequest.getDecision();
                 AtomicInteger i = new AtomicInteger();
                 approval.values().forEach(value->{
                     if(value) i.getAndIncrement();
@@ -184,19 +184,19 @@ public class ConsignOrderService implements IConsignOrderService {
         return consignOrders;
     }
 
-    public String completeOrder(int staffID, int orderID){
-        ConsignOrders consignOrders = iConsignOrderRepository.findById(orderID);
-        if(consignOrders.getStaff().getId()==staffID){
-            consignOrders.setStatus(CaringOrderStatus.Done.toString());
-            iConsignOrderRepository.save(caringOrder);
-            List<ConsignedKois> consignedKois = consignedKoiRepository.findByConsignOrder(consignOrders);
-            caredKois.forEach(koi->{
-                if(koi.getStatus().equals(ConsignedKoiStatus.Accepted_caring.toString())){
-                    koi.setStatus(CaredKoiStatus.Done.toString());
-                    caredKoiRepository.save(koi);
-                }
-            });
-        } else throw new AppException(ErrorCode.OUT_OF_ROLE);
-        return "Complete caring order successfully";
-    }
+//    public String completeOrder(int staffID, int orderID){
+//        ConsignOrders consignOrders = iConsignOrderRepository.findById(orderID);
+//        if(consignOrders.getStaff().getId()==staffID){
+//            consignOrders.setStatus(CaringOrderStatus.Done.toString());
+//            iConsignOrderRepository.save(caringOrder);
+//            List<ConsignedKois> consignedKois = consignedKoiRepository.findByConsignOrder(consignOrders);
+//            caredKois.forEach(koi->{
+//                if(koi.getStatus().equals(ConsignedKoiStatus.Accepted_caring.toString())){
+//                    koi.setStatus(CaredKoiStatus.Done.toString());
+//                    caredKoiRepository.save(koi);
+//                }
+//            });
+//        } else throw new AppException(ErrorCode.OUT_OF_ROLE);
+//        return "Complete caring order successfully";
+//    }
 }
