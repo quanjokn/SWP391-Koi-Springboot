@@ -1,5 +1,6 @@
 package SWP391.Fall24.controller.Manager;
 
+import SWP391.Fall24.dto.Manager.UserResponseDTO;
 import SWP391.Fall24.pojo.Users;
 import SWP391.Fall24.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/userManagement")
@@ -19,16 +21,26 @@ public class UserManagementController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/getAllUser")
-    public ResponseEntity<List<Users>> getAll() {
-        return ResponseEntity.ok(userService.getAllUsers());
+    // include all customer and staff
+    @GetMapping("/allAccount")
+    public UserResponseDTO getAllAccount(){
+        UserResponseDTO userResponseDTO = userService.getAllAccount();
+        return userResponseDTO;
     }
 
     @DeleteMapping("/deleteUser/{id}")
     public String delete(@PathVariable("id") int id) {
         userService.deleteUser(id);
-        var authentication = SecurityContextHolder.getContext().getAuthentication();
-        log.info("Role: {}", authentication.getAuthorities());
         return "Delete user successfully";
+    }
+
+    @PostMapping("/profile/{userId}")
+    public Optional<Users> findUser(@PathVariable int userId) {
+        return userService.findByID(userId);
+    }
+
+    @PostMapping("/createAccount")
+    public void createAccount(@RequestBody Users user) {
+        Users newUsers = userService.createUser(user);
     }
 }

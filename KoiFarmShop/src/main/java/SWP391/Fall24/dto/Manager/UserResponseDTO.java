@@ -12,8 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserResponseDTO {
-//    @JsonProperty("customers")
     private List<Users> customers;
-//    @JsonProperty("staff")
     private List<Users> staff;
 }

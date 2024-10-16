@@ -1,28 +1,29 @@
 package SWP391.Fall24.controller.VNPAY;
 
 import SWP391.Fall24.config.VNPAYConfig;
-import SWP391.Fall24.dto.VNPAY.PaymentDTO;
+import SWP391.Fall24.dto.PlaceOrderDTO;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.UnsupportedEncodingException;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-@RestController
+@Controller
 @RequestMapping("/api/payment")
 public class VNPayController {
 
     private VNPAYConfig Config;
 
     @GetMapping("/create_payment")
-    public ResponseEntity<?> createPayment(HttpServletRequest request) throws UnsupportedEncodingException {
+    public void createPayment(HttpServletRequest request, HttpServletResponse response, @RequestBody PlaceOrderDTO placeOrderDTO) throws IOException {
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String orderType = "other";
@@ -79,12 +80,12 @@ public class VNPayController {
         query.append("&vnp_SecureHash=").append(vnp_SecureHash);
         String paymentUrl = Config.vnp_PayUrl + "?" + query.toString();
 
-        PaymentDTO paymentDTO = new PaymentDTO();
-        paymentDTO.setStatus("OK");
-        paymentDTO.setMessage("Successfully");
-        paymentDTO.setURL(paymentUrl);
-
-        return ResponseEntity.status(HttpStatus.OK).body(paymentDTO);
+//        PaymentDTO paymentDTO = new PaymentDTO();
+//        paymentDTO.setStatus("OK");
+//        paymentDTO.setMessage("Successfully");
+//        paymentDTO.setURL(paymentUrl);
+//        return ResponseEntity.status(HttpStatus.OK).body(paymentDTO);
+        response.sendRedirect(paymentUrl);
     }
 
     @GetMapping("/return")
