@@ -1,6 +1,9 @@
 package SWP391.Fall24.service;
 
 import SWP391.Fall24.dto.*;
+import SWP391.Fall24.dto.Manager.OrdersRevenueDTO;
+import SWP391.Fall24.dto.Manager.ProductSalesDTO;
+import SWP391.Fall24.dto.Manager.WeekSalesDTO;
 import SWP391.Fall24.dto.Staff.AllOrderDTO;
 import SWP391.Fall24.exception.AppException;
 import SWP391.Fall24.exception.ErrorCode;
@@ -9,8 +12,11 @@ import SWP391.Fall24.pojo.Enum.OrderStatus;
 import SWP391.Fall24.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -196,6 +202,79 @@ public class OrderService implements IOrderService {
     }
 
 
+
+
+    //for dashboard
+    @Override
+    public List<OrdersRevenueDTO> getOrdersRevenueForDashBoard(int year, int month) {
+        List<Object[]> results = iOrderRepository.findOrdersAndRevenueByWeek(year, month);
+        List<OrdersRevenueDTO> revenueDTOList = new ArrayList<>();
+        for (Object[] result : results) {
+            int weekOfMonth = (int) result[0];
+            int totalOrders = (int) result[1];
+            Double totalRevenue = (Double) result[2];
+
+
+            OrdersRevenueDTO dto = new OrdersRevenueDTO(weekOfMonth, totalOrders, totalRevenue);
+            revenueDTOList.add(dto);
+        }
+        return revenueDTOList;
+    }
+
+    @Override
+    public List<WeekSalesDTO> getWeeklySales(int year, int month) {
+        List<Object[]> data = iOrderRepository.findSalesByWeek(year, month);
+
+        List<WeekSalesDTO> result = new ArrayList<>();
+        List<ProductSalesDTO> productSalesDTOList = new ArrayList<>();
+        int currentWeek = -1;
+
+        for(Object[] row: data){
+            int weekOfMonth = (int) row[0];
+            int fishId = (int) row[1];
+            int totalQuantity = (int) row[2];
+
+            if (currentWeek != weekOfMonth && productSalesDTOList.size() > 0) {
+                result.add(processWeekData(currentWeek, productSalesDTOList));
+                productSalesDTOList.clear();
+            }
+
+            currentWeek = weekOfMonth;
+            List<FishDetailDTO> fishDetailDTOList = fishService.allFish();
+            String fishName="";
+            for(FishDetailDTO f: fishDetailDTOList){
+                if(f.getId()==fishId){
+                    fishName = f.getName();
+                }
+            }
+            productSalesDTOList.add(new ProductSalesDTO(fishName, totalQuantity));
+        }
+        if (productSalesDTOList.size() > 0) {
+            result.add(processWeekData(currentWeek, productSalesDTOList));
+        }
+
+        return result;
+
+    }
+
+    private WeekSalesDTO processWeekData(int weekOfMonth, List<ProductSalesDTO> products) {
+        products.sort(Comparator.comparing(ProductSalesDTO::getTotalQuantity).reversed());
+
+        List<ProductSalesDTO> top3Products = new ArrayList<>();
+        int totalOtherSales =0;
+
+        for (int i = 0; i < products.size(); i++) {
+            if (i < 3) {
+                top3Products.add(products.get(i));
+            } else {
+                totalOtherSales += products.get(i).getTotalQuantity();
+            }
+        }
+        if (totalOtherSales > 0) {
+            top3Products.add(new ProductSalesDTO("Orther", totalOtherSales));
+        }
+        return new WeekSalesDTO(weekOfMonth, top3Products);
+    }
 }
 
 

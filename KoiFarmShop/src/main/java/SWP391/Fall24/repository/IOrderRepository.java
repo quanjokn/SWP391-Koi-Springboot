@@ -1,8 +1,7 @@
 package SWP391.Fall24.repository;
 
-import SWP391.Fall24.pojo.OrderDetails;
+import SWP391.Fall24.dto.Manager.OrdersRevenueDTO;
 import SWP391.Fall24.pojo.Orders;
-import SWP391.Fall24.pojo.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,4 +21,28 @@ public interface IOrderRepository extends JpaRepository<Orders, Integer> {
     List<Orders> findByStaffId(int staffId);
 
     List<Orders> findByCustomerId(int userId);
+
+    //for dashboard
+
+
+    @Query(value = "SELECT ((DAY(o.date) - 1) / 7) + 1 AS weekOfMonth, " +
+            "COUNT(*) AS totalOrders, " +
+            "SUM(o.total) AS totalRevenue " +
+            "FROM Orders o " +
+            "WHERE YEAR(o.date) = :year AND MONTH(o.date) = :month " +
+            "GROUP BY ((DAY(o.date) - 1) / 7) + 1",
+            nativeQuery = true)
+
+    List<Object[]> findOrdersAndRevenueByWeek(@Param("year") int year, @Param("month") int month);
+
+
+    @Query(value = "SELECT ((DAY(o.date) - 1) / 7 + 1) AS weekOfMonth, " +
+            "od.fishId AS fishId, SUM(od.quantity) AS totalQuantity " +
+            "FROM Orders o " +
+            "JOIN order_details od ON o.Id = od.orderid " +
+            "WHERE YEAR(o.date) = :year AND MONTH(o.date) = :month " +
+            "GROUP BY ((DAY(o.date) - 1) / 7 + 1), od.fishId " +
+            "ORDER BY weekOfMonth, totalQuantity DESC",
+            nativeQuery = true)
+    List<Object[]> findSalesByWeek(@Param("year") int year, @Param("month") int month);
 }

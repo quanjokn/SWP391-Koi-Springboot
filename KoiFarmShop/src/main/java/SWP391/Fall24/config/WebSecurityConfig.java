@@ -31,11 +31,11 @@ public class WebSecurityConfig {
 
     private String[] PUBLIC_ENDPOINTS = {"/posts/**", "/caringOrder/**", "/cart/**",
                                         "/consignOrder/**", "/email/**", "/fish/**",
-                                        "/orderDetail/**", "/user/**"};
+                                        "/orderDetail/**", "/user/**" , "/order/**" };
 
     private String[] STAFF_ENDPOINTS = {"/orderManagement/**", "/consignManagement/**", "/caringManagement/**"};
 
-    private String[] MANAGER_ENDPOINTS = {"/userManagement/**"};
+    private String[] MANAGER_ENDPOINTS = {"/userManagement/**","/dashBoard/**"};
 
     @Autowired
     private JWTRequestFilter jwtRequestFilter;
@@ -50,11 +50,11 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChainWebConfig(HttpSecurity http) throws Exception {
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         http.authorizeHttpRequests(request->{
-            request.requestMatchers(PUBLIC_ENDPOINTS).permitAll();
-            request.requestMatchers("/oauth/**").permitAll();
-            request.requestMatchers(STAFF_ENDPOINTS).hasAnyAuthority("Staff");
-            request.requestMatchers(MANAGER_ENDPOINTS).hasAnyAuthority("Manager");
-            request.anyRequest().authenticated();
+//            request.requestMatchers(PUBLIC_ENDPOINTS).permitAll();
+//            request.requestMatchers("/oauth/**").permitAll();
+//            request.requestMatchers(STAFF_ENDPOINTS).hasAnyAuthority("Staff");
+//            request.requestMatchers(MANAGER_ENDPOINTS).hasAnyAuthority("Manager");
+            request.anyRequest().permitAll();
         });
         http.oauth2Login().loginPage("/user/login")
                 .userInfoEndpoint().userService(oauthUserService)
