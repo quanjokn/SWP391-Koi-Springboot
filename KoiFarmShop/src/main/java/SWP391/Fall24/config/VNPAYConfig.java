@@ -11,10 +11,8 @@ import java.util.*;
 
 //@Configuration
 public class VNPAYConfig {
-    public static String vnp_Version = "2.1.0";
-    public static String vnp_Command = "pay";
-    public static String vnp_TmnCode = "U61VXJ9M"; // Lấy từ tài khoản sandbox
-    public static String vnp_HashSecret = "X4YC9NWMMELIVBFVFQ1TFXJ3BDH71629"; // Lấy từ tài khoản sandbox
+    public static String vnp_TmnCode = "9NLZ7N8C"; // Lấy từ tài khoản sandbox
+    public static String vnp_HashSecret = "WQR7J6HQN376J8T0V7C0TD4AWLLM0ZP9"; // Lấy từ tài khoản sandbox
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
     public static String vnp_Returnurl = "http://localhost:8080/api/payment/return"; // URL trả về sau khi thanh toán
     public static String vnp_apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/merchant.html";
