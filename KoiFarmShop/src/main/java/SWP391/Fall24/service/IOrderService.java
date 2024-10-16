@@ -1,6 +1,8 @@
 package SWP391.Fall24.service;
 
 import SWP391.Fall24.dto.*;
+import SWP391.Fall24.dto.Manager.OrdersRevenueDTO;
+import SWP391.Fall24.dto.Manager.WeekSalesDTO;
 import SWP391.Fall24.dto.Staff.AllOrderDTO;
 import SWP391.Fall24.pojo.Cart;
 import SWP391.Fall24.pojo.Enum.OrderStatus;
@@ -22,5 +24,7 @@ public interface IOrderService {
     public Orders handleOrder(int orderId , OrderStatus status);
     public Orders rejectOrder(OrderManagementDTO orderManagementDTO);
     public AllOrderDTO getAllOrdersForStaff(int userId);
-
+    //for dashboard
+    public List<OrdersRevenueDTO> getOrdersRevenueForDashBoard(int year , int month);
+    public List<WeekSalesDTO> getWeeklySales(int year, int month);
 }

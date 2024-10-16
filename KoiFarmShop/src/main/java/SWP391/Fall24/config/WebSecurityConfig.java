@@ -36,7 +36,7 @@ public class WebSecurityConfig {
 
     private String[] STAFF_ENDPOINTS = {"/orderManagement/**", "/consignManagement/**", "/caringManagement/**"};
 
-    private String[] MANAGER_ENDPOINTS = {"/userManagement/**"};
+    private String[] MANAGER_ENDPOINTS = {"/userManagement/**","/dashBoard/**"};
 
     @Autowired
     private JWTRequestFilter jwtRequestFilter;
