@@ -2,15 +2,9 @@ package SWP391.Fall24.controller.VNPAY;
 
 import SWP391.Fall24.config.VNPAYConfig;
 import SWP391.Fall24.dto.VNPAY.PaymentDTO;
-import com.nimbusds.jose.shaded.gson.Gson;
-import com.nimbusds.jose.shaded.gson.JsonObject;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +19,6 @@ import java.util.*;
 @RequestMapping("/api/payment")
 public class VNPayController {
 
-//    @Autowired
     private VNPAYConfig Config;
 
     @GetMapping("/create_payment")

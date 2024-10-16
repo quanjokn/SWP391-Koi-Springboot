@@ -22,4 +22,6 @@ public interface IConsignOrderService{
     List<ConsignOrders> findByStatus(String status);
 
     List<ConsignOrders> getReceivingOrder(int staffID);
+
+    String completeOrder(int staffID, int orderID);
 }

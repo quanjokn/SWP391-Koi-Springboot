@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class CaringOrderService implements ICaringOrderService{
@@ -84,11 +85,11 @@ public class CaringOrderService implements ICaringOrderService{
         CaringOrders caringOrder = caringOrderRepository.findById(approvalRequest.getOrderID());
         if(caringOrder.getStaff().getId()==approvalRequest.getStaffID()){
             HashMap<Integer, Boolean> approval = approvalRequest.getDecision();
-            AtomicBoolean check = new AtomicBoolean(false);
+            AtomicInteger i = new AtomicInteger();
             approval.values().forEach(value->{
-                if(value) check.set(true);
+                if(value) i.getAndIncrement();
             });
-            if(check.get()){
+            if(i.get()>0){
                 caringOrder.setStatus(CaringOrderStatus.Responded.toString());
             } else caringOrder.setStatus(CaringOrderStatus.Rejected.toString());
             caringOrder.setNote(approvalRequest.getNote());

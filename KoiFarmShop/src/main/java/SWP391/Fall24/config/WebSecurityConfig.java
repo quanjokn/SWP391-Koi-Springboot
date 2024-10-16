@@ -18,8 +18,12 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.io.IOException;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -47,11 +51,12 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChainWebConfig(HttpSecurity http) throws Exception {
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         http.authorizeHttpRequests(request->{
-            request.requestMatchers(PUBLIC_ENDPOINTS).permitAll();
-            request.requestMatchers("/oauth/**").permitAll();
-            request.requestMatchers(STAFF_ENDPOINTS).hasAnyAuthority("Staff");
-            request.requestMatchers(MANAGER_ENDPOINTS).hasAnyAuthority("Manager");
-            request.anyRequest().authenticated();
+//            request.requestMatchers(PUBLIC_ENDPOINTS).permitAll();
+//            request.requestMatchers("/oauth/**").permitAll();
+//            request.requestMatchers(STAFF_ENDPOINTS).hasAnyAuthority("Staff");
+//            request.requestMatchers(MANAGER_ENDPOINTS).hasAnyAuthority("Manager");
+//            request.anyRequest().authenticated();
+            request.anyRequest().permitAll();
         });
         http.oauth2Login().loginPage("/user/login")
                 .userInfoEndpoint().userService(oauthUserService)

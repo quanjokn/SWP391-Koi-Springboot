@@ -12,4 +12,6 @@ public interface IConsignOrderRepository  extends JpaRepository<ConsignOrders, I
 
     List<ConsignOrders> findAllByUser(Users user);
 
+    ConsignOrders findById(int id);
+
 }
