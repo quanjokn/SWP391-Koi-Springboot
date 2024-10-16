@@ -50,7 +50,6 @@ public class OrderManagementController {
     @PostMapping("/updateStatus")
     public String updateOrderStatus(@RequestBody OrderManagementDTO orderManagementDTO) {
         String status = orderManagementDTO.getStatus();
-
         if(status.equals(OrderStatus.Rejected.toString())){
             orderService.rejectOrder(orderManagementDTO);
         }else{

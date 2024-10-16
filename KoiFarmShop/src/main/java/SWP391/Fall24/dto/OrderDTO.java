@@ -1,6 +1,5 @@
 package SWP391.Fall24.dto;
 
-import SWP391.Fall24.pojo.Enum.OrderStatus;
 import SWP391.Fall24.pojo.Users;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;

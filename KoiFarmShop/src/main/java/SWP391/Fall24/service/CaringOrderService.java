@@ -15,11 +15,12 @@ import SWP391.Fall24.repository.ICaredKoiRepository;
 import SWP391.Fall24.repository.ICaringOrderRepository;
 import SWP391.Fall24.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class CaringOrderService implements ICaringOrderService{
@@ -83,11 +84,17 @@ public class CaringOrderService implements ICaringOrderService{
     public String approvalCaringOrder(CareApprovalRequest approvalRequest){
         CaringOrders caringOrder = caringOrderRepository.findById(approvalRequest.getOrderID());
         if(caringOrder.getStaff().getId()==approvalRequest.getStaffID()){
-            caringOrder.setStatus(CaringOrderStatus.Responded.toString());
+            HashMap<Integer, Boolean> approval = approvalRequest.getDecision();
+            AtomicInteger i = new AtomicInteger();
+            approval.values().forEach(value->{
+                if(value) i.getAndIncrement();
+            });
+            if(i.get()>0){
+                caringOrder.setStatus(CaringOrderStatus.Responded.toString());
+            } else caringOrder.setStatus(CaringOrderStatus.Rejected.toString());
             caringOrder.setNote(approvalRequest.getNote());
             caringOrderRepository.save(caringOrder);
             List<CaredKois> caredKois = caredKoiRepository.findByCaringOrder(caringOrder);
-            HashMap<Integer, Boolean> approval = approvalRequest.getDecision();
             caredKois.forEach(koi->{
                 approval.forEach((fishID, decision)->{
                     if(fishID==koi.getId()){
@@ -138,5 +145,21 @@ public class CaringOrderService implements ICaringOrderService{
             }
         });
         return result;
+    }
+
+    public String completeOrder(int staffID, int orderID) {
+        CaringOrders caringOrder = caringOrderRepository.findById(orderID);
+        if(caringOrder.getStaff().getId()==staffID){
+            caringOrder.setStatus(CaringOrderStatus.Done.toString());
+            caringOrderRepository.save(caringOrder);
+            List<CaredKois> caredKois = caredKoiRepository.findByCaringOrder(caringOrder);
+            caredKois.forEach(koi->{
+               if(koi.getStatus().equals(CaredKoiStatus.Accepted_caring.toString())){
+                   koi.setStatus(CaredKoiStatus.Done.toString());
+                   caredKoiRepository.save(koi);
+               }
+            });
+        } else throw new AppException(ErrorCode.OUT_OF_ROLE);
+        return "Complete caring order successfully";
     }
 }

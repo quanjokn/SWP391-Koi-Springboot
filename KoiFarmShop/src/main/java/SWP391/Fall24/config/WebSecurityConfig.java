@@ -1,6 +1,5 @@
 package SWP391.Fall24.config;
 
-import SWP391.Fall24.dto.request.LoginRequest;
 import SWP391.Fall24.service.OAuth.CustomOAuth2User;
 import SWP391.Fall24.service.OAuth.CustomOAuth2UserService;
 import SWP391.Fall24.service.UserService;
@@ -10,20 +9,21 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.io.IOException;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -31,7 +31,8 @@ public class WebSecurityConfig {
 
     private String[] PUBLIC_ENDPOINTS = {"/posts/**", "/caringOrder/**", "/cart/**",
                                         "/consignOrder/**", "/email/**", "/fish/**",
-                                        "/orderDetail/**", "/user/**" , "/order/**" };
+                                        "/orderDetail/**", "/user/**", "/order/**", "/feedback/**",
+                                        "/api/payment/**"};
 
     private String[] STAFF_ENDPOINTS = {"/orderManagement/**", "/consignManagement/**", "/caringManagement/**"};
 
@@ -54,6 +55,7 @@ public class WebSecurityConfig {
 //            request.requestMatchers("/oauth/**").permitAll();
 //            request.requestMatchers(STAFF_ENDPOINTS).hasAnyAuthority("Staff");
 //            request.requestMatchers(MANAGER_ENDPOINTS).hasAnyAuthority("Manager");
+//            request.anyRequest().authenticated();
             request.anyRequest().permitAll();
         });
         http.oauth2Login().loginPage("/user/login")
