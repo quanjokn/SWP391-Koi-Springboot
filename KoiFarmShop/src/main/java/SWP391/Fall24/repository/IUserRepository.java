@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-@EnableJpaRepositories(basePackageClasses = Users.class)
 public interface IUserRepository extends JpaRepository<Users, Integer> {
 
     Users findById(int id);

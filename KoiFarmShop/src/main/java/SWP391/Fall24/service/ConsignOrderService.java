@@ -181,21 +181,14 @@ public class ConsignOrderService implements IConsignOrderService {
         return consignOrders;
     }
 
+    @Override
+    public String doneConsignOrder(int staffID, int orderID){
+        ConsignOrders consignOrders = iConsignOrderRepository.findById(orderID).orElseThrow(()->new AppException(ErrorCode.ORDER_NOT_EXISTED));
+        if(consignOrders.getStaff().getId()==staffID){
+            consignOrders.setStatus(ConsignOrderStatus.Done.toString());
+            iConsignOrderRepository.save(consignOrders);
+        } else throw new AppException(ErrorCode.OUT_OF_ROLE);
+        return "Complete caring order successfully";
+    }
 
-
-//    public String completeOrder(int staffID, int orderID){
-//        ConsignOrders consignOrders = iConsignOrderRepository.findById(orderID);
-//        if(consignOrders.getStaff().getId()==staffID){
-//            consignOrders.setStatus(CaringOrderStatus.Done.toString());
-//            iConsignOrderRepository.save(caringOrder);
-//            List<ConsignedKois> consignedKois = consignedKoiRepository.findByConsignOrder(consignOrders);
-//            caredKois.forEach(koi->{
-//                if(koi.getStatus().equals(ConsignedKoiStatus.Accepted_caring.toString())){
-//                    koi.setStatus(CaredKoiStatus.Done.toString());
-//                    caredKoiRepository.save(koi);
-//                }
-//            });
-//        } else throw new AppException(ErrorCode.OUT_OF_ROLE);
-//        return "Complete caring order successfully";
-//    }
 }

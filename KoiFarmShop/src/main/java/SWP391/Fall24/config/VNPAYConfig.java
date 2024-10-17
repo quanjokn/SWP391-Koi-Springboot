@@ -2,14 +2,13 @@ package SWP391.Fall24.config;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
-
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-//@Configuration
+@Configuration
 public class VNPAYConfig {
     public static String vnp_TmnCode = "9NLZ7N8C"; // Lấy từ tài khoản sandbox
     public static String vnp_HashSecret = "WQR7J6HQN376J8T0V7C0TD4AWLLM0ZP9"; // Lấy từ tài khoản sandbox

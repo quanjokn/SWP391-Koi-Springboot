@@ -17,6 +17,17 @@ public class BlogService implements IBlogService{
     }
 
     @Override
+    public Blogs createBlog(Blogs blog) {
+        Blogs newBlog = iBlogRepository.save(blog);
+        return newBlog;
+    }
+
+    @Override
+    public Blogs updateBlog(Blogs blog) {
+        return iBlogRepository.save(blog);
+    }
+
+    @Override
     public List<Blogs> searchBlog(String title) {
         return iBlogRepository.findByTitleContainingIgnoreCase(title);
     }
@@ -25,4 +36,5 @@ public class BlogService implements IBlogService{
     public List<Blogs> getAll() {
         return iBlogRepository.findAll();
     }
+
 }

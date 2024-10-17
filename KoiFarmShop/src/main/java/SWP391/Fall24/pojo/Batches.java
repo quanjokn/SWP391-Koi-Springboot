@@ -57,7 +57,7 @@ public class Batches {
     private String video;
 
     @Column
-    private boolean status = true;
+    private boolean status = true; // false is out of stock
 
     @Override
     public boolean equals(Object o) {
