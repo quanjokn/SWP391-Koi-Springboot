@@ -175,7 +175,7 @@ public class ConsignOrderService implements IConsignOrderService {
     @Override
     public List<ConsignOrders> getReceivingOrder(int staffID){
         List<ConsignOrders> consignOrders = new ArrayList<>();
-        this.findByStatus(ConsignOrderStatus.Receiving.toString()).forEach(order->{
+        iConsignOrderRepository.findAll().forEach(order->{
             if(order.getStaff().getId() == staffID) consignOrders.add(order);
         });
         return consignOrders;

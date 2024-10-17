@@ -139,7 +139,7 @@ public class CaringOrderService implements ICaringOrderService{
     @Override
     public List<CaringOrders> getReceivingOrder(int staffID) {
         List<CaringOrders> result = new ArrayList<>();
-        this.getCaringOrdersByStatus(CaringOrderStatus.Receiving.toString()).forEach(order->{
+        caringOrderRepository.findAll().forEach(order->{
             if(order.getStaff().getId()==staffID){
                 result.add(order);
             }
