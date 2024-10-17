@@ -1,5 +1,6 @@
 package SWP391.Fall24.repository;
 
+import SWP391.Fall24.dto.ConsignedKoiDTO;
 import SWP391.Fall24.pojo.ConsignOrders;
 import SWP391.Fall24.pojo.ConsignedKois;
 import SWP391.Fall24.pojo.Fishes;
@@ -14,5 +15,8 @@ public interface IConsignedKoiRepository extends JpaRepository<ConsignedKois, In
     List<ConsignedKois> findByConsignOrder(ConsignOrders consignOrder);
 
     Optional<ConsignedKois> findConsignedKoisById(Integer consignOrderId);
+
+    List<ConsignedKois> findAll();
+
 
 }

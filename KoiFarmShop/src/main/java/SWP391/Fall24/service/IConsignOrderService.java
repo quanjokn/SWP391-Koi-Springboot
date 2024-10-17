@@ -5,10 +5,8 @@ import SWP391.Fall24.dto.request.ConsignOrderRequest;
 import SWP391.Fall24.dto.response.ConsignOrderResponse;
 import SWP391.Fall24.pojo.ConsignOrders;
 import SWP391.Fall24.pojo.ConsignedKois;
-import SWP391.Fall24.pojo.Users;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IConsignOrderService{
     ConsignOrderResponse createOrder(ConsignOrderRequest consignOrderRequest, int userId);
@@ -24,4 +22,5 @@ public interface IConsignOrderService{
     List<ConsignOrders> getReceivingOrder(int staffID);
 
     String doneConsignOrder(int staffID, int orderID);
+
 }

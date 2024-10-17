@@ -7,8 +7,6 @@ import SWP391.Fall24.dto.response.ConsignOrderResponse;
 import SWP391.Fall24.exception.AppException;
 import SWP391.Fall24.exception.ErrorCode;
 import SWP391.Fall24.pojo.*;
-import SWP391.Fall24.pojo.Enum.CaredKoiStatus;
-import SWP391.Fall24.pojo.Enum.CaringOrderStatus;
 import SWP391.Fall24.pojo.Enum.ConsignOrderStatus;
 import SWP391.Fall24.pojo.Enum.ConsignedKoiStatus;
 import SWP391.Fall24.repository.*;
@@ -16,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -184,6 +181,7 @@ public class ConsignOrderService implements IConsignOrderService {
         return consignOrders;
     }
 
+    @Override
     public String doneConsignOrder(int staffID, int orderID){
         ConsignOrders consignOrders = iConsignOrderRepository.findById(orderID).orElseThrow(()->new AppException(ErrorCode.ORDER_NOT_EXISTED));
         if(consignOrders.getStaff().getId()==staffID){
@@ -192,4 +190,5 @@ public class ConsignOrderService implements IConsignOrderService {
         } else throw new AppException(ErrorCode.OUT_OF_ROLE);
         return "Complete caring order successfully";
     }
+
 }
