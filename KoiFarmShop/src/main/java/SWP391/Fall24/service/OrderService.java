@@ -48,10 +48,10 @@ public class OrderService implements IOrderService {
     private IKoiRepository iKoiRepository;
 
     @Autowired
-    private IConsignOrderService consignOrderService;
+    private ConsignOrderService consignOrderService;
 
     @Autowired
-    private ICaringOrderService caringOrderService;
+    private CaringOrderService caringOrderService;
 
     @Autowired
     private IBatchRepository iBatchRepository;
