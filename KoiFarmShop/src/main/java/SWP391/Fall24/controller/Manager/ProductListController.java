@@ -20,7 +20,6 @@ public class ProductListController {
     @Autowired
     private FishService fishService;
 
-
     @GetMapping("/allFish")
     public AllFishDTO allFishForManager() {
         return fishService.getAllFishForManager();

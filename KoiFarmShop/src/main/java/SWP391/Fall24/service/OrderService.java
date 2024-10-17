@@ -229,8 +229,6 @@ public class OrderService implements IOrderService {
     }
 
 
-
-
     //for dashboard
     @Override
     public List<OrdersRevenueDTO> getOrdersRevenueForDashBoard(int year, int month) {
@@ -241,7 +239,6 @@ public class OrderService implements IOrderService {
             int totalOrders = (int) result[1];
             Double totalRevenue = (Double) result[2];
 
-
             OrdersRevenueDTO dto = new OrdersRevenueDTO(weekOfMonth, totalOrders, totalRevenue);
             revenueDTOList.add(dto);
         }
@@ -251,7 +248,6 @@ public class OrderService implements IOrderService {
     @Override
     public List<WeekSalesDTO> getWeeklySales(int year, int month) {
         List<Object[]> data = iOrderRepository.findSalesByWeek(year, month);
-
         List<WeekSalesDTO> result = new ArrayList<>();
         List<ProductSalesDTO> productSalesDTOList = new ArrayList<>();
         int currentWeek = -1;
