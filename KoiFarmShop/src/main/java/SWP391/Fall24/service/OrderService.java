@@ -8,12 +8,11 @@ import SWP391.Fall24.dto.Staff.AllOrderDTO;
 import SWP391.Fall24.exception.AppException;
 import SWP391.Fall24.exception.ErrorCode;
 import SWP391.Fall24.pojo.*;
+import SWP391.Fall24.pojo.Enum.ConsignedKoiStatus;
 import SWP391.Fall24.pojo.Enum.OrderStatus;
 import SWP391.Fall24.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -26,25 +25,39 @@ public class OrderService implements IOrderService {
 
     @Autowired
     private IOrderRepository iOrderRepository;
+
     @Autowired
     private IOrderDetailRepository iOrderDetailRepository;
 
     @Autowired
     private ICartRepository iCartRepository;
+
     @Autowired
     private FishService fishService;
+
+    @Autowired
+    private IFishRepository iFishRepository;
+
     @Autowired
     private ICartItemRepository iCartItemRepository;
 
     @Autowired
     private IUserRepository iUserRepository;
+
     @Autowired
     private IKoiRepository iKoiRepository;
+
     @Autowired
     private IConsignOrderService consignOrderService;
+
     @Autowired
     private ICaringOrderService caringOrderService;
 
+    @Autowired
+    private IBatchRepository iBatchRepository;
+
+    @Autowired
+    private IConsignedKoiRepository iConsignedKoiRepository;
 
     @Override
     public OrderDTO getOrderDetails(int orderId) {
@@ -169,10 +182,24 @@ public class OrderService implements IOrderService {
             List<OrderDetails> orderDetailsList = iOrderDetailRepository.findByOrdersId(orderId);
             for(OrderDetails od: orderDetailsList){
                 int fishId = od.getFishes().getId();
-                Optional<Kois> opKois = iKoiRepository.findById(fishId);
-                Kois koi = opKois.get();
-                koi.setQuantity(koi.getQuantity()-od.getQuantity());
-                iKoiRepository.save(koi);
+                Fishes fish = iFishRepository.findById(fishId).orElseThrow(()-> new AppException(ErrorCode.FISH_NOT_EXISTED));
+                if(fish.getCategory().equals("Koi")) {
+                    Kois koi = iKoiRepository.findById(fishId).orElseThrow(()-> new AppException(ErrorCode.KOI_NOT_EXISTED));
+                    koi.setQuantity(koi.getQuantity() - od.getQuantity());
+                    iKoiRepository.save(koi);
+                } else if(fish.getCategory().equals("Batch")) {
+                    Batches batches = iBatchRepository.findById(fishId).orElseThrow(()-> new AppException(ErrorCode.BATCH_NOT_EXISTED));
+                    batches.setStatus(false);
+                    iBatchRepository.save(batches);
+                } else if(fish.getCategory().equals("ConsignedKoi")) {
+                    ConsignedKois consignedKoi = iConsignedKoiRepository.findById(fishId).orElseThrow(()->new AppException(ErrorCode.CONSIGNED_KOI_NOT_EXISTED));
+                    consignedKoi.setQuantity(consignedKoi.getQuantity() - od.getQuantity());
+                    // check consignkoi out of stuck, so change status to Sold
+                    if(consignedKoi.getQuantity()==0){
+                        consignedKoi.setStatus(ConsignedKoiStatus.Sold.toString());
+                    }
+                    iConsignedKoiRepository.save(consignedKoi);
+                } else throw new AppException(ErrorCode.OUT_OF_CATEGORY_FISH);
             }
         }
         return order;

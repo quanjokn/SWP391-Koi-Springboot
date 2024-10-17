@@ -23,5 +23,5 @@ public interface IConsignOrderService{
 
     List<ConsignOrders> getReceivingOrder(int staffID);
 
-//    String completeOrder(int staffID, int orderID);
+    String doneConsignOrder(int staffID, int orderID);
 }

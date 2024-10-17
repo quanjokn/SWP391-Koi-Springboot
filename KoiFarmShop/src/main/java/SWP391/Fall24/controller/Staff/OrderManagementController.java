@@ -26,7 +26,6 @@ public class OrderManagementController {
     @GetMapping("/allOrder")
     public List<Orders> getAllOrders() {
         List<Orders> ordersList = orderService.getAllOrders();
-
         return ordersList;
     }
 
@@ -37,8 +36,8 @@ public class OrderManagementController {
 
     @PostMapping("/receiving/{orderId}/{staffId}")
     public String receiveOrder(@PathVariable int orderId, @PathVariable int staffId) {
-        Orders orders = orderService.receiveOrder(orderId,staffId);
-        return null;
+        orderService.receiveOrder(orderId,staffId);
+        return "Receiving successful";
     }
 
     @PostMapping("/orderDetail/{orderId}")

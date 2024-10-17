@@ -14,6 +14,9 @@ import java.util.Objects;
 @Table(name = "Batches")
 public class Batches {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
     @OneToOne
     @JoinColumn(name = "fishID")
     private Fishes fish;
@@ -52,7 +55,7 @@ public class Batches {
     private String video;
 
     @Column
-    private boolean status = true;
+    private boolean status = true; // false is out of stock
 
     @Override
     public boolean equals(Object o) {

@@ -43,8 +43,8 @@ public class ConsignOrderManagementController {
         return consignOrderService.getDetail(orderID);
     }
 
-//    @PostMapping("/complete/{staffID}/{orderID}")
-//    public String completeConsignOrder(@PathVariable("staffID") int staffID, @PathVariable("orderID") int orderID) {
-//        return consignOrderService.completeOrder(staffID, orderID);
-//    }
+    @PostMapping("/done/{staffID}/{orderID}")
+    public String completeConsignOrder(@PathVariable("staffID") int staffID, @PathVariable("orderID") int orderID) {
+        return consignOrderService.doneConsignOrder(staffID, orderID);
+    }
 }

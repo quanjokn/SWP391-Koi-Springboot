@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface IConsignedKoiRepository extends JpaRepository<ConsignedKois, Fishes> {
+public interface IConsignedKoiRepository extends JpaRepository<ConsignedKois, Integer> {
     List<ConsignedKois> findByConsignOrder(ConsignOrders consignOrder);
 
     Optional<ConsignedKois> findConsignedKoisById(Integer consignOrderId);
