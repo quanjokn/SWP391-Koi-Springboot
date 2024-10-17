@@ -45,16 +45,8 @@ public class Users {
     @Column(nullable = true)
     private boolean status = true;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Users users = (Users) o;
-        return id == users.id && status == users.status && Objects.equals(userName, users.userName) && Objects.equals(password, users.password) && role == users.role && Objects.equals(name, users.name) && Objects.equals(phone, users.phone) && Objects.equals(address, users.address) && Objects.equals(email, users.email);
-    }
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "point", nullable = true)
+    private LoyaltyPoints point;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, userName, password, role, name, phone, address, email, status);
-    }
 }

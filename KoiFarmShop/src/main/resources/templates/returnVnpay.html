@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>KẾT QUẢ THANH TOÁN</title>
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center; /* Center text in the body */
+        }
+
+        h1 {
+            margin-left: 50px;
+            margin-bottom: 20px; /* Space between header and table */
+        }
+
+        a{
+            margin-right: 50px;
+        }
+
+        table {
+            width: 80%; /* Adjust the width as needed */
+            max-width: 600px; /* Limit the maximum width */
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: gray;
+            border-radius: 8px; /* Rounded corners */
+            margin: 0 auto; /* Center the table */
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: darkgoldenrod; /* Green background for header */
+            color: white; /* White text color */
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2; /* Alternate row colors */
+        }
+
+        tr:hover {
+            background-color: #ddd; /* Highlight row on hover */
+        }
+
+        td {
+            color: #333; /* Text color */
+        }
+        .success {
+            color: green; /* Success color */
+        }
+
+        .failure {
+            color: red; /* Failure color */
+        }
+
+    </style>
+</head>
+<body>
+<h1>KẾT QUẢ THANH TOÁN</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Tên Thông Tin</th>
+        <th>Giá Trị</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Khách hàng</td>
+        <td th:text="${PAYMENT_RESULT.getUser().getName()}"></td>
+    </tr>
+    <tr>
+        <td>Mã Giao Dịch</td>
+        <td th:text="${PAYMENT_RESULT.getVnpTransactionNo()}"></td>
+    </tr>
+    <tr>
+        <td>Mã Hóa Đơn</td>
+        <td th:text="${PAYMENT_RESULT.getVnp_InvoiceCode()}"></td>
+    </tr>
+    <tr>
+        <td>Tổng Số Tiền</td>
+        <b><td th:text="${PAYMENT_RESULT.getVnpAmount()}">VND</td></b>
+    </tr>
+    <tr>
+        <td>Mã Phản Hồi VNPay</td>
+        <td id="money" th:text="${PAYMENT_RESULT.getVnpResponseCode()}"></td>
+    </tr>
+    <tr>
+        <td>Trạng Thái</td>
+        <td th:text="${PAYMENT_RESULT.getStatus()}"
+            th:class="${PAYMENT_RESULT.getStatus() == 'Thành công'} ? 'success' : 'failure'"></td>
+    </tr>
+    </tbody>
+</table>
+<a href="http://localhost:3000/thank-you">Trở về trang mua sắm</a>
+
+</body>
+</html>

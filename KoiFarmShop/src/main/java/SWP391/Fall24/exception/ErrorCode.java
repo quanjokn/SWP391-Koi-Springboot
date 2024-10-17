@@ -16,7 +16,8 @@ public enum ErrorCode {
     ORDER_NOT_EXISTED(1011, "Order not existed"),
     FAIL_RETURN_CONSIGNED_KOI(1012, "Fail to set status consigned koi from consign order"),
     FAIL_RETURN_CARED_KOI(1012, "Fail to set status for cared koi from consign order"),
-    OUT_OF_ROLE(1013, "This staff does not have permission to resolve order")
+    OUT_OF_ROLE(1013, "This staff does not have permission to resolve order"),
+    CART_NULL(1013, "Cart is null")
     ;
     private int code;
     private String message;
