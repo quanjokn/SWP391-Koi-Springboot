@@ -13,11 +13,15 @@ public enum ErrorCode {
     FAIL_LOGIN(1009, "Login failed"),
     FAIL_OTP(1010, "OTP error"),
     FISH_NOT_EXISTED(1011, "Fish not existed"),
+    KOI_NOT_EXISTED(1011, "Koi not existed"),
+    BATCH_NOT_EXISTED(1011, "Batch not existed"),
+    CONSIGNED_KOI_NOT_EXISTED(1011, "Consign koi not existed"),
     ORDER_NOT_EXISTED(1011, "Order not existed"),
     FAIL_RETURN_CONSIGNED_KOI(1012, "Fail to set status consigned koi from consign order"),
     FAIL_RETURN_CARED_KOI(1012, "Fail to set status for cared koi from consign order"),
     OUT_OF_ROLE(1013, "This staff does not have permission to resolve order"),
-    CART_NULL(1013, "Cart is null")
+    CART_NULL(1013, "Cart is null"),
+    OUT_OF_CATEGORY_FISH(1013, "This fish is out of fish's fish")
     ;
     private int code;
     private String message;
