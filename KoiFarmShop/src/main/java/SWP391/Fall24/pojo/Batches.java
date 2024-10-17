@@ -13,7 +13,12 @@ import java.util.Objects;
 @Entity
 @Table(name = "Batches")
 public class Batches {
+
     @Id
+    @Column(name = "id" )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
     @OneToOne
     @JoinColumn(name = "fishID")
     private Fishes fish;
