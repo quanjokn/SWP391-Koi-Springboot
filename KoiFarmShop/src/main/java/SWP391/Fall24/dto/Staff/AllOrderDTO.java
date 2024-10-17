@@ -14,10 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AllOrderDTO {
-//    @JsonProperty("orders")
     public List<Orders> order;
-//    @JsonProperty("consignOrders")
     public List<ConsignOrders> consignOrders;
-//    @JsonProperty("caringOrders")
     public List<CaringOrders> caringOrders;
 }
