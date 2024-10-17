@@ -17,22 +17,14 @@ public class LoyaltyPoints {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false, unique = true)
-    private String userID;
+    @OneToOne
+    @JoinColumn(name = "customerID", unique = true)
+    private Users customer;
+
+    @Column(name = "userName", nullable = true)
+    private String userName;
 
     @Column
     private int point = 0;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        LoyaltyPoints that = (LoyaltyPoints) o;
-        return userID == that.userID && point == that.point;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(userID, point);
-    }
 }
