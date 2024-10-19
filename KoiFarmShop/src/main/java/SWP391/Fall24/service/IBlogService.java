@@ -11,4 +11,5 @@ public interface IBlogService {
     public Blogs findById(int postId);
     public Blogs createBlog(Blogs blog);
     public Blogs updateBlog(Blogs blog);
+    public String deleteBlog(int blogID);
 }

@@ -11,4 +11,6 @@ import java.util.List;
 public interface ICaringOrderRepository extends JpaRepository<CaringOrders, Integer> {
     CaringOrders findById(int orderID);
     List<CaringOrders> findByCustomerId(int userId);
+
+    List<CaringOrders> findByStaffId(int staffID);
 }

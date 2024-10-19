@@ -30,6 +30,7 @@ public interface IOrderRepository extends JpaRepository<Orders, Integer> {
             "SUM(o.total) AS totalRevenue " +
             "FROM Orders o " +
             "WHERE YEAR(o.date) = :year AND MONTH(o.date) = :month " +
+            "and o.status = 'Completed' " +
             "GROUP BY ((DAY(o.date) - 1) / 7) + 1",
             nativeQuery = true)
 
@@ -41,6 +42,7 @@ public interface IOrderRepository extends JpaRepository<Orders, Integer> {
             "FROM Orders o " +
             "JOIN order_details od ON o.Id = od.orderid " +
             "WHERE YEAR(o.date) = :year AND MONTH(o.date) = :month " +
+            "and o.status = 'Completed' " +
             "GROUP BY ((DAY(o.date) - 1) / 7 + 1), od.fishId " +
             "ORDER BY weekOfMonth, totalQuantity DESC",
             nativeQuery = true)

@@ -29,11 +29,6 @@ public class FishController {
         return fishService.allFish();
     }
 
-//    @GetMapping("/fishes-list")
-//    private List<Fishes> getAllFish() {
-//        return iFishRepository.findAll();
-//    }
-
     @PostMapping("/fish-detail/{id}")
     @ResponseBody
     private Optional<FishDetailDTO> getFish(@PathVariable("id") int id) {

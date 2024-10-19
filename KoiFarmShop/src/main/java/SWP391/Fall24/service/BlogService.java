@@ -1,6 +1,7 @@
 package SWP391.Fall24.service;
 
 import SWP391.Fall24.pojo.Blogs;
+import SWP391.Fall24.pojo.Users;
 import SWP391.Fall24.repository.IBlogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,13 +19,25 @@ public class BlogService implements IBlogService{
 
     @Override
     public Blogs createBlog(Blogs blog) {
-        Blogs newBlog = iBlogRepository.save(blog);
-        return newBlog;
+        List<Blogs> list = iBlogRepository.findAll();
+        int i = list.size();
+        blog.setId(++i);
+        iBlogRepository.save(blog);
+        return blog;
     }
 
     @Override
     public Blogs updateBlog(Blogs blog) {
         return iBlogRepository.save(blog);
+    }
+
+    @Override
+    public String deleteBlog(int blogID) {
+        Blogs blog = iBlogRepository.findById(blogID);
+        blog.setStaff(new Users());
+        iBlogRepository.save(blog);
+        iBlogRepository.delete(blog);
+        return "Delete completely";
     }
 
     @Override

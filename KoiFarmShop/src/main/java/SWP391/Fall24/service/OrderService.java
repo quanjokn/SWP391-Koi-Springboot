@@ -51,7 +51,7 @@ public class OrderService implements IOrderService {
     private ConsignOrderService consignOrderService;
 
     @Autowired
-    private CaringOrderService caringOrderService;
+    private ICaringOrderRepository caringOrderRepository;
 
     @Autowired
     private IBatchRepository iBatchRepository;
@@ -218,7 +218,7 @@ public class OrderService implements IOrderService {
     public AllOrderDTO getAllOrdersForStaff(int staffId) {
         List<Orders> orders = this.getStaffOrders(staffId);
         List<ConsignOrders> consignOrders = consignOrderService.getReceivingOrder(staffId);
-        List<CaringOrders> caringOrders = caringOrderService.getReceivingOrder(staffId);
+        List<CaringOrders> caringOrders = caringOrderRepository.findByStaffId(staffId);
 
         AllOrderDTO allOrderDTO = new AllOrderDTO();
         allOrderDTO.setOrder(orders);
