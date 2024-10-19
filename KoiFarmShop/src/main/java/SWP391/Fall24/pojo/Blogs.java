@@ -14,7 +14,7 @@ import java.util.Objects;
 public class Blogs {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name="id", nullable = false)
     private int id;
 
     @Column(columnDefinition = "NVARCHAR(4000)")

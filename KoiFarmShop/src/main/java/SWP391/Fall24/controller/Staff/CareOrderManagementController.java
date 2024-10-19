@@ -5,22 +5,21 @@ import SWP391.Fall24.dto.response.CaringOrderResponse;
 import SWP391.Fall24.pojo.CaringOrders;
 import SWP391.Fall24.pojo.Enum.CaringOrderStatus;
 import SWP391.Fall24.repository.ICaredKoiRepository;
+import SWP391.Fall24.repository.ICaringOrderRepository;
 import SWP391.Fall24.service.CaringOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
 @RequestMapping("/caringManagement")
 @CrossOrigin(origins = "http://localhost:3000")
 public class CareOrderManagementController {
-
-    @Autowired
-    private ICaredKoiRepository caredKoiRepository;
-
     @Autowired
     private CaringOrderService caringOrderService;
+
+    @Autowired
+    private ICaringOrderRepository caringOrderRepository;
 
     @GetMapping("/allPendingOrder")
     public List<CaringOrders> getAllPending(){
@@ -29,7 +28,7 @@ public class CareOrderManagementController {
 
     @PostMapping("/allReceivingOrder/{staffID}")
     public List<CaringOrders> getAllReceiving(@PathVariable("staffID") int staffID){
-        return caringOrderService.getReceivingOrder(staffID);
+        return caringOrderRepository.findByStaffId(staffID);
     }
 
     @PostMapping("/detail/{orderID}")
@@ -51,5 +50,4 @@ public class CareOrderManagementController {
     public String completeCaringOrder(@PathVariable("orderID") int orderID, @PathVariable("staffID") int staffID) {
         return caringOrderService.completeOrder(staffID, orderID);
     }
-
 }

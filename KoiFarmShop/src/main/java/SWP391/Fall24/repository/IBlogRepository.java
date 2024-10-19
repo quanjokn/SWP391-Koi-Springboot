@@ -9,4 +9,5 @@ import java.util.List;
 public interface IBlogRepository extends JpaRepository<Blogs, Integer> {
     List<Blogs> findByTitleContainingIgnoreCase(String title);
     Blogs findById(int postId);
+    Blogs save(Blogs blogs);
 }

@@ -139,11 +139,12 @@ public class CaringOrderService implements ICaringOrderService{
     @Override
     public List<CaringOrders> getReceivingOrder(int staffID) {
         List<CaringOrders> result = new ArrayList<>();
-        caringOrderRepository.findAll().forEach(order->{
+        List<CaringOrders> list = caringOrderRepository.findAll();
+        for(CaringOrders order: list){
             if(order.getStaff().getId()==staffID){
                 result.add(order);
             }
-        });
+        }
         return result;
     }
 

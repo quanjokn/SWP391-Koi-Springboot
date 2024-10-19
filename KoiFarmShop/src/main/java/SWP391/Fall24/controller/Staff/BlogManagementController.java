@@ -17,13 +17,11 @@ public class BlogManagementController {
     private IBlogRepository iBlogRepository;
 
     @PostMapping("/create")
-    public void createBlog(@RequestBody Blogs blog) {
-        blogService.createBlog(blog);
-    }
+    public Blogs createBlog(@RequestBody Blogs blog) { return blogService.createBlog(blog); }
 
     @DeleteMapping("/delete/{blogID}")
-    public void deleteBlog(@PathVariable("blogID") int blogID) {
-        iBlogRepository.deleteById(blogID);
+    public String deleteBlog(@PathVariable("blogID") int blogID) {
+        return blogService.deleteBlog(blogID);
     }
 
     @GetMapping("detail/{blogID}")
