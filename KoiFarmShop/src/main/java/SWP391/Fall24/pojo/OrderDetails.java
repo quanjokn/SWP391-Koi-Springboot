@@ -47,10 +47,11 @@ public class OrderDetails {
     @Column(columnDefinition = "NVARCHAR(4000)")
     private String feedback;
 
+    @Column(name = "EvaluationStatus", nullable = true)
+    private boolean EvaluationStatus = false;
+
     @Column(name = "photo" ,columnDefinition = "VARCHAR(255)")
     private String photo;
-
-
 
     @Override
     public boolean equals(Object o) {
