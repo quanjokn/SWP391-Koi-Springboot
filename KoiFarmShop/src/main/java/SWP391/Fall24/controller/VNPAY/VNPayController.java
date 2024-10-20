@@ -36,13 +36,7 @@ public class VNPayController {
     private UserService userService;
 
     @Autowired
-    private OrderService orderService;
-
-    @Autowired
     private ICartRepository icartRepository;
-
-    @Autowired
-    private IOrderRepository orderRepository;
 
     @Autowired
     private IInvoiceRepository invoiceRepository;

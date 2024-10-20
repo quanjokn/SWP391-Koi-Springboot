@@ -34,6 +34,7 @@ public class FeedbackService implements IFeedbackService {
         OrderDetails orderDetails = iFeedbackRepository.findByOrdersIdAndFishesId(orderId , fishId);
         orderDetails.setFeedback(feedbackDetailDTO.getFeedback());
         orderDetails.setRating(feedbackDetailDTO.getRating());
+        orderDetails.setEvaluationStatus(true);
         iOrderDetailRepository.save(orderDetails);
 
         Optional<Orders> orders = iOrderRepository.findById(orderId);
@@ -44,7 +45,7 @@ public class FeedbackService implements IFeedbackService {
 
         Evaluations evaluations = new Evaluations(fishes,date,users.get().getUserName(),orderDetails.getRating(),orderDetails.getFeedback());
         iEvaluationRepository.save(evaluations);
-        return null;
+        return "Saved rating and feedback successfully";
     }
 
     @Override
