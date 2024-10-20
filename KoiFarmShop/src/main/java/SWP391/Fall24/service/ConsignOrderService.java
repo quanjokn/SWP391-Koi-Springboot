@@ -60,6 +60,7 @@ public class ConsignOrderService implements IConsignOrderService {
             List<ConsignedKoiDTO> consignedKoiDTOS = consignOrderRequest.getConsignList();
             for(ConsignedKoiDTO koi : consignedKoiDTOS) {
                 int i = 0;
+                koi.setCategory("ConsignedKoi");
                 Fishes newF = fishService.addFish(koi);
                 ConsignedKois consignedKoi = new ConsignedKois();
                 consignedKoi.setFish(newF);
@@ -73,11 +74,12 @@ public class ConsignOrderService implements IConsignOrderService {
                 consignedKoi.setPrice(koi.getPrice());
                 consignedKoi.setHealthStatus(koi.getHealthStatus());
                 consignedKoi.setRation(koi.getRation());
-                consignedKoi.setPhoto(koi.getPhoto());
+                consignedKoi.setPhoto("/images/"+koi.getPhoto());
                 consignedKoi.setVideo(koi.getVideo());
                 consignedKoi.setCertificate(koi.getCertificate());
                 consignedKoi.setCustomerID(userId);
                 consignedKoi.setConsignOrder(order);
+                consignedKoi.setType(koi.getType());
                 consignedKoi.setStatus(ConsignedKoiStatus.Pending_confirmation.toString());
 
                 consignOrderResponse.getRequest().getConsignList().get(i).setStatus(ConsignedKoiStatus.Pending_confirmation.toString());

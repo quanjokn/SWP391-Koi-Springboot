@@ -48,7 +48,7 @@ public class OrderService implements IOrderService {
     private IKoiRepository iKoiRepository;
 
     @Autowired
-    private ConsignOrderService consignOrderService;
+    private IConsignOrderRepository consignOrderRepository;
 
     @Autowired
     private ICaringOrderRepository caringOrderRepository;
@@ -216,8 +216,8 @@ public class OrderService implements IOrderService {
 
     @Override
     public AllOrderDTO getAllOrdersForStaff(int staffId) {
-        List<Orders> orders = this.getStaffOrders(staffId);
-        List<ConsignOrders> consignOrders = consignOrderService.getReceivingOrder(staffId);
+        List<Orders> orders = iOrderRepository.findByStaffId(staffId);
+        List<ConsignOrders> consignOrders = consignOrderRepository.findByStaffId(staffId);
         List<CaringOrders> caringOrders = caringOrderRepository.findByStaffId(staffId);
 
         AllOrderDTO allOrderDTO = new AllOrderDTO();

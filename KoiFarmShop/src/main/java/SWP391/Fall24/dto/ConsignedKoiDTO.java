@@ -26,6 +26,7 @@ public class ConsignedKoiDTO {
     private String video;
     private String certificate;
     private String category;
+    private String type;
     private float discount = 0;
     private float promotionPrice = price * (1-discount);
     private int origin;

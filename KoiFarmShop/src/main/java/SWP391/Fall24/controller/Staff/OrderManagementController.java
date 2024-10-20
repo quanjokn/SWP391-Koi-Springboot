@@ -25,13 +25,12 @@ public class OrderManagementController {
 
     @GetMapping("/allOrder")
     public List<Orders> getAllOrders() {
-        List<Orders> ordersList = orderService.getAllOrders();
-        return ordersList;
+        return iOrderRepository.findAll();
     }
 
     @PostMapping("/{staffId}")
     public List<Orders> getStaffOrder(@PathVariable ("staffId") int staffId){
-        return orderService.getStaffOrders(staffId);
+        return iOrderRepository.findByStaffId(staffId);
     }
 
     @PostMapping("/receiving/{orderId}/{staffId}")

@@ -15,4 +15,5 @@ public interface IConsignOrderRepository  extends JpaRepository<ConsignOrders, I
 
     Optional<ConsignOrders> findById(int id);
 
+    List<ConsignOrders> findByStaffId(int staffID);
 }

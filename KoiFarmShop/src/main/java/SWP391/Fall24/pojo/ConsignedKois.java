@@ -68,6 +68,9 @@ public class ConsignedKois {
     @Column(name = "customerID")
     private int customerID;
 
+    @Column(name = "type")
+    private String type;
+
     @ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "serviceID")
     private ConsignOrders consignOrder;

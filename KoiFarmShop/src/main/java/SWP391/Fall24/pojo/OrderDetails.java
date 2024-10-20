@@ -48,7 +48,7 @@ public class OrderDetails {
     private String feedback;
 
     @Column(name = "EvaluationStatus", nullable = true)
-    private boolean EvaluationStatus = false;
+    private Boolean EvaluationStatus = false;
 
     @Column(name = "photo" ,columnDefinition = "VARCHAR(255)")
     private String photo;
