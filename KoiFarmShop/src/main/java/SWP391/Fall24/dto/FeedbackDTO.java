@@ -1,16 +1,16 @@
 package SWP391.Fall24.dto;
 
+import SWP391.Fall24.pojo.Evaluations;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.List;
 
-import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class FeedbackDTO {
-    private String userName;
-    private LocalDate feedbackDate;
-    private float rating;
-    private String feedback;
+    @JsonProperty("evaluation")
+    private List<Evaluations> evaluation;
 }
