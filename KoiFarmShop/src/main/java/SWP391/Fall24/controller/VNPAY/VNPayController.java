@@ -17,8 +17,8 @@ public class VNPayController {
     @Autowired
     private VNPayService vnPayService;
 
-    @PostMapping("/create_payment/{userID}")
-    public String vnpayOrder(HttpServletRequest request, @PathVariable("userID") int userID) throws IOException {
-        return vnPayService.vnpayOrder(request, userID);
+    @PostMapping("/create_payment/{type}/{userId}/{vnpayCode}/{content}")
+    public String vnpayOrder(HttpServletRequest request, @PathVariable("type") String type, @PathVariable("userId") int userId, @PathVariable("vnpayCode") int vnpayCode, @PathVariable("content") String content) throws IOException {
+        return vnPayService.vnpayOrder(request, type, userId, vnpayCode, content);
     }
 }
