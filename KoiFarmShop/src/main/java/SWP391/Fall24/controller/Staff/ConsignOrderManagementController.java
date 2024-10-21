@@ -1,10 +1,13 @@
 package SWP391.Fall24.controller.Staff;
 
 import SWP391.Fall24.dto.request.ConsignApprovalRequest;
+import SWP391.Fall24.dto.request.ConsignOrderRequest;
 import SWP391.Fall24.dto.response.ConsignOrderResponse;
+import SWP391.Fall24.pojo.ConsignOrderInvoiceVNPay;
 import SWP391.Fall24.pojo.ConsignOrders;
 import SWP391.Fall24.pojo.Enum.ConsignOrderStatus;
 import SWP391.Fall24.service.ConsignOrderService;
+import SWP391.Fall24.service.ConsignOrderVNPayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
