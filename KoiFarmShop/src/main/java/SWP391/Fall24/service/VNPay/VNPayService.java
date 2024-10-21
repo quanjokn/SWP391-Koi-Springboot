@@ -3,17 +3,13 @@ package SWP391.Fall24.service.VNPay;
 import SWP391.Fall24.config.VNPAYConfig;
 import SWP391.Fall24.exception.AppException;
 import SWP391.Fall24.exception.ErrorCode;
-import SWP391.Fall24.pojo.Cart;
-import SWP391.Fall24.pojo.Invoices;
-import SWP391.Fall24.pojo.Users;
-import SWP391.Fall24.repository.ICartRepository;
-import SWP391.Fall24.repository.IInvoiceRepository;
+import SWP391.Fall24.pojo.*;
+import SWP391.Fall24.repository.*;
+import SWP391.Fall24.service.ICaringOrderService;
 import SWP391.Fall24.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -32,9 +28,24 @@ public class VNPayService implements IVNPayService {
     private ICartRepository icartRepository;
 
     @Autowired
-    private IInvoiceRepository invoiceRepository;
+    private IOrderInvoiceVNPayRepository invoiceRepository;
 
-    public String vnpayOrder(HttpServletRequest request, String type, int userID, int vnpayCode, String content) throws IOException {
+    @Autowired
+    private IConsignOrderRepository consignOrderRepository;
+
+    @Autowired
+    private IConsignOrderInvoiceVNPay consignOrderInvoiceVNPay;
+
+    @Autowired
+    private ICaringOrderInvoiceVNPayRepository caringOrderInvoiceVNPayRepository;
+
+    @Autowired
+    private ICaringOrderRepository caringOrderRepository;
+
+
+
+    public String vnpayOrder(HttpServletRequest request, String type, int userID, int orderId, int vnpayCode, String content) throws IOException {
+
         // find customer
         Optional<Users> u = userService.findByID(userID);
         Users customer = new Users();
@@ -51,17 +62,40 @@ public class VNPayService implements IVNPayService {
                 cart = opCart.get();
             } else throw new AppException(ErrorCode.CART_NULL);
             amount = cart.getTotalPrice().longValue();
+            // invoice
+            OrderInvoiceVNPay invoices = new OrderInvoiceVNPay();
+            invoices.setUser(customer);
+            invoices.setVnp_InvoiceCode(vnpayCode);
+            invoices.setStatus("Đang giao dịch");
+            invoices.setVnpAmount(amount);
+            invoiceRepository.save(invoices);
         } else if(type.equals("consignOrder")){
-
+            ConsignOrders consignOrders = consignOrderRepository.findById(orderId).orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTED));
+            amount =(long) consignOrders.getTotalPrice();
+            //invoice
+            ConsignOrderInvoiceVNPay invoice = new ConsignOrderInvoiceVNPay();
+            invoice.setUser(customer);
+            invoice.setOrders(consignOrders);
+            invoice.setVnp_InvoiceCode(vnpayCode);
+            invoice.setStatus("Đang giao dịch");
+            invoice.setVnpAmount(amount);
+            consignOrderInvoiceVNPay.save(invoice);
         } else if(type.equals("caringOrder")){
-
+            CaringOrders caringOrder = caringOrderRepository.findById(orderId);
+            amount = (long) caringOrder.getTotalPrice();
+            CaringOrderInvoiceVNPay invoice = new CaringOrderInvoiceVNPay();
+            invoice.setUser(customer);
+            invoice.setOrders(caringOrder);
+            invoice.setVnp_InvoiceCode(vnpayCode);
+            invoice.setStatus("Đang giao dịch");
+            invoice.setVnpAmount(amount);
+            caringOrderInvoiceVNPayRepository.save(invoice);
         } else throw new AppException(ErrorCode.ORDER_NOT_EXISTED);
 
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String orderType = "other";
 
-        String vnp_TxnRef = Config.getRandomNumber(8);
         String vnp_TmnCode = Config.vnp_TmnCode;
 
         Map<String, String> vnp_Params = new HashMap<>();
@@ -70,7 +104,7 @@ public class VNPayService implements IVNPayService {
         vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
         vnp_Params.put("vnp_Amount", String.valueOf(amount * 100)); // Nhân với 100
         vnp_Params.put("vnp_CurrCode", "VND");
-        vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
+        vnp_Params.put("vnp_TxnRef", String.valueOf(vnpayCode));
         vnp_Params.put("vnp_OrderInfo", content);
         vnp_Params.put("vnp_OrderType", orderType);
         vnp_Params.put("vnp_Locale", "vn");
@@ -78,12 +112,18 @@ public class VNPayService implements IVNPayService {
         vnp_Params.put("vnp_IpAddr", Config.getIpAddress(request));
 
         // invoices
-        Invoices invoices = new Invoices();
-        invoices.setUser(customer);
-        invoices.setVnp_InvoiceCode(vnpayCode);
-        invoices.setStatus("Đang giao dịch");
-        invoices.setVnpAmount(amount);
-        invoiceRepository.save(invoices);
+//        if(type.equals("order")){
+//            OrderInvoiceVNPay invoices = new OrderInvoiceVNPay();
+//            invoices.setUser(customer);
+//            invoices.setVnp_InvoiceCode(vnpayCode);
+//            invoices.setStatus("Đang giao dịch");
+//            invoices.setVnpAmount(amount);
+//            invoiceRepository.save(invoices);
+//        } else if(type.equals("consignOder")){
+//
+//        } else if(type.equals("caringOder")){
+//
+//        } else throw new AppException(ErrorCode.ORDER_NOT_EXISTED);
 
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");

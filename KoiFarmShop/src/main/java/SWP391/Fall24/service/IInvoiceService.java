@@ -1,7 +1,7 @@
 package SWP391.Fall24.service;
 
-import SWP391.Fall24.pojo.Invoices;
+import SWP391.Fall24.pojo.OrderInvoiceVNPay;
 
 public interface IInvoiceService {
-    Invoices findByVnp_InvoiceCodeAndAndVnpAmount(long vnp_InvoiceCode, long vnpAmount);
+    OrderInvoiceVNPay findByVnp_InvoiceCodeAndAndVnpAmount(long vnp_InvoiceCode, long vnpAmount);
 }

@@ -1,7 +1,7 @@
 package SWP391.Fall24.service;
 
-import SWP391.Fall24.pojo.Invoices;
-import SWP391.Fall24.repository.IInvoiceRepository;
+import SWP391.Fall24.pojo.OrderInvoiceVNPay;
+import SWP391.Fall24.repository.IOrderInvoiceVNPayRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,12 +11,12 @@ import java.util.concurrent.atomic.AtomicReference;
 @Service
 public class InvoiceService implements IInvoiceService {
     @Autowired
-    private IInvoiceRepository invoiceRepository;
+    private IOrderInvoiceVNPayRepository invoiceRepository;
 
     @Override
-    public Invoices findByVnp_InvoiceCodeAndAndVnpAmount(long vnp_InvoiceCode, long vnpAmount) {
-        List<Invoices> list = invoiceRepository.findAll();
-        AtomicReference<Invoices> result = new AtomicReference<>(new Invoices());
+    public OrderInvoiceVNPay findByVnp_InvoiceCodeAndAndVnpAmount(long vnp_InvoiceCode, long vnpAmount) {
+        List<OrderInvoiceVNPay> list = invoiceRepository.findAll();
+        AtomicReference<OrderInvoiceVNPay> result = new AtomicReference<>(new OrderInvoiceVNPay());
         list.forEach(invoice -> {
             if(invoice.getVnp_InvoiceCode()==vnp_InvoiceCode&&invoice.getVnpAmount()==vnpAmount) {
                 result.set(invoice);

@@ -1,23 +1,26 @@
 package SWP391.Fall24.pojo;
+
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 @Entity
-@Table(name = "Invoices")
-public class Invoices {
+@Table(name = "CaringOrderInvoiceVNPay")
+public class CaringOrderInvoiceVNPay {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne
     @JoinColumn(name = "orderID", referencedColumnName = "id", nullable = true)
-    private Orders orders;
+    private CaringOrders orders;
 
     @ManyToOne
-    @JoinColumn(name = "userID", referencedColumnName = "id", nullable = true)
+    @JoinColumn(name = "customerID", referencedColumnName = "id", nullable = true)
     private Users user;
 
     @Column(name = "vnpResponseCode")
@@ -34,5 +37,4 @@ public class Invoices {
 
     @Column(name = "vnp_Amount")
     private long vnpAmount;
-
 }

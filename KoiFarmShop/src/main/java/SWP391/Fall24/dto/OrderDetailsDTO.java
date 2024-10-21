@@ -13,8 +13,7 @@ public class OrderDetailsDTO {
     private float unitPrice;
     private float totalPrice;
     private String photo;
-    private boolean evaluationStatus;
-
+    private Boolean evaluationStatus;
 
     public OrderDetailsDTO(int fishId, String fishName, int quantity, float unitPrice , float totalPrice , String photo, boolean evaluationStatus) {
         this.fishId = fishId;

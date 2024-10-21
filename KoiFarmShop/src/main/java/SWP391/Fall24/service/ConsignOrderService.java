@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class ConsignOrderService implements IConsignOrderService {
@@ -149,16 +150,20 @@ public class ConsignOrderService implements IConsignOrderService {
                     consignOrder.setStatus(ConsignOrderStatus.Responded.toString());
                 } else consignOrder.setStatus(ConsignOrderStatus.Rejected.toString());
                 consignOrder.setNote(consignApprovalRequest.getNote());
-                iConsignOrderRepository.save(consignOrder);
                 // set consignFish status
                 ConsignOrderResponse consignOrderResponse = this.getDetail(consignApprovalRequest.getOrderID());
                 HashMap<Integer, Boolean> decision = consignApprovalRequest.getDecision();
+                AtomicReference<Float> total = new AtomicReference<>((float) 0);
                 decision.forEach((fishID, result)->{
                     ConsignedKois koi = iConsignedKoiRepository.findConsignedKoisById(fishID).orElseThrow(()->new AppException(ErrorCode.FISH_NOT_EXISTED));
-                    if(result) koi.setStatus(ConsignedKoiStatus.Accepted_Selling.toString());
+                    if(result){
+                        koi.setStatus(ConsignedKoiStatus.Accepted_Selling.toString());
+                        total.updateAndGet(v -> new Float((float) (v + koi.getPrice() * koi.getQuantity())));
+                    }
                     else koi.setStatus(ConsignedKoiStatus.Rejected.toString());
                     iConsignedKoiRepository.save(koi);
                 });
+                consignOrder.setTotalPrice(total.get());
             } else throw new AppException(ErrorCode.USER_NOT_EXISTED);
         } else throw new AppException(ErrorCode.ORDER_NOT_EXISTED);
         return "Responded consign order "+consignApprovalRequest.getOrderID()+" by "+opStaff.get().getName();
