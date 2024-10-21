@@ -34,22 +34,32 @@ public class VNPayService implements IVNPayService {
     @Autowired
     private IInvoiceRepository invoiceRepository;
 
-    public String vnpayOrder(HttpServletRequest request, int userID) throws IOException {
+    public String vnpayOrder(HttpServletRequest request, String type, int userID, int vnpayCode, String content) throws IOException {
+        // find customer
         Optional<Users> u = userService.findByID(userID);
         Users customer = new Users();
         if(u.isPresent()) {
             customer = u.get();
         } else throw new AppException(ErrorCode.USER_NOT_EXISTED);
-        Optional<Cart> opCart = icartRepository.findByUserId(userID);
-        Cart cart = new Cart();
-        if(opCart.isPresent()) {
-            cart = opCart.get();
-        } else throw new AppException(ErrorCode.CART_NULL);
+
+        long amount = 0;
+
+        if(type.equals("order")){
+            Optional<Cart> opCart = icartRepository.findByUserId(userID);
+            Cart cart = new Cart();
+            if(opCart.isPresent()) {
+                cart = opCart.get();
+            } else throw new AppException(ErrorCode.CART_NULL);
+            amount = cart.getTotalPrice().longValue();
+        } else if(type.equals("consignOrder")){
+
+        } else if(type.equals("caringOrder")){
+
+        } else throw new AppException(ErrorCode.ORDER_NOT_EXISTED);
 
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String orderType = "other";
-        long amount = cart.getTotalPrice().longValue();
 
         String vnp_TxnRef = Config.getRandomNumber(8);
         String vnp_TmnCode = Config.vnp_TmnCode;
@@ -61,7 +71,7 @@ public class VNPayService implements IVNPayService {
         vnp_Params.put("vnp_Amount", String.valueOf(amount * 100)); // Nhân với 100
         vnp_Params.put("vnp_CurrCode", "VND");
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-        vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
+        vnp_Params.put("vnp_OrderInfo", content);
         vnp_Params.put("vnp_OrderType", orderType);
         vnp_Params.put("vnp_Locale", "vn");
         vnp_Params.put("vnp_ReturnUrl", Config.vnp_Returnurl);
@@ -70,7 +80,7 @@ public class VNPayService implements IVNPayService {
         // invoices
         Invoices invoices = new Invoices();
         invoices.setUser(customer);
-        invoices.setVnp_InvoiceCode(Long.parseLong(vnp_TxnRef));
+        invoices.setVnp_InvoiceCode(vnpayCode);
         invoices.setStatus("Đang giao dịch");
         invoices.setVnpAmount(amount);
         invoiceRepository.save(invoices);

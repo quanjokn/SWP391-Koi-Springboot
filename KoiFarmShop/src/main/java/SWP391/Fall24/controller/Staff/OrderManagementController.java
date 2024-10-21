@@ -1,5 +1,6 @@
 package SWP391.Fall24.controller.Staff;
 
+import SWP391.Fall24.config.VNPAYConfig;
 import SWP391.Fall24.dto.OrderDTO;
 import SWP391.Fall24.dto.OrderManagementDTO;
 import SWP391.Fall24.dto.Staff.AllOrderDTO;
@@ -8,6 +9,7 @@ import SWP391.Fall24.pojo.Orders;
 
 import SWP391.Fall24.repository.IOrderRepository;
 import SWP391.Fall24.service.OrderService;
+import org.hibernate.query.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,9 +25,16 @@ public class OrderManagementController {
     @Autowired
     private IOrderRepository  iOrderRepository;
 
+    private VNPAYConfig vnpayConfig;
+
+    @PostMapping("/generateOrderId")
+    public String generateOrderId() {
+        return vnpayConfig.getRandomNumber(8);
+    }
+
     @GetMapping("/allOrder")
     public List<Orders> getAllOrders() {
-        return iOrderRepository.findAll();
+        return orderService.getAllOrders();
     }
 
     @PostMapping("/{staffId}")

@@ -73,7 +73,7 @@ public class OrderService implements IOrderService {
         }
         List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
         for (OrderDetails od : orderDetails) {
-            OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO(od.getFishes().getId(), od.getFishName(), od.getQuantity(), od.getPrice() ,od.getTotal() ,od.getPhoto());
+            OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO(od.getFishes().getId(), od.getFishName(), od.getQuantity(), od.getPrice() ,od.getTotal() ,od.getPhoto(), od.getEvaluationStatus());
             orderDetailsDTOList.add(orderDetailsDTO);
         }
         OrderDTO orderDTO  = new OrderDTO();

@@ -6,5 +6,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.io.IOException;
 
 public interface IVNPayService {
-    public String vnpayOrder(HttpServletRequest request, @PathVariable("userID") int userID) throws IOException;
+    public String vnpayOrder(HttpServletRequest request, String type, int userID, int vnpayCode, String content) throws IOException;
 }
