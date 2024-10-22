@@ -99,7 +99,9 @@ public class UserService implements IUserService{
 
     @Override
     public void deleteUser(int id) {
-        iUserRepository.deleteById(id);
+        Users user = iUserRepository.findById(id);
+        user.setStatus(false);
+        iUserRepository.save(user);
     }
 
     @Override
