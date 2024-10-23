@@ -4,6 +4,7 @@ import SWP391.Fall24.dto.FeedbackDTO;
 import SWP391.Fall24.dto.FeedbackDetailDTO;
 import SWP391.Fall24.dto.FishDetailDTO;
 import SWP391.Fall24.pojo.*;
+import SWP391.Fall24.pojo.Enum.FeedbackStatus;
 import SWP391.Fall24.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,24 +36,8 @@ public class FeedbackService implements IFeedbackService {
         orderDetails.setFeedback(feedbackDetailDTO.getFeedback());
         orderDetails.setRating(feedbackDetailDTO.getRating());
         orderDetails.setEvaluationStatus(true);
+        orderDetails.setApprovalStatus(FeedbackStatus.Approving.toString());
         iOrderDetailRepository.save(orderDetails);
-
-        Optional<Orders> orders = iOrderRepository.findById(orderId);
-        Optional<Users> users = iUserRepository.findUsersById(orders.get().getCustomer().getId());
-        Fishes fishes = fishService.findFishById(fishId);
-
-        LocalDate date = LocalDate.now();
-
-        List<OrderDetails> orderDetailsList = iOrderDetailRepository.findByFishesId(fishId);
-        float totalRating = 0 ;
-        for(OrderDetails od : orderDetailsList) {
-            totalRating += od.getRating();
-        }
-        float avgRating = totalRating / orderDetailsList.size();
-
-        fishes.setRating(avgRating);
-        Evaluations evaluations = new Evaluations(fishes,date,users.get().getUserName(),orderDetails.getRating(),orderDetails.getFeedback());
-        iEvaluationRepository.save(evaluations);
         return "Saved rating and feedback successfully";
     }
 
