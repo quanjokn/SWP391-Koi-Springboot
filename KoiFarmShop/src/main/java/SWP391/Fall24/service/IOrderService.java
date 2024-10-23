@@ -24,6 +24,5 @@ public interface IOrderService {
     //for dashboard
     public List<OrdersRevenueDTO> getOrdersRevenueForDashBoard(int year , int month);
     public List<WeekSalesDTO> getWeeklySales(int year, int month);
-    //promotion
-    public List<Promotions> getAllPromotions();
+
 }

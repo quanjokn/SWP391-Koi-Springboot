@@ -38,6 +38,9 @@ public class FishService implements IFishService {
     @Autowired
     private IOrderDetailRepository orderDetailRepository;
 
+    @Autowired
+    private IPromotionRepository promotionRepository;
+
 
 
     @Override
@@ -251,5 +254,10 @@ public class FishService implements IFishService {
         return productSalesDTOList;
     }
 
+    //promotion
+    @Override
+    public List<Promotions> getAllPromotions() {
+        return promotionRepository.findAll();
+    }
 
 }

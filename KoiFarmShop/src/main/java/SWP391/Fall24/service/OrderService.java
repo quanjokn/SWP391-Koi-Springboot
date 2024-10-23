@@ -324,11 +324,7 @@ public class OrderService implements IOrderService {
         return new WeekSalesDTO(weekOfMonth, top3Products);
     }
 
-    //promotion
-    @Override
-    public List<Promotions> getAllPromotions() {
-        return iPromotionRepository.findAll();
-    }
+
 
 }
 

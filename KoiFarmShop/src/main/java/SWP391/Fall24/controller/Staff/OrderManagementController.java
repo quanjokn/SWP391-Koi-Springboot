@@ -72,10 +72,6 @@ public class OrderManagementController {
         return allOrderDTOList;
     }
 
-    @GetMapping("/getPromotion")
-    public List<Promotions> getAllPromotion() {
-        List<Promotions> promotionList = orderService.getAllPromotions();
-        return promotionList;
-    }
+
 
 }

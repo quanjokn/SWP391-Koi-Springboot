@@ -4,8 +4,8 @@ import SWP391.Fall24.dto.ConsignedKoiDTO;
 import SWP391.Fall24.dto.FishDetailDTO;
 import SWP391.Fall24.dto.Manager.AllFishDTO;
 import SWP391.Fall24.dto.Manager.ProductSalesDTO;
-import SWP391.Fall24.pojo.ConsignedKois;
 import SWP391.Fall24.pojo.Fishes;
+import SWP391.Fall24.pojo.Promotions;
 
 import java.util.List;
 
@@ -28,4 +28,6 @@ public interface IFishService  {
     public void updateFish(int fishId ,ConsignedKoiDTO consignedKoiDTO);
 
     public List<ProductSalesDTO> getTop4Fish();
+    //promotion
+    public List<Promotions> getAllPromotions();
 }
