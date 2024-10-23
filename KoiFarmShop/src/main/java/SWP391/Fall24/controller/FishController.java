@@ -3,6 +3,7 @@ package SWP391.Fall24.controller;
 import SWP391.Fall24.dto.FishAndPromotionDTO;
 import SWP391.Fall24.dto.FishDetailDTO;
 import SWP391.Fall24.dto.Manager.ProductSalesDTO;
+import SWP391.Fall24.dto.Top4FishDTO;
 import SWP391.Fall24.pojo.Promotions;
 import SWP391.Fall24.repository.IEvaluationRepository;
 import SWP391.Fall24.service.FishService;
@@ -49,7 +50,7 @@ public class FishController {
     }
 
     @GetMapping("/top4Fish")
-    private List<ProductSalesDTO> getTop4Fish() {
+    private List<Top4FishDTO> getTop4Fish() {
         return fishService.getTop4Fish();
     }
 }
