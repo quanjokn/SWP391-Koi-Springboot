@@ -59,6 +59,10 @@ public class OrderService implements IOrderService {
     @Autowired
     private IConsignedKoiRepository iConsignedKoiRepository;
 
+    @Autowired
+    private IPromotionRepository iPromotionRepository;
+
+
     @Override
     public OrderDTO getOrderDetails(int orderId) {
         Optional<Orders> optionalOrder = iOrderRepository.findById(orderId);
@@ -92,10 +96,17 @@ public class OrderService implements IOrderService {
 
     @Override
     public int saveOrder(Cart cart, Users user , PlaceOrderDTO placeOrderDTO) {
+        Optional<Users> opUsers = iUserRepository.findUsersById(user.getId());
+        Users users = opUsers.get();
         Orders o = new Orders();
         LocalDate date = LocalDate.now();
 
-        o.setTotal(cart.getTotalPrice());
+        if(users.getPoint()>200){
+            o.setTotal((float) (cart.getTotalPrice()-(cart.getTotalPrice())*0.1));
+        }else{
+            o.setTotal(cart.getTotalPrice());
+        }
+
         o.setDate(date);
         o.setCustomer(user);
         o.setPayment(placeOrderDTO.getPaymentMethod());
@@ -119,12 +130,24 @@ public class OrderService implements IOrderService {
             od.setFishName(fishName);
             od.setQuantity(c.getQuantity());
             od.setPrice(c.getUnitPrice());
-            od.setTotal(c.getTotalPrice());
+            if(users.getPoint()>200){
+                od.setTotal((float) (c.getTotalPrice()-(c.getTotalPrice()*0.1)));
+                od.setDiscount(0.1F);
+            }else{
+                od.setTotal(c.getTotalPrice());
+            }
             od.setPhoto(photo);
             iOrderDetailRepository.save(od);
 
         }
         iCartRepository.deleteById(cart.getId());
+
+        //user point
+        float orderPrice = cart.getTotalPrice();
+        int promotion = (int) (orderPrice/100000);//1 diem = 100k
+
+        users.setPoint(users.addPoint(promotion));
+        iUserRepository.save(users);
         return o.getId();
     }
 
@@ -280,6 +303,8 @@ public class OrderService implements IOrderService {
 
     }
 
+
+
     private WeekSalesDTO processWeekData(int weekOfMonth, List<ProductSalesDTO> products) {
         products.sort(Comparator.comparing(ProductSalesDTO::getTotalQuantity).reversed());
 
@@ -298,6 +323,9 @@ public class OrderService implements IOrderService {
         }
         return new WeekSalesDTO(weekOfMonth, top3Products);
     }
+
+
+
 }
 
 

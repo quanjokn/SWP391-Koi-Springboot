@@ -3,6 +3,7 @@ package SWP391.Fall24.service;
 import SWP391.Fall24.dto.ConsignedKoiDTO;
 import SWP391.Fall24.dto.FishDetailDTO;
 import SWP391.Fall24.dto.Manager.AllFishDTO;
+import SWP391.Fall24.dto.Top4FishDTO;
 import SWP391.Fall24.pojo.*;
 import SWP391.Fall24.pojo.Enum.ConsignedKoiStatus;
 import SWP391.Fall24.repository.*;
@@ -33,6 +34,12 @@ public class FishService implements IFishService {
 
     @Autowired
     private IBatchRepository batchRepository;
+
+    @Autowired
+    private IOrderDetailRepository orderDetailRepository;
+
+    @Autowired
+    private IPromotionRepository promotionRepository;
 
 
 
@@ -160,6 +167,8 @@ public class FishService implements IFishService {
         }
     }
 
+
+
     @Override
     public Object  searhFish(int fishId){
         AllFishDTO allFishDTO = getAllFishForManager();
@@ -222,4 +231,33 @@ public class FishService implements IFishService {
                 .filter(fishDetail -> fishDetail.getId() == fishId)
                 .findFirst();
     }
+
+    //top4 fish
+    @Override
+    public List<Top4FishDTO> getTop4Fish() {
+        List<Object[]> data = orderDetailRepository.findTop4FishByQuantity();
+        List<Top4FishDTO> top4FishList = new ArrayList<>();
+        for(Object[] row : data){
+            int fishId = (int) row[0];
+            int totalQuantity = (int) row[1];
+
+            FishDetailDTO fishDetailDTO = null;
+            List<FishDetailDTO> fishDetailDTOList = this.allFish();
+            for(FishDetailDTO fish: fishDetailDTOList){
+                if(fish.getId()==fishId){
+                    fishDetailDTO = fish;
+                }
+            }
+            top4FishList.add(new Top4FishDTO(fishDetailDTO,totalQuantity));
+
+        }
+        return top4FishList;
+    }
+
+    //promotion
+    @Override
+    public List<Promotions> getAllPromotions() {
+        return promotionRepository.findAll();
+    }
+
 }
