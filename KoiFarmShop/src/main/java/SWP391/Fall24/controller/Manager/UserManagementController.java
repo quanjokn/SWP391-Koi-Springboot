@@ -40,7 +40,7 @@ public class UserManagementController {
     }
 
     @PostMapping("/createAccount")
-    public void createAccount(@RequestBody Users user) {
-        Users newUsers = userService.createUser(user);
+    public Users createAccount(@RequestBody Users user) {
+        return userService.createUser(user);
     }
 }
