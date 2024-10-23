@@ -2,6 +2,7 @@ package SWP391.Fall24.service;
 
 import SWP391.Fall24.dto.FeedbackDetailDTO;
 import SWP391.Fall24.pojo.*;
+import SWP391.Fall24.pojo.Enum.FeedbackStatus;
 import SWP391.Fall24.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,9 @@ public class FeedbackService implements IFeedbackService {
         orderDetails.setFeedback(feedbackDetailDTO.getFeedback());
         orderDetails.setRating(feedbackDetailDTO.getRating());
         orderDetails.setEvaluationStatus(true);
+        orderDetails.setApprovalStatus(FeedbackStatus.Approving.toString());
         iOrderDetailRepository.save(orderDetails);
+
 
         Optional<Orders> orders = iOrderRepository.findById(orderId);
         Optional<Users> users = iUserRepository.findUsersById(orders.get().getCustomer().getId());
@@ -51,6 +54,7 @@ public class FeedbackService implements IFeedbackService {
         fishes.setRating(avgRating);
         Evaluations evaluations = new Evaluations(fishes,date,users.get().getUserName(),orderDetails.getRating(),orderDetails.getFeedback());
         iEvaluationRepository.save(evaluations);
+
 
 
         return "Saved rating and feedback successfully";

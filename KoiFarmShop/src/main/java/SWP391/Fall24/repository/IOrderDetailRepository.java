@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface IOrderDetailRepository extends JpaRepository<OrderDetails , Integer> {
-
+    List<OrderDetails> findByApprovalStatus(String approvalStatus);
     List<OrderDetails> findByOrdersId(int orderId);
     List<OrderDetails> findByFishesId(int fishId);
 
@@ -21,4 +21,8 @@ public interface IOrderDetailRepository extends JpaRepository<OrderDetails , Int
             "ORDER BY totalQuantity DESC"
             , nativeQuery = true)
     List<Object[]> findTop4FishByQuantity();
+
+    OrderDetails findByOrdersIdAndFishesId(int orderId, int fishId);
+    List<OrderDetails> findByFishesIdAndApprovalStatus(int fishId, String approvalStatus);
+
 }
