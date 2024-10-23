@@ -154,7 +154,7 @@ public class UserService implements IUserService{
     }
     @Override
     public Users createUser(Users user) {
-        if (user.getRole() == null || !(user.getRole() == Role.Customer || user.getRole() == Role.Staff)) {
+        if (user.getRole() == null || !(user.getRole() == Role.Customer || user.getRole() == Role.Staff|| user.getRole() == Role.Manager)) {
             throw new IllegalArgumentException("Invalid role");
         }
         return iUserRepository.save(user);
