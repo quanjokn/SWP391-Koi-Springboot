@@ -1,5 +1,6 @@
 package SWP391.Fall24.pojo;
 
+import SWP391.Fall24.pojo.Enum.FeedbackStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -49,6 +50,9 @@ public class OrderDetails {
 
     @Column(name = "EvaluationStatus", nullable = true)
     private Boolean EvaluationStatus = false;
+
+    @Column(name = "approvalStatus", nullable = true)
+    private String approvalStatus;
 
     @Column(name = "photo" ,columnDefinition = "VARCHAR(255)")
     private String photo;
