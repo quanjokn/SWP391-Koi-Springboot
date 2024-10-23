@@ -29,11 +29,12 @@ public class FishDetailDTO {
     private float discount = 0;
     private float promotionPrice = price * (1-discount);
     private String origin;
+    private Float rating;
   
     @JsonProperty("evaluation")
     private List<Evaluations> evaluation;
 
-    public FishDetailDTO(int id, String name, int quantity, String description, String sex, String age, String character, String size, float price, String healthStatus, String ration, String photo, String video, String certificate, String category, float discount, float promotionPrice, String origin) {
+    public FishDetailDTO(int id, String name, int quantity, String description, String sex, String age, String character, String size, float price, String healthStatus, String ration, String photo, String video, String certificate, String category, float discount, float promotionPrice, String origin ,Float rating) {
         this.id = id;
         this.name = name;
         this.quantity = quantity;
@@ -52,5 +53,6 @@ public class FishDetailDTO {
         this.discount = discount;
         this.promotionPrice = promotionPrice;
         this.origin = origin;
+        this.rating = rating;
     }
 }

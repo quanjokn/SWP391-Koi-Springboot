@@ -7,6 +7,7 @@ import SWP391.Fall24.dto.Staff.AllOrderDTO;
 import SWP391.Fall24.pojo.Enum.OrderStatus;
 import SWP391.Fall24.pojo.Orders;
 
+import SWP391.Fall24.pojo.Promotions;
 import SWP391.Fall24.repository.IOrderRepository;
 import SWP391.Fall24.service.OrderService;
 import org.hibernate.query.Order;
@@ -69,6 +70,12 @@ public class OrderManagementController {
     public AllOrderDTO getAllOrder(@PathVariable ("staffId") int staffId) {
         AllOrderDTO allOrderDTOList = orderService.getAllOrdersForStaff(staffId);
         return allOrderDTOList;
+    }
+
+    @GetMapping("/getPromotion")
+    public List<Promotions> getAllPromotion() {
+        List<Promotions> promotionList = orderService.getAllPromotions();
+        return promotionList;
     }
 
 }

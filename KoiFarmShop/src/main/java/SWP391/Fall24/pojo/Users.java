@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Objects;
-
 @Data
 @Getter
 @Setter
@@ -45,8 +43,12 @@ public class Users {
     @Column(nullable = true)
     private boolean status = true;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "point", nullable = true)
-    private LoyaltyPoints point;
+    @Column(name = "point" ,nullable = true)
+    private int point = 0;
+
+    public int addPoint(int point) {
+        this.point += point;
+        return this.point;
+    }
 
 }

@@ -1,6 +1,7 @@
 package SWP391.Fall24.controller;
 
 import SWP391.Fall24.dto.FishDetailDTO;
+import SWP391.Fall24.dto.Manager.ProductSalesDTO;
 import SWP391.Fall24.pojo.Fishes;
 import SWP391.Fall24.pojo.Kois;
 import SWP391.Fall24.repository.IEvaluationRepository;
@@ -17,9 +18,6 @@ import java.util.Optional;
 public class FishController {
     @Autowired
     private FishService fishService;
-
-    @Autowired
-    private IFishRepository iFishRepository;
 
     @Autowired
     private IEvaluationRepository evaluationRepository;
@@ -44,5 +42,10 @@ public class FishController {
             }
         }
         return Optional.empty();
+    }
+
+    @GetMapping("/top4Fish")
+    private List<ProductSalesDTO> getTop4Fish() {
+        return fishService.getTop4Fish();
     }
 }

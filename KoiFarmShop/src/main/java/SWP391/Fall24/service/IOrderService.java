@@ -4,11 +4,8 @@ import SWP391.Fall24.dto.*;
 import SWP391.Fall24.dto.Manager.OrdersRevenueDTO;
 import SWP391.Fall24.dto.Manager.WeekSalesDTO;
 import SWP391.Fall24.dto.Staff.AllOrderDTO;
-import SWP391.Fall24.pojo.Cart;
+import SWP391.Fall24.pojo.*;
 import SWP391.Fall24.pojo.Enum.OrderStatus;
-import SWP391.Fall24.pojo.OrderDetails;
-import SWP391.Fall24.pojo.Orders;
-import SWP391.Fall24.pojo.Users;
 
 import java.util.List;
 
@@ -27,4 +24,6 @@ public interface IOrderService {
     //for dashboard
     public List<OrdersRevenueDTO> getOrdersRevenueForDashBoard(int year , int month);
     public List<WeekSalesDTO> getWeeklySales(int year, int month);
+    //promotion
+    public List<Promotions> getAllPromotions();
 }

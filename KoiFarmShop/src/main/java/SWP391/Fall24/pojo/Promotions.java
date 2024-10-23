@@ -28,20 +28,17 @@ public class Promotions {
     @Column(nullable = false, columnDefinition = "NVARCHAR(4000)")
     private String description;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "promotionID")
-    private Set<Fishes> fishes =  new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Promotions that = (Promotions) o;
-        return id == that.id && Float.compare(discount, that.discount) == 0 && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(fishes, that.fishes);
+        return id == that.id && Float.compare(discount, that.discount) == 0 && Objects.equals(name, that.name) && Objects.equals(description, that.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, discount, description, fishes);
+        return Objects.hash(id, name, discount, description);
     }
 }
