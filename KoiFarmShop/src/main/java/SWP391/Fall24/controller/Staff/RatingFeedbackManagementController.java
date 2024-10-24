@@ -1,5 +1,6 @@
 package SWP391.Fall24.controller.Staff;
 
+import SWP391.Fall24.dto.response.FeedbackApprovalResponse;
 import SWP391.Fall24.pojo.*;
 import SWP391.Fall24.pojo.Enum.FeedbackStatus;
 import SWP391.Fall24.repository.IEvaluationRepository;
@@ -34,9 +35,22 @@ public class RatingFeedbackManagementController {
     @Autowired
     private IEvaluationRepository evaluationRepository;
 
-    @PostMapping("/getList")
-    public List<OrderDetails> getList(){
-        return orderDetailRepository.findByApprovalStatus("Approving");
+    @GetMapping("/getList")
+    public List<FeedbackApprovalResponse> getList(){
+        List<OrderDetails> list =  orderDetailRepository.findByApprovalStatus("Approving");
+        List<FeedbackApprovalResponse> responseList = new ArrayList<>();
+        for(OrderDetails orderDetail : list){
+            FeedbackApprovalResponse response = new FeedbackApprovalResponse();
+            response.setImages(orderDetail.getPhoto());
+            response.setFishName(orderDetail.getFishName());
+            response.setRating(orderDetail.getRating());
+            response.setFeedback(orderDetail.getFeedback());
+            response.setFishId(orderDetail.getFishes().getId());
+            response.setOrderId(orderDetail.getOrders().getId());
+            response.setUserName(orderDetail.getOrders().getCustomer().getName());
+            responseList.add(response);
+        }
+        return responseList;
     }
 
     @PostMapping("approval/{orderID}/{fishID}/{approval}")
@@ -52,7 +66,6 @@ public class RatingFeedbackManagementController {
             Fishes fishes = fishService.findFishById(fishID);
 
             LocalDate date = LocalDate.now();
-
             List<OrderDetails> orderDetailsList = orderDetailRepository.findByFishesIdAndApprovalStatus(fishID, FeedbackStatus.Accepted.toString());
             float totalRating = 0 ;
             for(OrderDetails od : orderDetailsList) {
@@ -64,6 +77,7 @@ public class RatingFeedbackManagementController {
             Evaluations evaluations = new Evaluations(fishes,date,users.get().getUserName(),orderDetails.getRating(),orderDetails.getFeedback());
             evaluationRepository.save(evaluations);
             return "Approve feedback successfully";
-        }else return "OrderDetail is not available";
+        }else
+            return "OrderDetail is not available";
     }
 }
