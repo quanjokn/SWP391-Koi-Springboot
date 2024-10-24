@@ -36,27 +36,6 @@ public class FeedbackService implements IFeedbackService {
         orderDetails.setEvaluationStatus(true);
         orderDetails.setApprovalStatus(FeedbackStatus.Approving.toString());
         iOrderDetailRepository.save(orderDetails);
-
-
-        Optional<Orders> orders = iOrderRepository.findById(orderId);
-        Optional<Users> users = iUserRepository.findUsersById(orders.get().getCustomer().getId());
-        Fishes fishes = fishService.findFishById(fishId);
-
-        LocalDate date = LocalDate.now();
-
-        List<OrderDetails> orderDetailsList = iOrderDetailRepository.findByFishesId(fishId);
-        float totalRating = 0 ;
-        for(OrderDetails od : orderDetailsList) {
-            totalRating += od.getRating();
-        }
-        float avgRating = totalRating / orderDetailsList.size();
-
-        fishes.setRating(avgRating);
-        Evaluations evaluations = new Evaluations(fishes,date,users.get().getUserName(),orderDetails.getRating(),orderDetails.getFeedback());
-        iEvaluationRepository.save(evaluations);
-
-
-
         return "Saved rating and feedback successfully";
     }
 

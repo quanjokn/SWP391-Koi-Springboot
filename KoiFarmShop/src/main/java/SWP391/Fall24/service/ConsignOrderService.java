@@ -77,7 +77,7 @@ public class ConsignOrderService implements IConsignOrderService {
                 consignedKoi.setRation(koi.getRation());
                 consignedKoi.setPhoto("/images/"+koi.getPhoto());
                 consignedKoi.setVideo(koi.getVideo());
-                consignedKoi.setCertificate(koi.getCertificate());
+                consignedKoi.setCertificate("/images/"+koi.getCertificate());
                 consignedKoi.setCustomerID(userId);
                 consignedKoi.setConsignOrder(order);
                 consignedKoi.setType(koi.getType());
