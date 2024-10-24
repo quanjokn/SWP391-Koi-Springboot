@@ -42,7 +42,7 @@ public class Users {
     private boolean status = true;
 
     @Column(name = "point" ,nullable = true)
-    private int point = 0;
+    private Integer point = 0;
 
     public int addPoint(int point) {
         this.point += point;
