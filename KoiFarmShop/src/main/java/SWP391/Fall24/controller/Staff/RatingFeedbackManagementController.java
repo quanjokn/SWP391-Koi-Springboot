@@ -59,7 +59,9 @@ public class RatingFeedbackManagementController {
         if(orderDetails != null){
             if(approval == 1){
                 orderDetails.setApprovalStatus(FeedbackStatus.Accepted.toString());
-            } else orderDetails.setApprovalStatus(FeedbackStatus.Rejected.toString());
+            } else if(approval==0){
+                orderDetails.setApprovalStatus(FeedbackStatus.Rejected.toString());
+            }
             orderDetailRepository.save(orderDetails);
             Optional<Orders> orders = iOrderRepository.findById(orderID);
             Optional<Users> users = iUserRepository.findUsersById(orders.get().getCustomer().getId());
