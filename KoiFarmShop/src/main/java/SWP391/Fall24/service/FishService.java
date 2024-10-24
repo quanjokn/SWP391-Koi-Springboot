@@ -131,21 +131,7 @@ public class FishService implements IFishService {
         if(consignedKoiDTO.getCategory().equals("Koi")){
             Optional<Kois> opKois = koiRepository.findByFishId(fishId);
             Kois kois = opKois.get();
-            kois.setFish(fishRepository.findById(fishId).get());
-            kois.setName(consignedKoiDTO.getName());
             kois.setQuantity(consignedKoiDTO.getQuantity());
-            kois.setDescription(consignedKoiDTO.getDescription());
-            kois.setSex(consignedKoiDTO.getSex());
-            kois.setAge(consignedKoiDTO.getAge());
-            kois.setCertificate(consignedKoiDTO.getCertificate());
-            kois.setSize(consignedKoiDTO.getSize());
-            kois.setPrice(consignedKoiDTO.getPrice());
-            kois.setHealthStatus(consignedKoiDTO.getHealthStatus());
-            kois.setRation(consignedKoiDTO.getRation());
-            kois.setPhoto(consignedKoiDTO.getPhoto());
-            kois.setVideo(consignedKoiDTO.getVideo());
-            kois.setCertificate(consignedKoiDTO.getCertificate());
-            kois.setStatus(kois.isStatus());
             koiRepository.save(kois);
         } else if(consignedKoiDTO.getCategory().equals("Batch")){
             Optional<Batches> opBatches = batchRepository.findByFishId(fishId);
