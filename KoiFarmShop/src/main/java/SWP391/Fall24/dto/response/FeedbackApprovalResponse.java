@@ -14,5 +14,5 @@ public class FeedbackApprovalResponse {
     private float Rating;
     private String feedback;
     private int orderId;
-    private int fishId;l
+    private int fishId;
 }
