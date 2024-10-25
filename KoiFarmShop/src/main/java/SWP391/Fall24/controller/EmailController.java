@@ -28,6 +28,16 @@ public class EmailController {
     @Autowired
     private IUserRepository userRepository;
 
+    @PostMapping("/checkUsernameAndEmail")
+    public String check(@RequestBody ForgotPasswordRequest forgotPasswordRequest){
+        Optional<Users> user = userService.findByUserNameAndEmailIgnoreCase(forgotPasswordRequest.getUserName(), forgotPasswordRequest.getEmail());
+        if(user.isPresent()){
+            return "This user is exit";
+        } else {
+            throw new AppException(ErrorCode.USER_NOT_EXISTED);
+        }
+    }
+
     @PostMapping("/forgotPassword")
     public String forgotPasswordEmail(@RequestBody ForgotPasswordRequest forgotPasswordRequest) throws MessagingException {
         Optional<Users> user = userService.findByUserNameAndEmailIgnoreCase(forgotPasswordRequest.getUserName(), forgotPasswordRequest.getEmail());

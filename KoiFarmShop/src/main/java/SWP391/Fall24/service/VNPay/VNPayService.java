@@ -111,20 +111,6 @@ public class VNPayService implements IVNPayService {
         vnp_Params.put("vnp_ReturnUrl", Config.vnp_Returnurl);
         vnp_Params.put("vnp_IpAddr", Config.getIpAddress(request));
 
-        // invoices
-//        if(type.equals("order")){
-//            OrderInvoiceVNPay invoices = new OrderInvoiceVNPay();
-//            invoices.setUser(customer);
-//            invoices.setVnp_InvoiceCode(vnpayCode);
-//            invoices.setStatus("Đang giao dịch");
-//            invoices.setVnpAmount(amount);
-//            invoiceRepository.save(invoices);
-//        } else if(type.equals("consignOder")){
-//
-//        } else if(type.equals("caringOder")){
-//
-//        } else throw new AppException(ErrorCode.ORDER_NOT_EXISTED);
-
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         String vnp_CreateDate = formatter.format(cld.getTime());

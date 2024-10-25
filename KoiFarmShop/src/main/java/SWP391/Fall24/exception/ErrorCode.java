@@ -21,7 +21,8 @@ public enum ErrorCode {
     FAIL_RETURN_CARED_KOI(1012, "Fail to set status for cared koi from consign order"),
     OUT_OF_ROLE(1013, "This staff does not have permission to resolve order"),
     CART_NULL(1013, "Cart is null"),
-    OUT_OF_CATEGORY_FISH(1013, "This fish is out of fish's fish")
+    OUT_OF_CATEGORY_FISH(1013, "This fish is out of fish's fish"),
+    QUANTITY_EXCESS(1013, "The number of fish in warehouse is not enough to sell")
     ;
     private int code;
     private String message;

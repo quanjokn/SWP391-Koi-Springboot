@@ -124,11 +124,13 @@ public class OrderService implements IOrderService {
                 if(f.getId()==c.getFish().getId()){
                     fishName = f.getName();
                     photo = f.getPhoto();
+                    if(c.getQuantity()<=f.getQuantity()) {
+                        od.setQuantity(c.getQuantity());
+                    } else throw new AppException(ErrorCode.QUANTITY_EXCESS);
                 }
             }
             od.setFishes(c.getFish());
             od.setFishName(fishName);
-            od.setQuantity(c.getQuantity());
             od.setPrice(c.getUnitPrice());
             if(users.getPoint()>200){
                 od.setTotal((float) (c.getTotalPrice()-(c.getTotalPrice()*0.1)));
