@@ -319,7 +319,7 @@ public class OrderService implements IOrderService {
             }
         }
         if (totalOtherSales > 0) {
-            top3Products.add(new ProductSalesDTO("Orther", totalOtherSales));
+            top3Products.add(new ProductSalesDTO("Others", totalOtherSales));
         }
         return new WeekSalesDTO(weekOfMonth, top3Products);
     }
