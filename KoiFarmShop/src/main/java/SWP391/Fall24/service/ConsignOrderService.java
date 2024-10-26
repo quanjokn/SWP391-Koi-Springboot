@@ -51,7 +51,7 @@ public class ConsignOrderService implements IConsignOrderService {
             consignOrders.setUser(user);
             LocalDate localDate = LocalDate.now();
             consignOrders.setDate(localDate);
-            consignOrders.setCommission(consignOrderRequest.getCommission());
+            consignOrders.setCommission(Float.valueOf((float) (consignOrderRequest.getTotalPrice()*0.1)));
             consignOrders.setTotalPrice(consignOrderRequest.getTotalPrice());
             ConsignOrders order = iConsignOrderRepository.save(consignOrders);
 
@@ -164,6 +164,8 @@ public class ConsignOrderService implements IConsignOrderService {
                     iConsignedKoiRepository.save(koi);
                 });
                 consignOrder.setTotalPrice(total.get());
+                consignOrder.setCommission(Float.valueOf((float) (total.get()*0.1)));
+                iConsignOrderRepository.save(consignOrder);
             } else throw new AppException(ErrorCode.USER_NOT_EXISTED);
         } else throw new AppException(ErrorCode.ORDER_NOT_EXISTED);
         return "Responded consign order "+consignApprovalRequest.getOrderID()+" by "+opStaff.get().getName();

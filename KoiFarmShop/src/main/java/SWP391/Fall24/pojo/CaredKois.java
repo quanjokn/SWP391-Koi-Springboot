@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Data
 @Getter
 @Setter
@@ -44,4 +47,6 @@ public class CaredKois {
     @Column(name = "status", nullable = true)
     private String status = CaredKoiStatus.Pending_confirmation.toString();
 
+    @OneToMany(mappedBy = "caredKoi", cascade = CascadeType.ALL)
+    private Set<HealthUpdation> setUpdation = new HashSet<>();
 }
