@@ -6,13 +6,14 @@ import SWP391.Fall24.dto.Manager.WeekSalesDTO;
 import SWP391.Fall24.dto.Staff.AllOrderDTO;
 import SWP391.Fall24.pojo.*;
 import SWP391.Fall24.pojo.Enum.OrderStatus;
+import jakarta.mail.MessagingException;
 
 import java.util.List;
 
 public interface IOrderService {
 
     public OrderDTO getOrderDetails(int orderId);
-    public int saveOrder(Cart cart, Users user , PlaceOrderDTO placeOrderDTO);
+    public int saveOrder(Cart cart, Users user , PlaceOrderDTO placeOrderDTO) throws MessagingException;
     public List<Orders> findOrderByUserId(int userId);
     public List<OrderDetails> getOrderDetailsForStaff(int orderId);
     public List<Orders> getAllOrders();

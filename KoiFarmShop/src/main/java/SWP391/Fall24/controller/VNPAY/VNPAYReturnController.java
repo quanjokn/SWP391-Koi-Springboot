@@ -8,6 +8,7 @@ import SWP391.Fall24.pojo.Enum.CaringOrderStatus;
 import SWP391.Fall24.pojo.Enum.ConsignOrderStatus;
 import SWP391.Fall24.repository.*;
 import SWP391.Fall24.service.*;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,11 +65,12 @@ public class VNPAYReturnController {
     private ICaringOrderRepository icaringOrderRepository;
 
     @GetMapping
-    public String vnpayReturn(HttpServletRequest request, Model model) {
+    public String vnpayReturn(HttpServletRequest request, Model model) throws MessagingException {
         Map<String, String[]> params = request.getParameterMap();
         long vnp_Amount = Long.parseLong(Arrays.stream(params.get("vnp_Amount")).findFirst().get())/100;
         long vnpInvoiceCode = Long.parseLong(Arrays.stream(params.get("vnp_TxnRef")).findFirst().get());
         String vnp_OrderInfo = Arrays.stream(params.get("vnp_OrderInfo")).findFirst().get();
+
         if(vnp_OrderInfo.contains("Thanh toan don hang")){
             OrderInvoiceVNPay invoices = invoiceService.findByVnp_InvoiceCodeAndAndVnpAmount(vnpInvoiceCode, vnp_Amount);
             log.info(invoices.getUser().toString());

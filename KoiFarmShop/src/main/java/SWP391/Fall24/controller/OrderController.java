@@ -10,6 +10,7 @@ import SWP391.Fall24.pojo.Users;
 import SWP391.Fall24.repository.ICartRepository;
 import SWP391.Fall24.service.OrderService;
 import SWP391.Fall24.service.UserService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,7 @@ public class OrderController {
     private ICartRepository icartRepository;
 
     @PostMapping("/placeOrder")
-    public ResponseEntity<OrderDTO> placeOrder(@RequestBody PlaceOrderDTO placeOrderDTO) throws AppException {
+    public ResponseEntity<OrderDTO> placeOrder(@RequestBody PlaceOrderDTO placeOrderDTO) throws AppException, MessagingException {
         Optional<Users> u = userService.findByID(placeOrderDTO.getUserId());
         if(u.isPresent()) {
             Users user = u.get();

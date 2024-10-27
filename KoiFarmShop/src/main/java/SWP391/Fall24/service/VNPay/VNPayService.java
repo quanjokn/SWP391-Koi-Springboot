@@ -61,7 +61,9 @@ public class VNPayService implements IVNPayService {
             if(opCart.isPresent()) {
                 cart = opCart.get();
             } else throw new AppException(ErrorCode.CART_NULL);
-            amount = cart.getTotalPrice().longValue();
+            if(customer.getPoint()>=200){
+                amount = Long.valueOf((long) (cart.getTotalPrice()*0.9));
+            } else amount = cart.getTotalPrice().longValue();
             // invoice
             OrderInvoiceVNPay invoices = new OrderInvoiceVNPay();
             invoices.setUser(customer);
