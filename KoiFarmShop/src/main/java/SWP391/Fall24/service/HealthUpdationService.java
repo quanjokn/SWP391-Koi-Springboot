@@ -26,7 +26,7 @@ public class HealthUpdationService implements IHealthUpdationService {
         healthUpdation.setCaredKoi(caredKois);
         healthUpdation.setEvaluation(healthUpdationRequest.getEvaluation());
         healthUpdation.setDate(healthUpdationRequest.getDate());
-        healthUpdation.setPhoto(healthUpdationRequest.getPhoto());
+        healthUpdation.setPhoto("/images/"+healthUpdationRequest.getPhoto());
         healthUpdation.setStatus(true);
         healthUpdationRepository.save(healthUpdation);
     }

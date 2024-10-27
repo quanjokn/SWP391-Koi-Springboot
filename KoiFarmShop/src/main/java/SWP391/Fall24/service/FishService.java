@@ -108,9 +108,9 @@ public class FishService implements IFishService {
 
     @Override
     public void deleteFish(int fishId){
-        Fishes fishes = findFishById(fishId);
+        Fishes fishes = fishRepository.findById(fishId).get();
         if(fishes.getCategory().equals("Koi")){
-            Optional<Kois> opKois = koiRepository.findById(fishes.getId());
+            Optional<Kois> opKois = koiRepository.findByFishId(fishes.getId());
             if(opKois.isPresent()){
                 koiRepository.delete(opKois.get());
                 fishes.setOrigin(null);

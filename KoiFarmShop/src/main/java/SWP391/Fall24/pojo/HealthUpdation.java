@@ -24,6 +24,7 @@ public class HealthUpdation {
 
     private String photo;
 
+    @Column(length = 255, nullable = false, columnDefinition = "NVARCHAR(255)")
     private String evaluation;
 
     private Boolean status;
