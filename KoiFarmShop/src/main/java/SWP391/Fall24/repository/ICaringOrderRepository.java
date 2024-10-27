@@ -13,4 +13,8 @@ public interface ICaringOrderRepository extends JpaRepository<CaringOrders, Inte
     List<CaringOrders> findByCustomerId(int userId);
 
     List<CaringOrders> findByStaffId(int staffID);
+
+    @Query( value = "SELECT SUM(total_price) FROM caring_orders cao " +
+            "WHERE YEAR(cao.date) = :year AND MONTH(cao.date) = :month AND cao.status IN ('Paid', 'Done') " , nativeQuery = true)
+    Double findTotalForCaringOrder(int year, int month);
 }
