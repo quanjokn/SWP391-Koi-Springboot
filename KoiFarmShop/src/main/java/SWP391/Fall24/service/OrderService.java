@@ -270,20 +270,20 @@ public class OrderService implements IOrderService {
     public List<OrdersRevenueDTO> getOrdersRevenueForDashBoard(int year, int month) {
         List<Object[]> results = iOrderRepository.findOrdersAndRevenueByWeek(year, month);
         Double totalConsign = consignOrderRepository.findTotalForConsignOrders(year,month);
-        totalConsign = totalConsign*0.9;
+
         if(totalConsign ==null){
             totalConsign = 0.0;
         }
         Double totalCaring = caringOrderRepository.findTotalForCaringOrder(year,month);
-        if(totalConsign ==null){
-            totalConsign = 0.0;
+        if(totalCaring ==null){
+            totalCaring = 0.0;
         }
         List<OrdersRevenueDTO> revenueDTOList = new ArrayList<>();
         for (Object[] result : results) {
             int weekOfMonth = (int) result[0];
             int totalOrders = (int) result[1];
             Double totalOrder = (Double) result[2];
-            Double totalRevenue = totalOrder - totalConsign + totalCaring;
+            Double totalRevenue = totalOrder - (totalConsign*0.9) + totalCaring;
             OrdersRevenueDTO dto = new OrdersRevenueDTO(weekOfMonth, totalOrders, totalRevenue);
             revenueDTOList.add(dto);
         }
