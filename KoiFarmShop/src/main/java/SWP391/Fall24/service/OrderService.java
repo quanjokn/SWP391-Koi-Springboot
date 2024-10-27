@@ -117,7 +117,15 @@ public class OrderService implements IOrderService {
         List<CartItem> listCartItems = iCartItemRepository.findByCardId(cart.getId());
 
         List<FishDetailDTO> fishDetailDTOList = fishService.allFish();
-
+        for(CartItem ci: listCartItems) {
+            for (FishDetailDTO f : fishDetailDTOList) {
+                if (f.getId() == ci.getFish().getId()) {
+                    if (ci.getQuantity() > f.getQuantity()) {
+                        throw new AppException(ErrorCode.QUANTITY_EXCESS);
+                    }
+                }
+            }
+        }
         for(CartItem c: listCartItems){
             OrderDetails od = new OrderDetails();
             od.setOrders(o);
@@ -127,9 +135,6 @@ public class OrderService implements IOrderService {
                 if(f.getId()==c.getFish().getId()){
                     fishName = f.getName();
                     photo = f.getPhoto();
-                    if(c.getQuantity()<=f.getQuantity()) {
-                        od.setQuantity(c.getQuantity());
-                    } else throw new AppException(ErrorCode.QUANTITY_EXCESS);
                 }
             }
             od.setFishes(c.getFish());
@@ -142,8 +147,7 @@ public class OrderService implements IOrderService {
                 od.setTotal(c.getTotalPrice());
             }
             od.setPhoto(photo);
-            iOrderDetailRepository.save(od);
-
+                iOrderDetailRepository.save(od);
         }
         iCartRepository.deleteById(cart.getId());
 
