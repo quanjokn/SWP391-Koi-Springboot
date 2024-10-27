@@ -20,6 +20,7 @@ public class OrderDTO {
     private int totalQuantity;
     private LocalDate date;
     private String status ;
+    private String note;
     @JsonProperty("orderDetailsDTO")
     private List<OrderDetailsDTO> orderDetailsDTO;
 

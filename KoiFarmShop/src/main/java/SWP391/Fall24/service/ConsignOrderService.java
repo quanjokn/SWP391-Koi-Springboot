@@ -160,7 +160,9 @@ public class ConsignOrderService implements IConsignOrderService {
                         koi.setStatus(ConsignedKoiStatus.Accepted_Selling.toString());
                         total.updateAndGet(v -> new Float((float) (v + koi.getPrice() * koi.getQuantity())));
                     }
-                    else koi.setStatus(ConsignedKoiStatus.Rejected.toString());
+                    else{
+                        koi.setStatus(ConsignedKoiStatus.Rejected.toString());
+                    }
                     iConsignedKoiRepository.save(koi);
                 });
                 consignOrder.setTotalPrice(total.get());

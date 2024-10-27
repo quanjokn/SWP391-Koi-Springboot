@@ -11,6 +11,7 @@ import SWP391.Fall24.pojo.*;
 import SWP391.Fall24.pojo.Enum.ConsignedKoiStatus;
 import SWP391.Fall24.pojo.Enum.OrderStatus;
 import SWP391.Fall24.repository.*;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
@@ -60,8 +61,10 @@ public class OrderService implements IOrderService {
     private IConsignedKoiRepository iConsignedKoiRepository;
 
     @Autowired
-    private ICaringOrderRepository carringOrderRepository;
+    private EmailService emailService;
 
+    @Autowired
+    private ICaringOrderRepository carringOrderRepository;
 
     @Override
     public OrderDTO getOrderDetails(int orderId) {
@@ -86,6 +89,7 @@ public class OrderService implements IOrderService {
         orderDTO.setDate(LocalDate.now());
         orderDTO.setTotalOrderPrice(totalPrice);
         orderDTO.setStatus(order.getStatus());
+        orderDTO.setNote(order.getNote());
         orderDTO.setTotalQuantity(totalQuantity);
         orderDTO.setOrderDetailsDTO(orderDetailsDTOList);
 
@@ -95,7 +99,7 @@ public class OrderService implements IOrderService {
 
 
     @Override
-    public int saveOrder(Cart cart, Users user , PlaceOrderDTO placeOrderDTO) {
+    public int saveOrder(Cart cart, Users user , PlaceOrderDTO placeOrderDTO) throws MessagingException {
         Optional<Users> opUsers = iUserRepository.findUsersById(user.getId());
         Users users = opUsers.get();
         Orders o = new Orders();
@@ -149,6 +153,9 @@ public class OrderService implements IOrderService {
 
         users.setPoint(users.addPoint(promotion));
         iUserRepository.save(users);
+        // send thank-you email
+        emailService.sendMail(user.getEmail(), emailService.subjectOrder(user.getName()), emailService.messageOrder(date, o.getTotal(), user.getAddress(), "Đợi Xác Nhận"));
+
         iOrderRepository.save(o);
         return o.getId();
     }

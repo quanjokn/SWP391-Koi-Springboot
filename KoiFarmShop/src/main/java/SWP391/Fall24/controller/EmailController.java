@@ -11,6 +11,7 @@ import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.random.RandomGenerator;
 
@@ -25,8 +26,12 @@ public class EmailController {
     @Autowired
     private EmailService emailService;
 
-    @Autowired
-    private IUserRepository userRepository;
+
+    @GetMapping("/email")
+    public void send() throws MessagingException {
+        LocalDate date = LocalDate.now();
+        emailService.sendMail("quanctse182750@fpt.edu.vn", emailService.subjectOrder("Quan"), emailService.messageOrder(date, 10000000, "abc", "Đang Chuẩn Bị"));
+    }
 
     @PostMapping("/checkUsernameAndEmail")
     public String check(@RequestBody ForgotPasswordRequest forgotPasswordRequest){
