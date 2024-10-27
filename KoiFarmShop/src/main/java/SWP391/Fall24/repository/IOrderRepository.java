@@ -33,7 +33,6 @@ public interface IOrderRepository extends JpaRepository<Orders, Integer> {
             "AND o.status = 'Completed' " +
             "GROUP BY ((DAY(o.date) - 1) / 7) + 1",
             nativeQuery = true)
-
     List<Object[]> findOrdersAndRevenueByWeek(@Param("year") int year, @Param("month") int month);
 
 

@@ -63,6 +63,8 @@ public class OrderService implements IOrderService {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private ICaringOrderRepository carringOrderRepository;
 
     @Override
     public OrderDTO getOrderDetails(int orderId) {
@@ -112,14 +114,13 @@ public class OrderService implements IOrderService {
         o.setDate(date);
         o.setCustomer(user);
         o.setPayment(placeOrderDTO.getPaymentMethod());
-        Orders savedOrder = iOrderRepository.save(o);
         List<CartItem> listCartItems = iCartItemRepository.findByCardId(cart.getId());
 
         List<FishDetailDTO> fishDetailDTOList = fishService.allFish();
 
         for(CartItem c: listCartItems){
             OrderDetails od = new OrderDetails();
-            od.setOrders(savedOrder);
+            od.setOrders(o);
             String fishName="";
             String photo = "";
             for(FishDetailDTO f: fishDetailDTOList){
@@ -152,10 +153,10 @@ public class OrderService implements IOrderService {
 
         users.setPoint(users.addPoint(promotion));
         iUserRepository.save(users);
-
         // send thank-you email
         emailService.sendMail(user.getEmail(), emailService.subjectOrder(user.getName()), emailService.messageOrder(date, o.getTotal(), user.getAddress(), "Đợi Xác Nhận"));
 
+        iOrderRepository.save(o);
         return o.getId();
     }
 
@@ -264,12 +265,21 @@ public class OrderService implements IOrderService {
     @Override
     public List<OrdersRevenueDTO> getOrdersRevenueForDashBoard(int year, int month) {
         List<Object[]> results = iOrderRepository.findOrdersAndRevenueByWeek(year, month);
+        Double totalConsign = consignOrderRepository.findTotalForConsignOrders(year,month);
+        totalConsign = totalConsign*0.9;
+        if(totalConsign ==null){
+            totalConsign = 0.0;
+        }
+        Double totalCaring = caringOrderRepository.findTotalForCaringOrder(year,month);
+        if(totalConsign ==null){
+            totalConsign = 0.0;
+        }
         List<OrdersRevenueDTO> revenueDTOList = new ArrayList<>();
         for (Object[] result : results) {
             int weekOfMonth = (int) result[0];
             int totalOrders = (int) result[1];
-            Double totalRevenue = (Double) result[2];
-
+            Double totalOrder = (Double) result[2];
+            Double totalRevenue = totalOrder - totalConsign + totalCaring;
             OrdersRevenueDTO dto = new OrdersRevenueDTO(weekOfMonth, totalOrders, totalRevenue);
             revenueDTOList.add(dto);
         }
