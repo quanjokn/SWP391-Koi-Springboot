@@ -10,6 +10,7 @@ import SWP391.Fall24.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -146,10 +147,13 @@ public class UserService implements IUserService{
     public UserResponseDTO getAllAccount() {
         List<Users> customers = iUserRepository.findByRole(Role.Customer);
         List<Users> staff = iUserRepository.findByRole(Role.Staff);
-
+        List<Users> manager = iUserRepository.findByRole(Role.Manager);
+        List<Users> managerAndStaff = new ArrayList<>();
+        managerAndStaff.addAll(staff);
+        managerAndStaff.addAll(manager);
         UserResponseDTO userResponseDTO = new UserResponseDTO();
         userResponseDTO.setCustomers(customers);
-        userResponseDTO.setStaff(staff);
+        userResponseDTO.setStaff(managerAndStaff);
         return userResponseDTO;
     }
     @Override
