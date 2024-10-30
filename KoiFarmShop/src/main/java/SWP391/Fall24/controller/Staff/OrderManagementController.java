@@ -10,6 +10,7 @@ import SWP391.Fall24.pojo.Orders;
 import SWP391.Fall24.pojo.Promotions;
 import SWP391.Fall24.repository.IOrderRepository;
 import SWP391.Fall24.service.OrderService;
+import jakarta.mail.MessagingException;
 import org.hibernate.query.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,11 +27,9 @@ public class OrderManagementController {
     @Autowired
     private IOrderRepository  iOrderRepository;
 
-    private VNPAYConfig vnpayConfig;
-
     @PostMapping("/generateOrderId")
     public String generateOrderId() {
-        return vnpayConfig.getRandomNumber(8);
+        return VNPAYConfig.getRandomNumber(8);
     }
 
     @GetMapping("/allOrder")
@@ -51,12 +50,11 @@ public class OrderManagementController {
 
     @PostMapping("/orderDetail/{orderId}")
     public OrderDTO getOrderDetailForStaff(@PathVariable int orderId) {
-        OrderDTO orderDetails = orderService.getOrderDetails(orderId);
-        return orderDetails;
+        return orderService.getOrderDetails(orderId);
     }
 
     @PostMapping("/updateStatus")
-    public String updateOrderStatus(@RequestBody OrderManagementDTO orderManagementDTO) {
+    public String updateOrderStatus(@RequestBody OrderManagementDTO orderManagementDTO) throws MessagingException {
         String status = orderManagementDTO.getStatus();
         if(status.equals(OrderStatus.Rejected.toString())){
             orderService.rejectOrder(orderManagementDTO);
@@ -68,10 +66,6 @@ public class OrderManagementController {
 
     @PostMapping("/getAllOrder/{staffId}")
     public AllOrderDTO getAllOrder(@PathVariable ("staffId") int staffId) {
-        AllOrderDTO allOrderDTOList = orderService.getAllOrdersForStaff(staffId);
-        return allOrderDTOList;
+        return orderService.getAllOrdersForStaff(staffId);
     }
-
-
-
 }
