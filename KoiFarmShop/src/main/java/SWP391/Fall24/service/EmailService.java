@@ -34,13 +34,13 @@ public class EmailService {
 
     public String messageDecline(String reason, int orderID, String name) {
         return "<!DOCTYPE html>\n" +
-                "<html lang=\"en\">\n" +
+                "<html lang=\"vi\">\n" +
                 "<head>\n" +
                 "    <meta charset=\"UTF-8\">\n" +
                 "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
-                "    <title>Order Declined Notification</title>\n" +
+                "    <title>Thông báo Từ chối Đơn hàng</title>\n" +
                 "    <style>\n" +
-                "        /* General Reset */\n" +
+                "        /* Reset chung */\n" +
                 "        body, table, td, a { \n" +
                 "            text-size-adjust: 100%;\n" +
                 "            font-family: Arial, sans-serif;\n" +
@@ -55,7 +55,7 @@ public class EmailService {
                 "            display: block;\n" +
                 "        }\n" +
                 "\n" +
-                "        /* Container */\n" +
+                "        /* Khung chứa */\n" +
                 "        .email-container {\n" +
                 "            width: 100%;\n" +
                 "            padding: 20px;\n" +
@@ -69,7 +69,7 @@ public class EmailService {
                 "            overflow: hidden;\n" +
                 "        }\n" +
                 "\n" +
-                "        /* Header */\n" +
+                "        /* Tiêu đề */\n" +
                 "        .email-header {\n" +
                 "            background-color: #e53e3e;\n" +
                 "            color: #ffffff;\n" +
@@ -82,7 +82,7 @@ public class EmailService {
                 "            font-weight: bold;\n" +
                 "        }\n" +
                 "\n" +
-                "        /* Body */\n" +
+                "        /* Nội dung */\n" +
                 "        .email-body {\n" +
                 "            padding: 20px 30px;\n" +
                 "        }\n" +
@@ -97,7 +97,7 @@ public class EmailService {
                 "            font-size: 16px;\n" +
                 "        }\n" +
                 "\n" +
-                "        /* Rejection Reason */\n" +
+                "        /* Lý do từ chối */\n" +
                 "        .reason-box {\n" +
                 "            background-color: #ffe8e8;\n" +
                 "            border-left: 4px solid #e53e3e;\n" +
@@ -111,7 +111,7 @@ public class EmailService {
                 "            margin: 0;\n" +
                 "        }\n" +
                 "\n" +
-                "        /* Footer */\n" +
+                "        /* Chân trang */\n" +
                 "        .email-footer {\n" +
                 "            background-color: #f4f4f7;\n" +
                 "            color: #888888;\n" +
@@ -126,40 +126,41 @@ public class EmailService {
                 "</head>\n" +
                 "<body>\n" +
                 "    <div class=\"email-container\">\n" +
-                "        <!-- Email Content -->\n" +
+                "        <!-- Nội dung Email -->\n" +
                 "        <div class=\"email-content\">\n" +
                 "            \n" +
-                "            <!-- Header -->\n" +
+                "            <!-- Tiêu đề -->\n" +
                 "            <div class=\"email-header\">\n" +
-                "                <h1>Order Update</h1>\n" +
+                "                <h1>Cập nhật Đơn hàng</h1>\n" +
                 "            </div>\n" +
                 "            \n" +
-                "            <!-- Body -->\n" +
+                "            <!-- Nội dung chính -->\n" +
                 "            <div class=\"email-body\">\n" +
-                "                <h2>Dear "+ name +",</h2>\n" +
+                "                <h2>Xin chào "+ name +",</h2>\n" +
                 "                <p>\n" +
-                "                    We regret to inform you that your order (Order No. <strong>"+orderID+"</strong>) has been declined. We understand that this may be disappointing, and we want to assure you that we’re here to help.\n" +
+                "                    Chúng tôi rất tiếc thông báo rằng đơn hàng của bạn (Mã đơn hàng: #<strong>"+orderID+"</strong>) đã bị từ chối. Chúng tôi hiểu rằng điều này có thể gây thất vọng và chúng tôi luôn sẵn sàng hỗ trợ bạn.\n" +
                 "                </p>\n" +
                 "\n" +
-                "                <!-- Reason for Rejection -->\n" +
+                "                <!-- Lý do từ chối -->\n" +
                 "                <div class=\"reason-box\">\n" +
-                "                    <p><strong>Reason for Decline:</strong> "+reason+"</p>\n" +
+                "                    <p><strong>Lý do từ chối:</strong> "+reason+"</p>\n" +
                 "                </div>\n" +
                 "\n" +
-                "                <p>If you have any questions or need further assistance, please don’t hesitate to reach out to our support team.</p>\n" +
+                "                <p>Nếu bạn có bất kỳ câu hỏi nào hoặc cần thêm trợ giúp, vui lòng liên hệ với đội ngũ hỗ trợ của chúng tôi.</p>\n" +
                 "            </div>\n" +
                 "\n" +
-                "            <!-- Footer -->\n" +
+                "            <!-- Chân trang -->\n" +
                 "            <div class=\"email-footer\">\n" +
-                "                <p>Thank you for choosing us,</p>\n" +
+                "                <p>Cảm ơn bạn đã chọn chúng tôi,</p>\n" +
                 "                <p><strong>Koi Farm Shop</strong></p>\n" +
-                "                <p>Email: support@koifarmshop.com | Phone: +123-456-7890</p>\n" +
+                "                <p>Email: koifarmshopswp391@gmail.com | Điện thoại: +123-456-7890</p>\n" +
                 "            </div>\n" +
                 "        </div>\n" +
                 "    </div>\n" +
                 "</body>\n" +
                 "</html>\n";
     }
+
 
     public String messageOrder(LocalDate date, double totalMoney, String address, String status) {
         String step1 = status.equals("Đợi Xác Nhận") || status.equals("Đang Chuẩn Bị") || status.equals("Đang Vận Chuyển") || status.equals("Đã Hoàn Thành") ? "completed" : "";
