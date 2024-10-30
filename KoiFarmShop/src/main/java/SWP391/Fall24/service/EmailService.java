@@ -1,5 +1,9 @@
 package SWP391.Fall24.service;
 
+import SWP391.Fall24.pojo.CaredKois;
+import SWP391.Fall24.pojo.CaringOrders;
+import SWP391.Fall24.pojo.ConsignOrders;
+import SWP391.Fall24.pojo.ConsignedKois;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -8,7 +12,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.util.Locale;
 
 @Service
 public class EmailService {
@@ -131,7 +137,7 @@ public class EmailService {
                 "            \n" +
                 "            <!-- Tiêu đề -->\n" +
                 "            <div class=\"email-header\">\n" +
-                "                <h1>Cập nhật Đơn hàng</h1>\n" +
+                "                <h1>Cập nhật trạng thái</h1>\n" +
                 "            </div>\n" +
                 "            \n" +
                 "            <!-- Nội dung chính -->\n" +
@@ -167,6 +173,9 @@ public class EmailService {
         String step2 = status.equals("Đang Chuẩn Bị") || status.equals("Đang Vận Chuyển") || status.equals("Đã Hoàn Thành") ? "completed" : "";
         String step3 = status.equals("Đang Vận Chuyển") || status.equals("Đã Hoàn Thành") ? "completed" : "";
         String step4 = status.equals("Đã Hoàn Thành") ? "completed" : "";
+
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        String formattedTotalMoney = currencyFormatter.format(totalMoney);
 
         return "<!DOCTYPE html>\n"
                 + "<html lang=\"en\">\n"
@@ -277,7 +286,7 @@ public class EmailService {
                 + "    <div class=\"content\">\n"
                     + "      <h3>ORDER SUMMARY</h3>\n"
                 + "      <p>Order Date: " + date + "</p>\n"
-                + "      <p>Order Total: VND" + totalMoney + "</p>\n"
+                + "      <p>Order Total: " + formattedTotalMoney + "</p>\n"
                 + "      <p>Shipping address: " + address + "</p>\n"
                     + "      <h3>ORDER PROCESS</h3>\n"
                 + "      <div class=\"progress-container\">\n"
@@ -340,7 +349,7 @@ public class EmailService {
                 + "        </tr>\n"
                 + "        <tr>\n"
                 + "            <td style=\"padding: 20px; text-align: center; background-color: #4CAF50; color: #ffffff;\">\n"
-                + "                &copy; 2024 Koi Paradise\n"
+                + "                &copy; 2024 Koi Farm Shop\n"
                 + "            </td>\n"
                 + "        </tr>\n"
                 + "    </table>\n"
@@ -348,4 +357,142 @@ public class EmailService {
                 + "</body>\n"
                 + "</html>";
     }
+
+    public String messageConsignedKoiSold(ConsignOrders order, ConsignedKois koi) {
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        String formattedTotalMoney = currencyFormatter.format(koi.getPrice());
+        LocalDate soldDate = LocalDate.now();
+        return "<!DOCTYPE html>\n"
+                + "<html lang=\"vi\">\n"
+                + "<head>\n"
+                + "  <meta charset=\"utf-8\">\n"
+                + "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
+                + "  <style>\n"
+                + "    body {\n"
+                + "      font-family: Arial, sans-serif;\n"
+                + "      background-color: #f4f4f4;\n"
+                + "      margin: 0;\n"
+                + "      padding: 0;\n"
+                + "      color: #333;\n"
+                + "    }\n"
+                + "    .email-container {\n"
+                + "      max-width: 600px;\n"
+                + "      margin: 20px auto;\n"
+                + "      background-color: #ffffff;\n"
+                + "      border-radius: 8px;\n"
+                + "      overflow: hidden;\n"
+                + "      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);\n"
+                + "    }\n"
+                + "    .header {\n"
+                + "      background-color: #3498db;\n"
+                + "      color: #ffffff;\n"
+                + "      padding: 20px;\n"
+                + "      text-align: center;\n"
+                + "      font-size: 24px;\n"
+                + "    }\n"
+                + "    .content {\n"
+                + "      padding: 20px;\n"
+                + "      font-size: 16px;\n"
+                + "      line-height: 1.5;\n"
+                + "      color: #555555;\n"
+                + "    }\n"
+                + "    .footer {\n"
+                + "      background-color: #3498db;\n"
+                + "      color: #ffffff;\n"
+                + "      padding: 15px;\n"
+                + "      text-align: center;\n"
+                + "      font-size: 14px;\n"
+                + "      border-radius: 0 0 8px 8px;\n"
+                + "    }\n"
+                + "  </style>\n"
+                + "</head>\n"
+                + "<body>\n"
+                + "  <div class=\"email-container\">\n"
+                + "    <div class=\"header\">\n"
+                + "      <h1>Koi Farm Shop</h1>\n"
+                + "      <h2>Thông báo bán cá thành công</h2>\n"
+                + "    </div>\n"
+                + "    <div class=\"content\">\n"
+                + "      <p>Xin chào " + order.getUser().getName()+ ",</p>\n"
+                + "      <p>Chúng tôi vui mừng thông báo rằng cá Koi <strong>" + koi.getName() + "</strong> trong đơn hàng kí gửi bán: <strong>#"+order.getId()+"</strong> của bạn đã được bán thành công vào ngày <strong>" + soldDate + "</strong>. Chi tiết đơn hàng vui lòng đăng nhập website để theo dõi.</p>\n"
+                + "      <p>Giá bán: <strong>" + formattedTotalMoney + "</strong>.</p>\n"
+                + "      <p>Cảm ơn bạn đã tin tưởng và lựa chọn dịch vụ kí gửi cá Koi của chúng tôi. Nếu bạn có bất kỳ câu hỏi nào hoặc cần hỗ trợ thêm, vui lòng liên hệ với chúng tôi.</p>\n"
+                + "    </div>\n"
+                + "    <div class=\"footer\">\n"
+                + "      <p>Koi Farm Shop - Mang đến giá trị bền vững cho từng con cá Koi</p>\n"
+                + "      <p><a href=\"tel:0773363666\" style=\"color: #ffffff; text-decoration: none;\">Liên hệ: 0773363666</a></p>\n"
+                + "    </div>\n"
+                + "  </div>\n"
+                + "</body>\n"
+                + "</html>";
+    }
+
+    public String messageConsignedKoiShared(ConsignOrders order) {
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        String formattedTotalMoney = currencyFormatter.format(order.getTotalPrice()*0.9);
+        return "<!DOCTYPE html>\n"
+                + "<html lang=\"vi\">\n"
+                + "<head>\n"
+                + "  <meta charset=\"utf-8\">\n"
+                + "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
+                + "  <style>\n"
+                + "    body {\n"
+                + "      font-family: Arial, sans-serif;\n"
+                + "      background-color: #f4f4f4;\n"
+                + "      margin: 0;\n"
+                + "      padding: 0;\n"
+                + "      color: #333;\n"
+                + "    }\n"
+                + "    .email-container {\n"
+                + "      max-width: 600px;\n"
+                + "      margin: 20px auto;\n"
+                + "      background-color: #ffffff;\n"
+                + "      border-radius: 8px;\n"
+                + "      overflow: hidden;\n"
+                + "      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);\n"
+                + "    }\n"
+                + "    .header {\n"
+                + "      background-color: #3498db;\n"
+                + "      color: #ffffff;\n"
+                + "      padding: 20px;\n"
+                + "      text-align: center;\n"
+                + "      font-size: 24px;\n"
+                + "    }\n"
+                + "    .content {\n"
+                + "      padding: 20px;\n"
+                + "      font-size: 16px;\n"
+                + "      line-height: 1.5;\n"
+                + "      color: #555555;\n"
+                + "    }\n"
+                + "    .footer {\n"
+                + "      background-color: #3498db;\n"
+                + "      color: #ffffff;\n"
+                + "      padding: 15px;\n"
+                + "      text-align: center;\n"
+                + "      font-size: 14px;\n"
+                + "      border-radius: 0 0 8px 8px;\n"
+                + "    }\n"
+                + "  </style>\n"
+                + "</head>\n"
+                + "<body>\n"
+                + "  <div class=\"email-container\">\n"
+                + "    <div class=\"header\">\n"
+                + "      <h1>Koi Farm Shop</h1>\n"
+                + "      <h2>Thông báo chia lợi nhuận thành công</h2>\n"
+                + "    </div>\n"
+                + "    <div class=\"content\">\n"
+                + "      <p>Xin chào " + order.getUser().getName()+ ",</p>\n"
+                + "      <p>Chúng tôi thông báo rằng các cá Koi trong đơn hàng kí gửi bán: <strong>#"+order.getId()+"</strong> của bạn đã được bán thành công và chúng tôi đã thanh toán số tiền sau khi thu hoa hồng như trong hợp đồng. Chi tiết đơn hàng vui lòng đăng nhập website để theo dõi.</p>\n"
+                + "      <p>Số tiền chuyển cho bạn: <strong>" + formattedTotalMoney + "</strong>.</p>\n"
+                + "      <p>Cảm ơn bạn đã tin tưởng và lựa chọn dịch vụ kí gửi cá Koi của chúng tôi. Nếu bạn có bất kỳ câu hỏi nào hoặc cần hỗ trợ thêm, vui lòng liên hệ với chúng tôi.</p>\n"
+                + "    </div>\n"
+                + "    <div class=\"footer\">\n"
+                + "      <p>Koi Farm Shop - Mang đến giá trị bền vững cho từng con cá Koi</p>\n"
+                + "      <p><a href=\"tel:0773363666\" style=\"color: #ffffff; text-decoration: none;\">Liên hệ: 0773363666</a></p>\n"
+                + "    </div>\n"
+                + "  </div>\n"
+                + "</body>\n"
+                + "</html>";
+    }
+
 }

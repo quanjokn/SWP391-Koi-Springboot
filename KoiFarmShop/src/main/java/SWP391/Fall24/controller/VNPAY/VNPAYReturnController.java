@@ -66,6 +66,9 @@ public class VNPAYReturnController {
     @Autowired
     private ICaredKoiRepository iCaredKoiRepository;
 
+    @Autowired
+    private EmailService emailService;
+
     @GetMapping
     public String vnpayReturn(HttpServletRequest request, Model model) throws MessagingException {
         Map<String, String[]> params = request.getParameterMap();
@@ -104,6 +107,9 @@ public class VNPAYReturnController {
                     ConsignOrders consignOrders = consignOrderRepository.findById(invoices.getOrders().getId()).orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTED));
                     consignOrders.setStatus(ConsignOrderStatus.Shared.toString());
                     consignOrderRepository.save(consignOrders);
+                    // send email after having pay commission
+
+                    emailService.sendMail(u.get().getEmail(), emailService.subjectOrder(u.get().getName()), emailService.messageConsignedKoiShared(consignOrders));
                 }
                 invoices.setVnpResponseCode(Arrays.stream(params.get("vnp_TransactionStatus")).findFirst().get());
                 invoices.setStatus("Thành công");

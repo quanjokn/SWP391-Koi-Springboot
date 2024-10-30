@@ -242,6 +242,8 @@ public class OrderService implements IOrderService {
                     if(consignedKoi.getQuantity()==0){
                         consignedKoi.setStatus(ConsignedKoiStatus.Sold.toString());
                     }
+                    Users consignedKoiOwner = iUserRepository.findUsersById(consignedKoi.getCustomerID()).orElseThrow(()->new AppException(ErrorCode.USER_NOT_EXISTED));
+                    emailService.sendMail(consignedKoiOwner.getEmail(), emailService.subjectOrder(consignedKoiOwner.getName()), emailService.messageConsignedKoiSold(consignedKoi.getConsignOrder(), consignedKoi));
                     iConsignedKoiRepository.save(consignedKoi);
                 } else throw new AppException(ErrorCode.OUT_OF_CATEGORY_FISH);
             }
