@@ -299,10 +299,18 @@ public class OrderService implements IOrderService {
             Double totalRevenueOfWeek = totalOrder - (totalConsign * 0.9) + totalCaring;
             OrderRevenueOfWeekDTO dto = new OrderRevenueOfWeekDTO(weekOfMonth, totalOrders, totalRevenueOfWeek);
             revenueDTOList.add(dto);
-            double allOrder = iOrderRepository.findAllOrderRevenue(year, month);
-            double allConsignOrder = consignOrderRepository.findAllConsignOrders(year, month);
-            double allCaringOrder = caringOrderRepository.findAllCaringOrder(year, month);
-
+            Double allOrder = iOrderRepository.findAllOrderRevenue(year, month);
+            if(allOrder ==null){
+                allOrder = 0.0;
+            }
+            Double allConsignOrder = consignOrderRepository.findAllConsignOrders(year, month);
+            if(allConsignOrder ==null){
+                allConsignOrder = 0.0;
+            }
+            Double allCaringOrder = caringOrderRepository.findAllCaringOrder(year, month);
+            if(allCaringOrder ==null){
+                allCaringOrder = 0.0;
+            }
             double allRevenue = allOrder + allConsignOrder + allCaringOrder;
 
             allOrderRevenueDTO = new AllRevenueOfMonthDTO(allRevenue, revenueDTOList);
