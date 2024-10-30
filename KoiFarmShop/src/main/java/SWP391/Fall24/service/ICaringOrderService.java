@@ -4,6 +4,7 @@ import SWP391.Fall24.dto.request.CareApprovalRequest;
 import SWP391.Fall24.dto.request.CaringOrderRequest;
 import SWP391.Fall24.dto.response.CaringOrderResponse;
 import SWP391.Fall24.pojo.CaringOrders;
+import jakarta.mail.MessagingException;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public interface ICaringOrderService {
 
     CaringOrderResponse getDetail(int caringOrderId);
 
-    String approvalCaringOrder(CareApprovalRequest approvalRequest);
+    String approvalCaringOrder(CareApprovalRequest approvalRequest) throws MessagingException;
 
     List<CaringOrders> getCaringOrdersByStatus(String status);
 

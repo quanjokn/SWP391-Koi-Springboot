@@ -13,6 +13,7 @@ import SWP391.Fall24.repository.ICaringOrderRepository;
 import SWP391.Fall24.repository.IHealthUpdationRepository;
 import SWP391.Fall24.service.CaringOrderService;
 import SWP391.Fall24.service.HealthUpdationService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -57,7 +58,7 @@ public class CareOrderManagementController {
     }
 
     @PostMapping("/approval")
-    public String approveCaringOrder(@RequestBody CareApprovalRequest approvalRequest) {
+    public String approveCaringOrder(@RequestBody CareApprovalRequest approvalRequest) throws MessagingException {
         return caringOrderService.approvalCaringOrder(approvalRequest);
     }
 
@@ -67,7 +68,7 @@ public class CareOrderManagementController {
     }
 
     @PostMapping("/updateHealthStatus")
-    public void updateHealthStatus(@RequestBody HealthUpdationRequest healthUpdationRequest){
+    public void updateHealthStatus(@RequestBody HealthUpdationRequest healthUpdationRequest) throws MessagingException {
         healthUpdationService.saveUpdation(healthUpdationRequest);
     }
 

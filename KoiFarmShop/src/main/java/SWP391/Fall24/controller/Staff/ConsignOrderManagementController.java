@@ -8,6 +8,7 @@ import SWP391.Fall24.pojo.ConsignOrders;
 import SWP391.Fall24.pojo.Enum.ConsignOrderStatus;
 import SWP391.Fall24.service.ConsignOrderService;
 import SWP391.Fall24.service.ConsignOrderVNPayService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +38,7 @@ public class ConsignOrderManagementController {
     }
 
     @PostMapping("/approval/{staffID}")
-    public String consignOrderApproval(@RequestBody ConsignApprovalRequest consignApprovalRequest, @PathVariable("staffID") int staffID) {
+    public String consignOrderApproval(@RequestBody ConsignApprovalRequest consignApprovalRequest, @PathVariable("staffID") int staffID) throws MessagingException {
         return consignOrderService.approvalResponse(consignApprovalRequest, staffID);
     }
 

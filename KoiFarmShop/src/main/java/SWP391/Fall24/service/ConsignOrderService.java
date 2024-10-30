@@ -10,6 +10,7 @@ import SWP391.Fall24.pojo.*;
 import SWP391.Fall24.pojo.Enum.ConsignOrderStatus;
 import SWP391.Fall24.pojo.Enum.ConsignedKoiStatus;
 import SWP391.Fall24.repository.*;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
@@ -36,6 +37,9 @@ public class ConsignOrderService implements IConsignOrderService {
 
     @Autowired
     private IConsignedKoiRepository iConsignedKoiRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public ConsignOrderResponse createOrder(ConsignOrderRequest consignOrderRequest, int userId) {
@@ -135,7 +139,7 @@ public class ConsignOrderService implements IConsignOrderService {
 
 
     @Override
-    public String approvalResponse(ConsignApprovalRequest consignApprovalRequest, int staffID) {
+    public String approvalResponse(ConsignApprovalRequest consignApprovalRequest, int staffID) throws MessagingException {
         Optional<ConsignOrders> consignOrders = iConsignOrderRepository.findById(consignApprovalRequest.getOrderID());
         Optional<Users> opStaff = iUserRepository.findUsersById(staffID);
         if(consignOrders.isPresent()) {
@@ -168,6 +172,7 @@ public class ConsignOrderService implements IConsignOrderService {
                 consignOrder.setTotalPrice(total.get());
                 consignOrder.setCommission(Float.valueOf((float) (total.get()*0.1)));
                 iConsignOrderRepository.save(consignOrder);
+                emailService.sendMail(consignOrder.getUser().getEmail(), emailService.subjectOrder(consignOrder.getUser().getName()), emailService.Approval(consignOrder.getUser().getName(), consignOrder.getId()));
             } else throw new AppException(ErrorCode.USER_NOT_EXISTED);
         } else throw new AppException(ErrorCode.ORDER_NOT_EXISTED);
         return "Responded consign order "+consignApprovalRequest.getOrderID()+" by "+opStaff.get().getName();
