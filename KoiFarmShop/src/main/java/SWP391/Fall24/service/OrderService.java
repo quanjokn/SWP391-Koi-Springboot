@@ -207,12 +207,19 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public Orders handleOrder(int orderId , OrderStatus status) {
+    public Orders handleOrder(int orderId , OrderStatus status) throws MessagingException {
         Optional<Orders> opOrder = iOrderRepository.findById(orderId);
         Orders order = opOrder.get();
 
         order.setStatus(status.toString());
         iOrderRepository.save(order);
+        // send mail
+        String statusOrder = "";
+        if(status.toString().equals("Completed")) statusOrder="Đã Hoàn Thành";
+        else if(status.toString().equals("Shipping")) statusOrder= "Đang Vận Chuyển";
+        else if(status.toString().equals("Preparing")) statusOrder = "Đang Chuẩn Bị";
+        LocalDate date = LocalDate.now();
+        emailService.sendMail(order.getCustomer().getEmail(), emailService.subjectOrder(order.getCustomer().getName()), emailService.messageOrder(date, order.getTotal(), order.getCustomer().getAddress(), statusOrder));
 
         if(status.toString().equals(OrderStatus.Preparing.toString())){
             List<OrderDetails> orderDetailsList = iOrderDetailRepository.findByOrdersId(orderId);
@@ -241,11 +248,14 @@ public class OrderService implements IOrderService {
         return order;
     }
     @Override
-    public Orders rejectOrder(OrderManagementDTO orderManagementDTO){
+    public Orders rejectOrder(OrderManagementDTO orderManagementDTO) throws MessagingException {
         Optional<Orders> opOrder = iOrderRepository.findById(orderManagementDTO.getOrderId());
         Orders order = opOrder.get();
         order.setStatus(OrderStatus.Rejected.toString());
         order.setNote(orderManagementDTO.getNote());
+        //email
+        LocalDate date = LocalDate.now();
+        emailService.sendMail(order.getCustomer().getEmail(), emailService.subjectOrder(order.getCustomer().getName()), emailService.messageDecline(orderManagementDTO.getNote(), order.getId(), order.getCustomer().getName()));
         iOrderRepository.save(order);
         return order;
     }

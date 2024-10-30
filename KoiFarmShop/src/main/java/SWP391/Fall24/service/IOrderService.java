@@ -19,8 +19,8 @@ public interface IOrderService {
     public List<Orders> getAllOrders();
     public List<Orders> getStaffOrders(int staffId);
     public Orders receiveOrder(int orderId , int staffId);
-    public Orders handleOrder(int orderId , OrderStatus status);
-    public Orders rejectOrder(OrderManagementDTO orderManagementDTO);
+    public Orders handleOrder(int orderId , OrderStatus status) throws MessagingException;
+    public Orders rejectOrder(OrderManagementDTO orderManagementDTO) throws MessagingException;
     public AllOrderDTO getAllOrdersForStaff(int userId);
     //for dashboard
     public List<OrdersRevenueDTO> getOrdersRevenueForDashBoard(int year , int month);
