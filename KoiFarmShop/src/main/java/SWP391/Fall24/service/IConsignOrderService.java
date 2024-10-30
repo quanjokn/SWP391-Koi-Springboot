@@ -5,6 +5,7 @@ import SWP391.Fall24.dto.request.ConsignOrderRequest;
 import SWP391.Fall24.dto.response.ConsignOrderResponse;
 import SWP391.Fall24.pojo.ConsignOrders;
 import SWP391.Fall24.pojo.ConsignedKois;
+import jakarta.mail.MessagingException;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface IConsignOrderService{
 
     String receiveConsignOrder(int staffID, int orderID);
 
-    String approvalResponse(ConsignApprovalRequest approvalRequest, int staffID);
+    String approvalResponse(ConsignApprovalRequest approvalRequest, int staffID) throws MessagingException;
 
     List<ConsignOrders> findByStatus(String status);
 

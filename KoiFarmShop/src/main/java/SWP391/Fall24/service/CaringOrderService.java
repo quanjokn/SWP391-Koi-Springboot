@@ -14,6 +14,7 @@ import SWP391.Fall24.pojo.Users;
 import SWP391.Fall24.repository.ICaredKoiRepository;
 import SWP391.Fall24.repository.ICaringOrderRepository;
 import SWP391.Fall24.repository.IUserRepository;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,8 @@ public class CaringOrderService implements ICaringOrderService{
 
     @Autowired
     private ICaredKoiRepository caredKoiRepository;
+    @Autowired
+    private EmailService emailService;
 
 
     @Override
@@ -80,7 +83,7 @@ public class CaringOrderService implements ICaringOrderService{
     }
 
     @Override
-    public String approvalCaringOrder(CareApprovalRequest approvalRequest){
+    public String approvalCaringOrder(CareApprovalRequest approvalRequest) throws MessagingException {
         CaringOrders caringOrder = caringOrderRepository.findById(approvalRequest.getOrderID());
         if(caringOrder.getStaff().getId()==approvalRequest.getStaffID()){
             HashMap<Integer, Boolean> approval = approvalRequest.getDecision();
@@ -108,6 +111,7 @@ public class CaringOrderService implements ICaringOrderService{
             });
             caringOrder.setTotalPrice(pricePerOne*count.get());
             caringOrderRepository.save(caringOrder);
+            emailService.sendMail(caringOrder.getCustomer().getEmail(), emailService.subjectOrder(caringOrder.getCustomer().getName()), emailService.Approval(caringOrder.getCustomer().getName(), caringOrder.getId()));
         } else throw new AppException(ErrorCode.OUT_OF_ROLE);
         return "Approval caring order successfully";
     }
