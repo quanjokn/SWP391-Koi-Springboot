@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -93,18 +92,22 @@ public class CaringOrderService implements ICaringOrderService{
                 caringOrder.setStatus(CaringOrderStatus.Responded.toString());
             } else caringOrder.setStatus(CaringOrderStatus.Rejected.toString());
             caringOrder.setNote(approvalRequest.getNote());
-            caringOrderRepository.save(caringOrder);
             List<CaredKois> caredKois = caredKoiRepository.findByCaringOrder(caringOrder);
+            float pricePerOne = caringOrder.getTotalPrice()/caredKois.size();
+            AtomicInteger count = new AtomicInteger();
             caredKois.forEach(koi->{
                 approval.forEach((fishID, decision)->{
                     if(fishID==koi.getId()){
                         if(decision){
-                            koi.setStatus(CaredKoiStatus.Accepted_caring.toString());
+                            koi.setStatus(CaredKoiStatus.Pending_payment.toString());
+                            count.getAndIncrement();
                         } else koi.setStatus(CaredKoiStatus.Rejected.toString());
                         caredKoiRepository.save(koi);
                     }
                 });
             });
+            caringOrder.setTotalPrice(pricePerOne*count.get());
+            caringOrderRepository.save(caringOrder);
         } else throw new AppException(ErrorCode.OUT_OF_ROLE);
         return "Approval caring order successfully";
     }
