@@ -1,6 +1,5 @@
 package SWP391.Fall24.repository;
 
-import SWP391.Fall24.dto.Manager.OrdersRevenueDTO;
 import SWP391.Fall24.pojo.Orders;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -46,4 +45,11 @@ public interface IOrderRepository extends JpaRepository<Orders, Integer> {
             "ORDER BY weekOfMonth, totalQuantity DESC",
             nativeQuery = true)
     List<Object[]> findSalesByWeek(@Param("year") int year, @Param("month") int month);
+
+    @Query(value = "SELECT SUM(o.total) AS totalRevenue " +
+            "FROM Orders o " +
+            "WHERE o.status = 'Completed'" +
+            "AND YEAR(o.date) = :year AND MONTH(o.date) = :month " ,
+            nativeQuery = true)
+    double findAllOrderRevenue( int year , int month);
 }

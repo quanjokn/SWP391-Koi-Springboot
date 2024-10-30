@@ -1,7 +1,8 @@
 package SWP391.Fall24.service;
 
 import SWP391.Fall24.dto.*;
-import SWP391.Fall24.dto.Manager.OrdersRevenueDTO;
+import SWP391.Fall24.dto.Manager.AllRevenueOfMonthDTO;
+import SWP391.Fall24.dto.Manager.OrderRevenueOfWeekDTO;
 import SWP391.Fall24.dto.Manager.ProductSalesDTO;
 import SWP391.Fall24.dto.Manager.WeekSalesDTO;
 import SWP391.Fall24.dto.Staff.AllOrderDTO;
@@ -278,26 +279,36 @@ public class OrderService implements IOrderService {
 
     //for dashboard
     @Override
-    public List<OrdersRevenueDTO> getOrdersRevenueForDashBoard(int year, int month) {
+    public AllRevenueOfMonthDTO getOrdersRevenueForDashBoard(int year, int month) {
         List<Object[]> results = iOrderRepository.findOrdersAndRevenueByWeek(year, month);
-        Double totalConsign = consignOrderRepository.findTotalForConsignOrders(year,month);
-        if(totalConsign ==null){
-            totalConsign = 0.0;
-        }
-        Double totalCaring = caringOrderRepository.findTotalForCaringOrder(year,month);
-        if(totalCaring ==null){
-            totalCaring = 0.0;
-        }
-        List<OrdersRevenueDTO> revenueDTOList = new ArrayList<>();
+        List<OrderRevenueOfWeekDTO> revenueDTOList = new ArrayList<>();
+        AllRevenueOfMonthDTO allOrderRevenueDTO = null;
         for (Object[] result : results) {
             int weekOfMonth = (int) result[0];
             int totalOrders = (int) result[1];
             Double totalOrder = (Double) result[2];
-            Double totalRevenue = totalOrder - (totalConsign*0.9) + totalCaring;
-            OrdersRevenueDTO dto = new OrdersRevenueDTO(weekOfMonth, totalOrders, totalRevenue);
+
+            Double totalConsign = consignOrderRepository.findTotalForConsignOrders(year, month, weekOfMonth);
+            if (totalConsign == null) {
+                totalConsign = 0.0;
+            }
+            Double totalCaring = caringOrderRepository.findTotalForCaringOrder(year, month, weekOfMonth);
+            if (totalCaring == null) {
+                totalCaring = 0.0;
+            }
+            Double totalRevenueOfWeek = totalOrder - (totalConsign * 0.9) + totalCaring;
+            OrderRevenueOfWeekDTO dto = new OrderRevenueOfWeekDTO(weekOfMonth, totalOrders, totalRevenueOfWeek);
             revenueDTOList.add(dto);
+            double allOrder = iOrderRepository.findAllOrderRevenue(year, month);
+            double allConsignOrder = consignOrderRepository.findAllConsignOrders(year, month);
+            double allCaringOrder = caringOrderRepository.findAllCaringOrder(year, month);
+
+            double allRevenue = allOrder + allConsignOrder + allCaringOrder;
+
+            allOrderRevenueDTO = new AllRevenueOfMonthDTO(allRevenue, revenueDTOList);
         }
-        return revenueDTOList;
+
+        return allOrderRevenueDTO;
     }
 
     @Override

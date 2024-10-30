@@ -1,7 +1,7 @@
 package SWP391.Fall24.service;
 
 import SWP391.Fall24.dto.*;
-import SWP391.Fall24.dto.Manager.OrdersRevenueDTO;
+import SWP391.Fall24.dto.Manager.AllRevenueOfMonthDTO;
 import SWP391.Fall24.dto.Manager.WeekSalesDTO;
 import SWP391.Fall24.dto.Staff.AllOrderDTO;
 import SWP391.Fall24.pojo.*;
@@ -23,7 +23,7 @@ public interface IOrderService {
     public Orders rejectOrder(OrderManagementDTO orderManagementDTO) throws MessagingException;
     public AllOrderDTO getAllOrdersForStaff(int userId);
     //for dashboard
-    public List<OrdersRevenueDTO> getOrdersRevenueForDashBoard(int year , int month);
+    public AllRevenueOfMonthDTO getOrdersRevenueForDashBoard(int year , int month);
     public List<WeekSalesDTO> getWeeklySales(int year, int month);
 
 }
