@@ -140,6 +140,7 @@ public class OrderService implements IOrderService {
             od.setFishes(c.getFish());
             od.setFishName(fishName);
             od.setPrice(c.getUnitPrice());
+            od.setQuantity(c.getQuantity());
             if(users.getPoint()>200){
                 od.setTotal((float) (c.getTotalPrice()-(c.getTotalPrice()*0.1)));
                 od.setDiscount(0.1F);
@@ -280,7 +281,6 @@ public class OrderService implements IOrderService {
     public List<OrdersRevenueDTO> getOrdersRevenueForDashBoard(int year, int month) {
         List<Object[]> results = iOrderRepository.findOrdersAndRevenueByWeek(year, month);
         Double totalConsign = consignOrderRepository.findTotalForConsignOrders(year,month);
-
         if(totalConsign ==null){
             totalConsign = 0.0;
         }
