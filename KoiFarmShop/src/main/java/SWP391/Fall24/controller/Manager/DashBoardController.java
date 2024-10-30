@@ -1,7 +1,7 @@
 package SWP391.Fall24.controller.Manager;
 
+import SWP391.Fall24.dto.Manager.AllRevenueOfMonthDTO;
 import SWP391.Fall24.dto.Manager.DashBoardMonthYearDTO;
-import SWP391.Fall24.dto.Manager.OrdersRevenueDTO;
 import SWP391.Fall24.dto.Manager.WeekSalesDTO;
 import SWP391.Fall24.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +18,8 @@ public class DashBoardController {
     private OrderService orderService;
 
     @PostMapping("/orderAndRevenue")
-    public List<OrdersRevenueDTO> getOrderAndRevenue(@RequestBody DashBoardMonthYearDTO dashBoardMonthYearDTO) {
-        List<OrdersRevenueDTO> revenueList = orderService.getOrdersRevenueForDashBoard(dashBoardMonthYearDTO.getYear(), dashBoardMonthYearDTO.getMonth());
+    public AllRevenueOfMonthDTO getOrderAndRevenue(@RequestBody DashBoardMonthYearDTO dashBoardMonthYearDTO) {
+        AllRevenueOfMonthDTO revenueList = orderService.getOrdersRevenueForDashBoard(dashBoardMonthYearDTO.getYear(), dashBoardMonthYearDTO.getMonth());
         return revenueList;
     }
 

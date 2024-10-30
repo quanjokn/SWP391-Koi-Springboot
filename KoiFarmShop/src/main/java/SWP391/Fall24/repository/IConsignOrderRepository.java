@@ -19,6 +19,13 @@ public interface IConsignOrderRepository  extends JpaRepository<ConsignOrders, I
     List<ConsignOrders> findByStaffId(int staffID);
 
     @Query(value = "SELECT SUM(total_price) FROM consign_orders co " +
-            "WHERE YEAR(co.date) = :year AND MONTH(co.date) = :month  ", nativeQuery = true)
-    Double findTotalForConsignOrders(int year , int month);
+            "WHERE YEAR(co.date) = :year AND MONTH(co.date) = :month " +
+            "AND ((DAY(co.date) - 1) / 7 + 1) = :week " +
+            "AND co.status = 'Shared'", nativeQuery = true)
+    Double findTotalForConsignOrders(int year , int month , int week);
+
+    @Query(value = "  SELECT SUM(co.total_price) AS totalRevenue " +
+            "FROM consign_orders co WHERE co.status = 'Shared' " +
+            "AND YEAR(co.date) = :year AND MONTH(co.date) = :month", nativeQuery = true)
+    Double findAllConsignOrders(int year , int month);
 }
