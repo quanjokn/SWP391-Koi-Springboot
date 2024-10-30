@@ -4,6 +4,7 @@ import SWP391.Fall24.dto.PlaceOrderDTO;
 import SWP391.Fall24.exception.AppException;
 import SWP391.Fall24.exception.ErrorCode;
 import SWP391.Fall24.pojo.*;
+import SWP391.Fall24.pojo.Enum.CaredKoiStatus;
 import SWP391.Fall24.pojo.Enum.CaringOrderStatus;
 import SWP391.Fall24.pojo.Enum.ConsignOrderStatus;
 import SWP391.Fall24.repository.*;
@@ -18,9 +19,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("/api/payment/return")
@@ -63,6 +62,9 @@ public class VNPAYReturnController {
 
     @Autowired
     private ICaringOrderRepository icaringOrderRepository;
+
+    @Autowired
+    private ICaredKoiRepository iCaredKoiRepository;
 
     @GetMapping
     public String vnpayReturn(HttpServletRequest request, Model model) throws MessagingException {
@@ -119,6 +121,13 @@ public class VNPAYReturnController {
                     CaringOrders caringOrder = icaringOrderRepository.findById(invoices.getOrders().getId());
                     caringOrder.setStatus(CaringOrderStatus.Paid.toString());
                     icaringOrderRepository.save(caringOrder);
+                    Set<CaredKois> caredKoiList = caringOrder.getCaredKois();
+                    caredKoiList.forEach(koi->{
+                        if(koi.getStatus().equals("Pending_payment")){
+                            koi.setStatus(CaredKoiStatus.Accepted_caring.toString());
+                            iCaredKoiRepository.save(koi);
+                        }
+                    });
                 }
                 invoices.setVnpResponseCode(Arrays.stream(params.get("vnp_TransactionStatus")).findFirst().get());
                 invoices.setStatus("Thành công");
