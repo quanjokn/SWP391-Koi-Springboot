@@ -313,7 +313,7 @@ public class OrderService implements IOrderService {
             if(allCaringOrder ==null){
                 allCaringOrder = 0.0;
             }
-            double allRevenue = allOrder + allConsignOrder + allCaringOrder;
+            double allRevenue = allOrder + (allConsignOrder*0.1) + allCaringOrder;
 
             allOrderRevenueDTO = new AllRevenueOfMonthDTO(allRevenue, revenueDTOList);
         }
