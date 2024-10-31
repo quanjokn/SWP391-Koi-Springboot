@@ -80,7 +80,7 @@ public class VNPayService implements IVNPayService {
             invoice.setOrders(consignOrders);
             invoice.setVnp_InvoiceCode(vnpayCode);
             invoice.setStatus("Đang giao dịch");
-            invoice.setVnpAmount(amount);
+            invoice.setVnpAmount((long) (amount*0.9));
             consignOrderInvoiceVNPay.save(invoice);
         } else if(type.equals("caringOrder")){
             CaringOrders caringOrder = caringOrderRepository.findById(orderId);
