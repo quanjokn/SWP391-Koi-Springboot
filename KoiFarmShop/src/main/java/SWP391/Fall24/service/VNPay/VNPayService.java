@@ -73,14 +73,14 @@ public class VNPayService implements IVNPayService {
             invoiceRepository.save(invoices);
         } else if(type.equals("consignOrder")){
             ConsignOrders consignOrders = consignOrderRepository.findById(orderId).orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTED));
-            amount =(long) consignOrders.getTotalPrice();
+            amount = (long) (consignOrders.getTotalPrice()*0.9);
             //invoice
             ConsignOrderInvoiceVNPay invoice = new ConsignOrderInvoiceVNPay();
             invoice.setUser(customer);
             invoice.setOrders(consignOrders);
             invoice.setVnp_InvoiceCode(vnpayCode);
             invoice.setStatus("Đang giao dịch");
-            invoice.setVnpAmount((long) (amount*0.9));
+            invoice.setVnpAmount(amount);
             consignOrderInvoiceVNPay.save(invoice);
         } else if(type.equals("caringOrder")){
             CaringOrders caringOrder = caringOrderRepository.findById(orderId);
