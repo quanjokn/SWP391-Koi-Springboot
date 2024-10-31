@@ -22,7 +22,8 @@ public enum ErrorCode {
     OUT_OF_ROLE(1013, "This staff does not have permission to resolve order"),
     CART_NULL(1013, "Cart is null"),
     OUT_OF_CATEGORY_FISH(1013, "This fish is out of fish's fish"),
-    QUANTITY_EXCESS(1013, "The number of fish in warehouse is not enough to sell")
+    QUANTITY_EXCESS(1013, "The number of fish in warehouse is not enough to sell"),
+    CONSIGNED_FISH_OWNER(1013, "This fish is possessed by this customer, can not buy")
     ;
     private int code;
     private String message;

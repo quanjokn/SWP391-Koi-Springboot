@@ -32,7 +32,7 @@ public class HealthUpdationService implements IHealthUpdationService {
         healthUpdation.setDate(healthUpdationRequest.getDate());
         healthUpdation.setPhoto("/images/"+healthUpdationRequest.getPhoto());
         healthUpdation.setStatus(true);
-        emailService.sendMail(caredKois.getCaringOrder().getCustomer().getEmail(), emailService.subjectOrder(caredKois.getCaringOrder().getCustomer().getName()), emailService.Approval(caredKois.getCaringOrder().getCustomer().getName(), caredKois.getCaringOrder().getId()));
+        emailService.sendMail(caredKois.getCaringOrder().getCustomer().getEmail(), emailService.subjectOrder(caredKois.getCaringOrder().getCustomer().getName()), emailService.emailHealthUpdate(caredKois.getCaringOrder()));
         healthUpdationRepository.save(healthUpdation);
     }
 }

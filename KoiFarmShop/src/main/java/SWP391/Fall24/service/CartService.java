@@ -3,10 +3,14 @@ package SWP391.Fall24.service;
 import SWP391.Fall24.dto.CartDTO;
 import SWP391.Fall24.dto.CartItemDTO;
 import SWP391.Fall24.dto.FishDetailDTO;
+import SWP391.Fall24.exception.AppException;
+import SWP391.Fall24.exception.ErrorCode;
 import SWP391.Fall24.pojo.Cart;
 import SWP391.Fall24.pojo.CartItem;
+import SWP391.Fall24.pojo.ConsignedKois;
 import SWP391.Fall24.repository.ICartItemRepository;
 import SWP391.Fall24.repository.ICartRepository;
+import SWP391.Fall24.repository.IConsignedKoiRepository;
 import SWP391.Fall24.repository.IFishRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +32,9 @@ public class CartService implements ICartService {
     private IFishRepository fishRepository;
     @Autowired
     private FishService fishService;
+    @Autowired
+    private IConsignedKoiRepository consignedKoiRepository;
+
     public CartDTO addToCart(CartItemDTO cartItemDTO, int userId) {
         Cart cart = cartRepository.findByUserId(userId).orElse(new Cart());
         cart.setUser(userService.findByID(userId).orElseThrow(() -> new RuntimeException("User not found")));
@@ -43,7 +50,10 @@ public class CartService implements ICartService {
         Optional<CartItem> existingCartItem = cart.getCartItems().stream()
                 .filter(cartItem -> cartItem.getFish().getId() == fishDetail.getId())
                 .findFirst();
-
+        List<ConsignedKois> consignedKoi = consignedKoiRepository.findAll();
+        for(ConsignedKois koi: consignedKoi) {
+            if(koi.getFish().getId()==fishDetail.getId() && koi.getCustomerID()==userId) throw new AppException(ErrorCode.CONSIGNED_FISH_OWNER);
+        }
         CartItem cartItem;
         if (existingCartItem.isPresent()) {
             cartItem = existingCartItem.get();
