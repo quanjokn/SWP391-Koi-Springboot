@@ -127,9 +127,9 @@ public class VNPAYReturnController {
                     CaringOrders caringOrder = icaringOrderRepository.findById(invoices.getOrders().getId());
                     caringOrder.setStatus(CaringOrderStatus.Paid.toString());
                     icaringOrderRepository.save(caringOrder);
-                    Set<CaredKois> caredKoiList = caringOrder.getCaredKois();
+                    List<CaredKois> caredKoiList = iCaredKoiRepository.findByCaringOrder(caringOrder);
                     caredKoiList.forEach(koi->{
-                        if(koi.getStatus().equals("Pending_payment")){
+                        if(koi.getStatus().equals(CaredKoiStatus.Pending_payment.toString())){
                             koi.setStatus(CaredKoiStatus.Accepted_caring.toString());
                             iCaredKoiRepository.save(koi);
                         }
