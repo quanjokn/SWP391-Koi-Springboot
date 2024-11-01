@@ -198,11 +198,12 @@ public class ConsignOrderService implements IConsignOrderService {
     }
 
     @Override
-    public String doneConsignOrder(int staffID, int orderID){
+    public String doneConsignOrder(int staffID, int orderID) throws MessagingException {
         ConsignOrders consignOrders = iConsignOrderRepository.findById(orderID).orElseThrow(()->new AppException(ErrorCode.ORDER_NOT_EXISTED));
         if(consignOrders.getStaff().getId()==staffID){
             consignOrders.setStatus(ConsignOrderStatus.Done.toString());
             iConsignOrderRepository.save(consignOrders);
+            emailService.sendMail(consignOrders.getUser().getEmail(), emailService.subjectOrder(consignOrders.getUser().getName()), emailService.messageConsignedKoiShared(consignOrders));
         } else throw new AppException(ErrorCode.OUT_OF_ROLE);
         return "Complete caring order successfully";
     }
