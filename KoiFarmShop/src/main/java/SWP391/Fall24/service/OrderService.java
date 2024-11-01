@@ -298,7 +298,7 @@ public class OrderService implements IOrderService {
             if (totalCaring == null) {
                 totalCaring = 0.0;
             }
-            Double totalRevenueOfWeek = totalOrder - (totalConsign * 0.9) + totalCaring;
+            Double totalRevenueOfWeek = totalOrder + (totalConsign * 0.1) + totalCaring;
             OrderRevenueOfWeekDTO dto = new OrderRevenueOfWeekDTO(weekOfMonth, totalOrders, totalRevenueOfWeek);
             revenueDTOList.add(dto);
             Double allOrder = iOrderRepository.findAllOrderRevenue(year, month);
