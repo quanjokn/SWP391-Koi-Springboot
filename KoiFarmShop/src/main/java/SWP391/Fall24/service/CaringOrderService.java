@@ -155,7 +155,7 @@ public class CaringOrderService implements ICaringOrderService{
         return result;
     }
 
-    public String completeOrder(int staffID, int orderID) {
+    public String completeOrder(int staffID, int orderID) throws MessagingException {
         CaringOrders caringOrder = caringOrderRepository.findById(orderID);
         if(caringOrder.getStaff().getId()==staffID){
             caringOrder.setStatus(CaringOrderStatus.Done.toString());
@@ -167,6 +167,7 @@ public class CaringOrderService implements ICaringOrderService{
                    caredKoiRepository.save(koi);
                }
             });
+            emailService.sendMail(caringOrder.getCustomer().getEmail(), emailService.subjectOrder(caringOrder.getCustomer().getName()), emailService.DoneCareOrder(caringOrder.getCustomer().getName(), caringOrder.getId(), caringOrder.getEndDate()));
         } else throw new AppException(ErrorCode.OUT_OF_ROLE);
         return "Complete caring order successfully";
     }

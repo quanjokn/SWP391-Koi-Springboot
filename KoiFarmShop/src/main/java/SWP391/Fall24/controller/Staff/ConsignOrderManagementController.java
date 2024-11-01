@@ -48,7 +48,7 @@ public class ConsignOrderManagementController {
     }
 
     @PostMapping("/done/{staffID}/{orderID}")
-    public String completeConsignOrder(@PathVariable("staffID") int staffID, @PathVariable("orderID") int orderID) {
+    public String completeConsignOrder(@PathVariable("staffID") int staffID, @PathVariable("orderID") int orderID) throws MessagingException {
         return consignOrderService.doneConsignOrder(staffID, orderID);
     }
 }

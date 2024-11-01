@@ -63,7 +63,7 @@ public class CareOrderManagementController {
     }
 
     @PostMapping("/complete/{staffID}/{orderID}")
-    public String completeCaringOrder(@PathVariable("orderID") int orderID, @PathVariable("staffID") int staffID) {
+    public String completeCaringOrder(@PathVariable("orderID") int orderID, @PathVariable("staffID") int staffID) throws MessagingException {
         return caringOrderService.completeOrder(staffID, orderID);
     }
 
