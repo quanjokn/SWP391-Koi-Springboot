@@ -85,6 +85,7 @@ public class ConsignOrderService implements IConsignOrderService {
                 consignedKoi.setCustomerID(userId);
                 consignedKoi.setConsignOrder(order);
                 consignedKoi.setType(koi.getType());
+                consignedKoi.setQuantity(koi.getQuantity());
                 consignedKoi.setStatus(ConsignedKoiStatus.Pending_confirmation.toString());
 
                 consignOrderResponse.getRequest().getConsignList().get(i).setStatus(ConsignedKoiStatus.Pending_confirmation.toString());
