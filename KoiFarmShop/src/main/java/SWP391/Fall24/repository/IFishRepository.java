@@ -23,7 +23,7 @@ public interface IFishRepository extends JpaRepository<Fishes, Integer> {
             "from Fishes f inner join Batches k on f.id = k.fish.id join Origins o on f.origin.id = o.id ")
     public List<FishDetailDTO> batchList();
 
-    @Query("select new SWP391.Fall24.dto.FishDetailDTO(f.id, k.name, 1, k.description, k.sex, k.age, k.character, k.size, k.price, k.healthStatus, k.ration, k.photo, k.video, k.certificate, f.category, 0, 0, o.origin ,f.rating) " +
+    @Query("select new SWP391.Fall24.dto.FishDetailDTO(f.id, k.name, k.quantity, k.description, k.sex, k.age, k.character, k.size, k.price, k.healthStatus, k.ration, k.photo, k.video, k.certificate, f.category, 0, 0, o.origin ,f.rating) " +
             "from Fishes f inner join ConsignedKois k on f.id = k.fish.id join Origins o on f.origin.id = o.id where k.status = :status")
     public List<FishDetailDTO> consignedKoiList(@Param("status") String status);
 
