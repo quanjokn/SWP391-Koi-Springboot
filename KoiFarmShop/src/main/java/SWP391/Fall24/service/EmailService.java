@@ -32,7 +32,7 @@ public class EmailService {
     }
 
     public String subjectOrder(String fullName) {
-        return "Hi, " + fullName + ", thanks for your order from Shoe For Men Shop!";
+        return "Hi, " + fullName + ", thanks for your order from Koi Farm Shop!";
     }
 
     public String subjectForgotPass() {

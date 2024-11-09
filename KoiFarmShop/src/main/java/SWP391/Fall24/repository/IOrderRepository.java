@@ -35,16 +35,15 @@ public interface IOrderRepository extends JpaRepository<Orders, Integer> {
     List<Object[]> findOrdersAndRevenueByWeek(@Param("year") int year, @Param("month") int month);
 
 
-    @Query(value = "SELECT ((DAY(o.date) - 1) / 7 + 1) AS weekOfMonth, " +
-            "od.fishId AS fishId, SUM(od.quantity) AS totalQuantity " +
+    @Query(value = "SELECT od.fishId AS fishId, SUM(od.quantity) AS totalQuantity " +
             "FROM Orders o " +
             "JOIN order_details od ON o.Id = od.orderid " +
             "WHERE YEAR(o.date) = :year AND MONTH(o.date) = :month " +
             "AND o.status = 'Completed' " +
-            "GROUP BY ((DAY(o.date) - 1) / 7 + 1), od.fishId " +
-            "ORDER BY weekOfMonth, totalQuantity DESC",
+            "GROUP BY od.fishId " +
+            "ORDER BY totalQuantity DESC",
             nativeQuery = true)
-    List<Object[]> findSalesByWeek(@Param("year") int year, @Param("month") int month);
+    List<Object[]> findSalesByMonth(@Param("year") int year, @Param("month") int month);
 
     @Query(value = "SELECT SUM(o.total) AS totalRevenue " +
             "FROM Orders o " +

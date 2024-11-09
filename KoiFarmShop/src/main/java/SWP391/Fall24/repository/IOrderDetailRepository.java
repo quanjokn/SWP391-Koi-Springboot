@@ -13,6 +13,7 @@ public interface IOrderDetailRepository extends JpaRepository<OrderDetails , Int
     List<OrderDetails> findByOrdersId(int orderId);
     List<OrderDetails> findByFishesId(int fishId);
 
+    //chỉ lấy cá của shop (category = Koi)
     @Query(value = "SELECT TOP 4 od.fishId, SUM(od.quantity) AS totalQuantity " +
             "FROM order_details od " +
             "JOIN Orders o ON o.id=od.orderId " +

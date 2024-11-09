@@ -2,9 +2,9 @@ package SWP391.Fall24.service;
 
 import SWP391.Fall24.dto.*;
 import SWP391.Fall24.dto.Manager.AllRevenueOfMonthDTO;
+import SWP391.Fall24.dto.Manager.MonthSalesDTO;
 import SWP391.Fall24.dto.Manager.OrderRevenueOfWeekDTO;
 import SWP391.Fall24.dto.Manager.ProductSalesDTO;
-import SWP391.Fall24.dto.Manager.WeekSalesDTO;
 import SWP391.Fall24.dto.Staff.AllOrderDTO;
 import SWP391.Fall24.exception.AppException;
 import SWP391.Fall24.exception.ErrorCode;
@@ -16,10 +16,7 @@ import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @Service
@@ -288,7 +285,7 @@ public class OrderService implements IOrderService {
         for (Object[] result : results) {
             int weekOfMonth = (int) result[0];
             int totalOrders = (int) result[1];
-            Double totalOrder = (Double) result[2];
+            Double totalOrderPrice = (Double) result[2];
 
             Double totalConsign = consignOrderRepository.findTotalForConsignOrders(year, month, weekOfMonth);
             if (totalConsign == null) {
@@ -298,7 +295,7 @@ public class OrderService implements IOrderService {
             if (totalCaring == null) {
                 totalCaring = 0.0;
             }
-            Double totalRevenueOfWeek = totalOrder + (totalConsign * 0.1) + totalCaring;
+            Double totalRevenueOfWeek = totalOrderPrice + (totalConsign * 0.1) + totalCaring;
             OrderRevenueOfWeekDTO dto = new OrderRevenueOfWeekDTO(weekOfMonth, totalOrders, totalRevenueOfWeek);
             revenueDTOList.add(dto);
             Double allOrder = iOrderRepository.findAllOrderRevenue(year, month);
@@ -322,47 +319,36 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<WeekSalesDTO> getWeeklySales(int year, int month) {
-        List<Object[]> data = iOrderRepository.findSalesByWeek(year, month);
-        List<WeekSalesDTO> result = new ArrayList<>();
+    public List<MonthSalesDTO> getMonthlySales(int year, int month) {
+        List<Object[]> data = iOrderRepository.findSalesByMonth(year, month);
         List<ProductSalesDTO> productSalesDTOList = new ArrayList<>();
-        int currentWeek = -1;
 
-        for(Object[] row: data){
-            int weekOfMonth = (int) row[0];
-            int fishId = (int) row[1];
-            int totalQuantity = (int) row[2];
+        for (Object[] row : data) {
+            int fishId = (int) row[0];
+            int totalQuantity = (int) row[1];
 
-            if (currentWeek != weekOfMonth && productSalesDTOList.size() > 0) {
-                result.add(processWeekData(currentWeek, productSalesDTOList));
-                productSalesDTOList.clear();
-            }
-
-            currentWeek = weekOfMonth;
             List<FishDetailDTO> fishDetailDTOList = fishService.allFish();
-            String fishName="";
-            for(FishDetailDTO f: fishDetailDTOList){
-                if(f.getId()==fishId){
+            String fishName = "";
+            for (FishDetailDTO f : fishDetailDTOList) {
+                if (f.getId() == fishId) {
                     fishName = f.getName();
+                    break;
                 }
             }
+
             productSalesDTOList.add(new ProductSalesDTO(fishName, totalQuantity));
         }
-        if (productSalesDTOList.size() > 0) {
-            result.add(processWeekData(currentWeek, productSalesDTOList));
-        }
 
-        return result;
+        List<ProductSalesDTO> top3Products = processMonthlyData(productSalesDTOList);
 
+        return Collections.singletonList(new MonthSalesDTO(month, top3Products));
     }
 
-
-
-    private WeekSalesDTO processWeekData(int weekOfMonth, List<ProductSalesDTO> products) {
+    private List<ProductSalesDTO> processMonthlyData(List<ProductSalesDTO> products) {
         products.sort(Comparator.comparing(ProductSalesDTO::getTotalQuantity).reversed());
 
         List<ProductSalesDTO> top3Products = new ArrayList<>();
-        int totalOtherSales =0;
+        int totalOtherSales = 0;
 
         for (int i = 0; i < products.size(); i++) {
             if (i < 3) {
@@ -374,9 +360,8 @@ public class OrderService implements IOrderService {
         if (totalOtherSales > 0) {
             top3Products.add(new ProductSalesDTO("Others", totalOtherSales));
         }
-        return new WeekSalesDTO(weekOfMonth, top3Products);
+        return top3Products;
     }
-
 
 
 }
