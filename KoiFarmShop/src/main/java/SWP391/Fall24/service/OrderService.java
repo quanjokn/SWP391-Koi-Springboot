@@ -295,14 +295,14 @@ public class OrderService implements IOrderService {
             if (totalCaring == null) {
                 totalCaring = 0.0;
             }
-            Double totalRevenueOfWeek = totalOrderPrice + (totalConsign * 0.1) + totalCaring;
+            Double totalRevenueOfWeek = totalOrderPrice - (totalConsign * 0.9) + totalCaring;
             OrderRevenueOfWeekDTO dto = new OrderRevenueOfWeekDTO(weekOfMonth, totalOrders, totalRevenueOfWeek);
             revenueDTOList.add(dto);
             Double allOrder = iOrderRepository.findAllOrderRevenue(year, month);
             if(allOrder ==null){
                 allOrder = 0.0;
             }
-            Double allConsignOrder = consignOrderRepository.findAllConsignOrders(year, month);
+            Double allConsignOrder = consignOrderRepository.findAllConsignOrders(year, month); // comission
             if(allConsignOrder ==null){
                 allConsignOrder = 0.0;
             }
@@ -310,7 +310,7 @@ public class OrderService implements IOrderService {
             if(allCaringOrder ==null){
                 allCaringOrder = 0.0;
             }
-            double allRevenue = allOrder + (allConsignOrder*0.1) + allCaringOrder;
+            double allRevenue = allOrder - (allConsignOrder*0.9) + allCaringOrder;
 
             allOrderRevenueDTO = new AllRevenueOfMonthDTO(allRevenue, revenueDTOList);
         }
