@@ -268,7 +268,6 @@ public class OrderService implements IOrderService {
         Orders order = opOrder.get();
         order.setStatus(OrderStatus.Rejected.toString());
         order.setNote(orderManagementDTO.getNote());
-        order.getOrderDateStatus().setRejectDate(LocalDate.now());
         //email
         LocalDate date = LocalDate.now();
         emailService.sendMail(order.getCustomer().getEmail(), emailService.subjectOrder(order.getCustomer().getName()), emailService.messageDecline(orderManagementDTO.getNote(), order.getId(), order.getCustomer().getName()));
