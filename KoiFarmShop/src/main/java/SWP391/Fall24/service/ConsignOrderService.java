@@ -57,6 +57,8 @@ public class ConsignOrderService implements IConsignOrderService {
             consignOrders.setDate(localDate);
             consignOrders.setCommission(Float.valueOf((float) (consignOrderRequest.getTotalPrice()*0.1)));
             consignOrders.setTotalPrice(consignOrderRequest.getTotalPrice());
+            ConsignDateStatus consignDateStatus = new ConsignDateStatus();
+            consignOrders.setConsignDateStatus(consignDateStatus);
             consignOrders.getConsignDateStatus().setRequestDate(LocalDate.now());
             ConsignOrders order = iConsignOrderRepository.save(consignOrders);
 

@@ -30,8 +30,8 @@ public class ConsignOrders {
     @ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "staffID", nullable = true)
     private Users staff;
-    
-    @OneToOne
+
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
     private ConsignDateStatus consignDateStatus = new ConsignDateStatus();
 

@@ -47,9 +47,9 @@ public class CaringOrders {
     private Set<CaredKois> caredKois = new HashSet<>();
 
     @JsonProperty("careDateStatus")
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
-    private CareDateStatus careDateStatus = new CareDateStatus();
+    private CareDateStatus careDateStatus;
 
     @Column(name = "status", nullable = true)
     private String status = CaringOrderStatus.Pending_confirmation.toString();
