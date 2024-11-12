@@ -38,8 +38,10 @@ public interface IOrderRepository extends JpaRepository<Orders, Integer> {
     @Query(value = "SELECT od.fishId AS fishId, SUM(od.quantity) AS totalQuantity " +
             "FROM Orders o " +
             "JOIN order_details od ON o.Id = od.orderid " +
+            "JOIN Fishes f ON f.id=od.fishId  " +
             "WHERE YEAR(o.date) = :year AND MONTH(o.date) = :month " +
             "AND o.status = 'Completed' " +
+            "AND f.category = 'Koi' " +
             "GROUP BY od.fishId " +
             "ORDER BY totalQuantity DESC",
             nativeQuery = true)

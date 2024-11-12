@@ -36,8 +36,13 @@ public class UserService implements IUserService{
         Optional<Users> opUser = iUserRepository.findByUserNameIgnoreCase(loginRequest.getUserName());
         if (opUser.isPresent()) {
             Users user = opUser.get();
+
             if (encryptionService.verifyPassword(loginRequest.getPassword(), user.getPassword())) {
-                return jwtService.generateJWT(user);
+                if(user.isStatus()==true){ // check them status khi login
+                    return jwtService.generateJWT(user);
+                }else{
+                    throw new AppException(ErrorCode.FAIL_LOGIN_BANNED_ACCOUNT);
+                }
             }
         }else
             throw new AppException(ErrorCode.FAIL_LOGIN);

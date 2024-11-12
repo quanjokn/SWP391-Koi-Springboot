@@ -59,25 +59,26 @@ public class RatingFeedbackManagementController {
         if(orderDetails != null){
             if(approval == 1){
                 orderDetails.setApprovalStatus(FeedbackStatus.Accepted.toString());
-            } else if(approval==0){
+                Optional<Orders> orders = iOrderRepository.findById(orderID);
+                Optional<Users> users = iUserRepository.findUsersById(orders.get().getCustomer().getId());
+                Fishes fishes = fishService.findFishById(fishID);
+
+                LocalDate date = LocalDate.now();
+                List<OrderDetails> orderDetailsList = orderDetailRepository.findByFishesIdAndApprovalStatus(fishID, FeedbackStatus.Accepted.toString());
+                float totalRating = 0 ;
+                for(OrderDetails od : orderDetailsList) {
+                    totalRating += od.getRating();
+                }
+                float avgRating = totalRating / orderDetailsList.size();
+
+                fishes.setRating(avgRating);
+                Evaluations evaluations = new Evaluations(fishes,date,users.get().getUserName(),orderDetails.getRating(),orderDetails.getFeedback());
+                evaluationRepository.save(evaluations);
+            } else if(approval== 0){
                 orderDetails.setApprovalStatus(FeedbackStatus.Rejected.toString());
             }
             orderDetailRepository.save(orderDetails);
-            Optional<Orders> orders = iOrderRepository.findById(orderID);
-            Optional<Users> users = iUserRepository.findUsersById(orders.get().getCustomer().getId());
-            Fishes fishes = fishService.findFishById(fishID);
 
-            LocalDate date = LocalDate.now();
-            List<OrderDetails> orderDetailsList = orderDetailRepository.findByFishesIdAndApprovalStatus(fishID, FeedbackStatus.Accepted.toString());
-            float totalRating = 0 ;
-            for(OrderDetails od : orderDetailsList) {
-                totalRating += od.getRating();
-            }
-            float avgRating = totalRating / orderDetailsList.size();
-
-            fishes.setRating(avgRating);
-            Evaluations evaluations = new Evaluations(fishes,date,users.get().getUserName(),orderDetails.getRating(),orderDetails.getFeedback());
-            evaluationRepository.save(evaluations);
             return "Approve feedback successfully";
         }else
             return "OrderDetail is not available";
