@@ -43,7 +43,7 @@ public class OrderManagementController {
     }
 
     @PostMapping("/receiving/{orderId}/{staffId}")
-    public String receiveOrder(@PathVariable int orderId, @PathVariable int staffId) {
+    public String receiveOrder(@PathVariable int orderId,   @PathVariable int staffId) {
         orderService.receiveOrder(orderId,staffId);
         return "Receiving successful";
     }

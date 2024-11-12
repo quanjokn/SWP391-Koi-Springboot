@@ -38,6 +38,12 @@ public class ConsignOrders {
     @Column(name = "date", nullable = true)
     private LocalDate date;
 
+    @Column(name = "approvalDate", nullable = true)
+    private LocalDate approvalDate;
+
+    @Column(name = "expiredDate", nullable = true)
+    private LocalDate expiredDate;
+
     @Column(name = "totalPrice", nullable = true)
     private float totalPrice;
 

@@ -76,7 +76,9 @@ public class OrderService implements IOrderService {
         }
         List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
         for (OrderDetails od : orderDetails) {
-            OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO(od.getFishes().getId(), od.getFishName(), od.getQuantity(), od.getPrice() ,od.getTotal() ,od.getPhoto(), od.getEvaluationStatus());
+            Optional<Fishes> fishes = iFishRepository.findById(od.getFishes().getId());
+            Fishes f = fishes.get();
+            OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO(od.getFishes().getId(), od.getFishName(), od.getQuantity(), od.getPrice() ,od.getTotal() ,od.getPhoto(), od.getEvaluationStatus() , f.getCategory());
             orderDetailsDTOList.add(orderDetailsDTO);
         }
         OrderDTO orderDTO  = new OrderDTO();
@@ -205,7 +207,7 @@ public class OrderService implements IOrderService {
         Optional<Users> opStaff = iUserRepository.findUsersById(staffId);
         Orders order = opOrder.get();
         order.setStaff(opStaff.get());
-        order.getOrderDateStatus().setResponseDate(LocalDate.now());
+
         iOrderRepository.save(order);
         return order;
     }
@@ -268,7 +270,6 @@ public class OrderService implements IOrderService {
         Orders order = opOrder.get();
         order.setStatus(OrderStatus.Rejected.toString());
         order.setNote(orderManagementDTO.getNote());
-        order.getOrderDateStatus().setRejectDate(LocalDate.now());
         //email
         LocalDate date = LocalDate.now();
         emailService.sendMail(order.getCustomer().getEmail(), emailService.subjectOrder(order.getCustomer().getName()), emailService.messageDecline(orderManagementDTO.getNote(), order.getId(), order.getCustomer().getName()));

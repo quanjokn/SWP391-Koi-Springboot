@@ -12,6 +12,7 @@ import SWP391.Fall24.pojo.Enum.ConsignedKoiStatus;
 import SWP391.Fall24.repository.*;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.*;
@@ -101,6 +102,7 @@ public class ConsignOrderService implements IConsignOrderService {
 
     @Override
     public ConsignOrderResponse getDetail(int orderID) {
+        this.resolveExpiredOrder();
         ConsignOrders order = iConsignOrderRepository.findById(orderID).orElseThrow(()-> new AppException(ErrorCode.ORDER_NOT_EXISTED));
         ConsignOrderResponse consignOrderResponse = new ConsignOrderResponse();
         // set data into consignOrderRequest
@@ -158,6 +160,9 @@ public class ConsignOrderService implements IConsignOrderService {
                 });
                 if(i.get()>0){
                     consignOrder.setStatus(ConsignOrderStatus.Responded.toString());
+                    LocalDate today = LocalDate.now();
+                    consignOrder.setApprovalDate(today);
+                    consignOrder.setExpiredDate(today.plusDays(7));
                 } else consignOrder.setStatus(ConsignOrderStatus.Rejected.toString());
                 consignOrder.setNote(consignApprovalRequest.getNote());
                 // set consignFish status
@@ -175,6 +180,12 @@ public class ConsignOrderService implements IConsignOrderService {
                     }
                     iConsignedKoiRepository.save(koi);
                 });
+                if(i.get()==0){
+                    decision.forEach((fishID, result)->{
+                        ConsignedKois koi = iConsignedKoiRepository.findConsignedKoisById(fishID).orElseThrow(()->new AppException(ErrorCode.FISH_NOT_EXISTED));
+                            total.updateAndGet(v -> new Float((float) (v + koi.getPrice() * koi.getQuantity())));
+                    });
+                }
                 consignOrder.setTotalPrice(total.get());
                 consignOrder.setCommission(Float.valueOf((float) (total.get()*0.1)));
                 consignOrder.getConsignDateStatus().setResponseDate(LocalDate.now());
@@ -209,10 +220,30 @@ public class ConsignOrderService implements IConsignOrderService {
         ConsignOrders consignOrders = iConsignOrderRepository.findById(orderID).orElseThrow(()->new AppException(ErrorCode.ORDER_NOT_EXISTED));
         if(consignOrders.getStaff().getId()==staffID){
             consignOrders.setStatus(ConsignOrderStatus.Done.toString());
+            consignOrders.getConsignDateStatus().setCompletedDate(LocalDate.now());
             iConsignOrderRepository.save(consignOrders);
             emailService.sendMail(consignOrders.getUser().getEmail(), emailService.subjectOrder(consignOrders.getUser().getName()), emailService.messageConsignedKoiShared(consignOrders));
         } else throw new AppException(ErrorCode.OUT_OF_ROLE);
         return "Complete caring order successfully";
+    }
+
+    @Override
+    public void resolveExpiredOrder() {
+        List<ConsignOrders> list = iConsignOrderRepository.findAll();
+        for(ConsignOrders consignOrder : list){
+            LocalDate today = LocalDate.now();
+            if(consignOrder.getStatus().equals(ConsignOrderStatus.Responded.toString())){
+                if (today.isAfter(consignOrder.getExpiredDate()) || consignOrder.getExpiredDate().isEqual(today)) {
+                    consignOrder.setStatus(ConsignOrderStatus.Expired.toString());
+                    iConsignOrderRepository.save(consignOrder);
+                    List<ConsignedKois> allConsignedKois = iConsignedKoiRepository.findByConsignOrder(consignOrder);
+                    for(ConsignedKois koi : allConsignedKois){
+                        koi.setStatus(ConsignedKoiStatus.Expired.toString());
+                        iConsignedKoiRepository.save(koi);
+                    }
+                }
+            }
+        }
     }
 
 }

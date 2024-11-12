@@ -44,6 +44,7 @@ public class ConsignOrderManagementController {
 
     @PostMapping("/detail/{orderID}")
     public ConsignOrderResponse getDetail(@PathVariable("orderID") int orderID) {
+        consignOrderService.resolveExpiredOrder();
         return consignOrderService.getDetail(orderID);
     }
 

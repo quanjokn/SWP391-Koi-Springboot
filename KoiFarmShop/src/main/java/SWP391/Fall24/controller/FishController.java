@@ -6,6 +6,7 @@ import SWP391.Fall24.dto.Manager.ProductSalesDTO;
 import SWP391.Fall24.dto.Top4FishDTO;
 import SWP391.Fall24.pojo.Promotions;
 import SWP391.Fall24.repository.IEvaluationRepository;
+import SWP391.Fall24.service.ConsignOrderService;
 import SWP391.Fall24.service.FishService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +23,12 @@ public class FishController {
     @Autowired
     private IEvaluationRepository evaluationRepository;
 
+    @Autowired
+    private ConsignOrderService consignOrderService;
+
     @GetMapping("/fishes-list")
     private FishAndPromotionDTO getAllFish() {
+        consignOrderService.resolveExpiredOrder();
         List<FishDetailDTO> fishDetailDTOList = fishService.allFish();
         List<Promotions> promotionList = fishService.getAllPromotions();
         FishAndPromotionDTO fishAndPromotionDTO = new FishAndPromotionDTO();

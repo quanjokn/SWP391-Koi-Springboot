@@ -24,4 +24,5 @@ public interface IConsignOrderService{
 
     String doneConsignOrder(int staffID, int orderID) throws MessagingException;
 
+    void resolveExpiredOrder();
 }
