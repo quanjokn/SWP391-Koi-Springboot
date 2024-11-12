@@ -26,7 +26,4 @@ public class OrderDateStatus {
     private LocalDate deliveryDate;
     @Column(nullable = true)
     private LocalDate completeDate;
-    @Column(nullable = true)
-    private LocalDate rejectDate;
-
 }
