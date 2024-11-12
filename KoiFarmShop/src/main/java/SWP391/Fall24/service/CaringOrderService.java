@@ -114,7 +114,10 @@ public class CaringOrderService implements ICaringOrderService{
                     }
                 });
             });
-            caringOrder.setTotalPrice(pricePerOne*count.get());
+            if(count.get()>0) caringOrder.setTotalPrice(pricePerOne*count.get());
+            else {
+                caringOrder.setTotalPrice(caringOrder.getTotalPrice());
+            }
             caringOrder.getCareDateStatus().setResponseDate(LocalDate.now());
             caringOrderRepository.save(caringOrder);
             emailService.sendMail(caringOrder.getCustomer().getEmail(), emailService.subjectOrder(caringOrder.getCustomer().getName()), emailService.Approval(caringOrder.getCustomer().getName(), caringOrder.getId()));

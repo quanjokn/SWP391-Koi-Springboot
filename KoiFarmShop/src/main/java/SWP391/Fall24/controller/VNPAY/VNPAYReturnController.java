@@ -107,7 +107,7 @@ public class VNPAYReturnController {
                 if(u.isPresent()) {
                     ConsignOrders consignOrders = consignOrderRepository.findById(invoices.getOrders().getId()).orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTED));
                     consignOrders.setStatus(ConsignOrderStatus.Shared.toString());
-                    consignOrders.getConsignDateStatus().setCompletedDate(LocalDate.now());
+                    consignOrders.getConsignDateStatus().setPaymentDate(LocalDate.now());
                     consignOrderRepository.save(consignOrders);
                     // send email after having pay commission
 
