@@ -6,6 +6,7 @@ import SWP391.Fall24.dto.request.CaringOrderRequest;
 import SWP391.Fall24.dto.response.CaringOrderResponse;
 import SWP391.Fall24.exception.AppException;
 import SWP391.Fall24.exception.ErrorCode;
+import SWP391.Fall24.pojo.CareDateStatus;
 import SWP391.Fall24.pojo.CaredKois;
 import SWP391.Fall24.pojo.CaringOrders;
 import SWP391.Fall24.pojo.Enum.CaredKoiStatus;
@@ -50,6 +51,8 @@ public class CaringOrderService implements ICaringOrderService{
             order.setCustomer(user);
             LocalDate today = LocalDate.now();
             order.setDate(today);
+            CareDateStatus careDateStatus = new CareDateStatus();
+            order.setCareDateStatus(careDateStatus);
             order.getCareDateStatus().setRequestDate(today);
             CaringOrders caringOrder = caringOrderRepository.save(order);
             // create cared Koi in CaredKoi
