@@ -2,7 +2,7 @@ package SWP391.Fall24.service;
 
 import SWP391.Fall24.dto.*;
 import SWP391.Fall24.dto.Manager.AllRevenueOfMonthDTO;
-import SWP391.Fall24.dto.Manager.WeekSalesDTO;
+import SWP391.Fall24.dto.Manager.MonthSalesDTO;
 import SWP391.Fall24.dto.Staff.AllOrderDTO;
 import SWP391.Fall24.pojo.*;
 import SWP391.Fall24.pojo.Enum.OrderStatus;
@@ -24,6 +24,6 @@ public interface IOrderService {
     public AllOrderDTO getAllOrdersForStaff(int userId);
     //for dashboard
     public AllRevenueOfMonthDTO getOrdersRevenueForDashBoard(int year , int month);
-    public List<WeekSalesDTO> getWeeklySales(int year, int month);
+    public List<MonthSalesDTO> getMonthlySales(int year, int month);
 
 }
