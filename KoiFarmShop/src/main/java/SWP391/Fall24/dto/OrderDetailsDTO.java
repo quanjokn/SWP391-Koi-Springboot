@@ -15,8 +15,9 @@ public class OrderDetailsDTO {
     private float totalPrice;
     private String photo;
     private Boolean evaluationStatus;
+    private String category;
 
-    public OrderDetailsDTO(int fishId, String fishName, int quantity, float unitPrice , float totalPrice , String photo, boolean evaluationStatus ) {
+    public OrderDetailsDTO(int fishId, String fishName, int quantity, float unitPrice , float totalPrice , String photo, boolean evaluationStatus,String category ) {
         this.fishId = fishId;
         this.fishName = fishName;
         this.quantity = quantity;
@@ -24,5 +25,6 @@ public class OrderDetailsDTO {
         this.totalPrice = totalPrice;
         this.photo = photo;
         this.evaluationStatus = evaluationStatus;
+        this.category = category;
     }
 }
