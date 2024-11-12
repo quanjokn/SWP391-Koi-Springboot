@@ -76,7 +76,7 @@ public class FishService implements IFishService {
             kois.setDescription(consignedKoiDTO.getDescription());
             kois.setHealthStatus(consignedKoiDTO.getHealthStatus());
             kois.setName(consignedKoiDTO.getName());
-            kois.setPhoto(consignedKoiDTO.getPhoto());
+            kois.setPhoto("/images/"+consignedKoiDTO.getPhoto());
             kois.setPrice(consignedKoiDTO.getPrice());
             kois.setQuantity(consignedKoiDTO.getQuantity());
             kois.setRation(consignedKoiDTO.getRation());

@@ -17,7 +17,9 @@ public interface IOrderDetailRepository extends JpaRepository<OrderDetails , Int
     @Query(value = "SELECT TOP 4 od.fishId, SUM(od.quantity) AS totalQuantity " +
             "FROM order_details od " +
             "JOIN Orders o ON o.id=od.orderId " +
+            "JOIN Fishes f ON f.id=od.fishId " +
             "WHERE o.status ='Completed' " +
+            "AND f.category = 'Koi' " +
             "GROUP BY od.fishId " +
             "ORDER BY totalQuantity DESC"
             , nativeQuery = true)

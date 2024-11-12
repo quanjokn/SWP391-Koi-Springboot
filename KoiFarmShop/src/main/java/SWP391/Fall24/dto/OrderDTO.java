@@ -1,5 +1,6 @@
 package SWP391.Fall24.dto;
 
+import SWP391.Fall24.pojo.OrderDateStatus;
 import SWP391.Fall24.pojo.Users;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
@@ -23,5 +24,7 @@ public class OrderDTO {
     private String note;
     @JsonProperty("orderDetailsDTO")
     private List<OrderDetailsDTO> orderDetailsDTO;
+    @JsonProperty
+    private OrderDateStatus orderDateStatus;
 
 }
