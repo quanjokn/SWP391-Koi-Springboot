@@ -76,7 +76,9 @@ public class OrderService implements IOrderService {
         }
         List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
         for (OrderDetails od : orderDetails) {
-            OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO(od.getFishes().getId(), od.getFishName(), od.getQuantity(), od.getPrice() ,od.getTotal() ,od.getPhoto(), od.getEvaluationStatus());
+            Optional<Fishes> fishes = iFishRepository.findById(od.getFishes().getId());
+            Fishes f = fishes.get();
+            OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO(od.getFishes().getId(), od.getFishName(), od.getQuantity(), od.getPrice() ,od.getTotal() ,od.getPhoto(), od.getEvaluationStatus() , f.getCategory());
             orderDetailsDTOList.add(orderDetailsDTO);
         }
         OrderDTO orderDTO  = new OrderDTO();
