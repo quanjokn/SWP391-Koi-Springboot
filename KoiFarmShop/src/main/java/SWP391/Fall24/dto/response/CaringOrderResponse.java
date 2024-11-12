@@ -1,7 +1,9 @@
 package SWP391.Fall24.dto.response;
 
+import SWP391.Fall24.pojo.CareDateStatus;
 import SWP391.Fall24.pojo.CaredKois;
 import SWP391.Fall24.pojo.CaringOrders;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,5 +18,9 @@ import java.util.Set;
 @AllArgsConstructor
 public class CaringOrderResponse {
     private CaringOrders caringOrder;
+
+    @JsonProperty
+    private CareDateStatus careDateStatus;
+
     private List<CaredKois> caredKois;
 }

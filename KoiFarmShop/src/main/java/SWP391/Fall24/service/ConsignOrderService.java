@@ -57,6 +57,7 @@ public class ConsignOrderService implements IConsignOrderService {
             consignOrders.setDate(localDate);
             consignOrders.setCommission(Float.valueOf((float) (consignOrderRequest.getTotalPrice()*0.1)));
             consignOrders.setTotalPrice(consignOrderRequest.getTotalPrice());
+            consignOrders.getConsignDateStatus().setRequestDate(LocalDate.now());
             ConsignOrders order = iConsignOrderRepository.save(consignOrders);
 
             consignOrderResponse.setOrderID(order.getId());
@@ -104,6 +105,7 @@ public class ConsignOrderService implements IConsignOrderService {
         consignOrderResponse.setOrderID(orderID);
         consignOrderResponse.setCustomer(order.getUser());
         consignOrderResponse.setStatus(order.getStatus());
+        consignOrderResponse.setConsignDateStatus(order.getConsignDateStatus());
 
         ConsignOrderRequest orderRequest = new ConsignOrderRequest();
         orderRequest.setDate(order.getDate());
@@ -134,6 +136,7 @@ public class ConsignOrderService implements IConsignOrderService {
         ConsignOrders order = iConsignOrderRepository.findById(orderID).orElseThrow(()-> new AppException(ErrorCode.ORDER_NOT_EXISTED));
         order.setStaff(staff);
         order.setStatus(ConsignOrderStatus.Receiving.toString());
+        order.getConsignDateStatus().setPendingDate(LocalDate.now());
         iConsignOrderRepository.save(order);
         return "Consign order "+orderID+" received by "+staff.getName();
     }
@@ -172,6 +175,7 @@ public class ConsignOrderService implements IConsignOrderService {
                 });
                 consignOrder.setTotalPrice(total.get());
                 consignOrder.setCommission(Float.valueOf((float) (total.get()*0.1)));
+                consignOrder.getConsignDateStatus().setResponseDate(LocalDate.now());
                 iConsignOrderRepository.save(consignOrder);
                 emailService.sendMail(consignOrder.getUser().getEmail(), emailService.subjectOrder(consignOrder.getUser().getName()), emailService.Approval(consignOrder.getUser().getName(), consignOrder.getId()));
             } else throw new AppException(ErrorCode.USER_NOT_EXISTED);

@@ -46,6 +46,11 @@ public class CaringOrders {
     @JoinColumn(name = "serviceID")
     private Set<CaredKois> caredKois = new HashSet<>();
 
+    @JsonProperty("careDateStatus")
+    @OneToOne
+    @JoinColumn
+    private CareDateStatus careDateStatus = new CareDateStatus();
+
     @Column(name = "status", nullable = true)
     private String status = CaringOrderStatus.Pending_confirmation.toString();
 

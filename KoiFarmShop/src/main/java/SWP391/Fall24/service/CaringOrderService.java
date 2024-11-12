@@ -50,6 +50,7 @@ public class CaringOrderService implements ICaringOrderService{
             order.setCustomer(user);
             LocalDate today = LocalDate.now();
             order.setDate(today);
+            order.getCareDateStatus().setRequestDate(today);
             CaringOrders caringOrder = caringOrderRepository.save(order);
             // create cared Koi in CaredKoi
             List<CaredKoiDTO> listKoi = request.getCaredKoiList();
@@ -79,6 +80,7 @@ public class CaringOrderService implements ICaringOrderService{
         List<CaredKois> caredKois = caredKoiRepository.findByCaringOrderId(orderID);
         caringOrderResponse.setCaringOrder(caringOrder);
         caringOrderResponse.setCaredKois(caredKois);
+        caringOrderResponse.setCareDateStatus(caringOrder.getCareDateStatus());
         return caringOrderResponse;
     }
 
@@ -110,6 +112,7 @@ public class CaringOrderService implements ICaringOrderService{
                 });
             });
             caringOrder.setTotalPrice(pricePerOne*count.get());
+            caringOrder.getCareDateStatus().setResponseDate(LocalDate.now());
             caringOrderRepository.save(caringOrder);
             emailService.sendMail(caringOrder.getCustomer().getEmail(), emailService.subjectOrder(caringOrder.getCustomer().getName()), emailService.Approval(caringOrder.getCustomer().getName(), caringOrder.getId()));
         } else throw new AppException(ErrorCode.OUT_OF_ROLE);
@@ -137,6 +140,7 @@ public class CaringOrderService implements ICaringOrderService{
             Users staffUser = staff.get();
             order.setStaff(staffUser);
             order.setStatus(CaringOrderStatus.Receiving.toString());
+            order.getCareDateStatus().setPendingDate(LocalDate.now());
             caringOrderRepository.save(order);
             result = "Caring order #"+orderID+" is received by "+staffUser.getUserName();
         } else throw new AppException(ErrorCode.USER_NOT_EXISTED);
@@ -159,6 +163,7 @@ public class CaringOrderService implements ICaringOrderService{
         CaringOrders caringOrder = caringOrderRepository.findById(orderID);
         if(caringOrder.getStaff().getId()==staffID){
             caringOrder.setStatus(CaringOrderStatus.Done.toString());
+            caringOrder.getCareDateStatus().setCompletedDate(LocalDate.now());
             caringOrderRepository.save(caringOrder);
             List<CaredKois> caredKois = caredKoiRepository.findByCaringOrder(caringOrder);
             caredKois.forEach(koi->{

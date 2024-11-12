@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Controller
@@ -106,6 +107,7 @@ public class VNPAYReturnController {
                 if(u.isPresent()) {
                     ConsignOrders consignOrders = consignOrderRepository.findById(invoices.getOrders().getId()).orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTED));
                     consignOrders.setStatus(ConsignOrderStatus.Shared.toString());
+                    consignOrders.getConsignDateStatus().setCompletedDate(LocalDate.now());
                     consignOrderRepository.save(consignOrders);
                     // send email after having pay commission
 
@@ -126,6 +128,7 @@ public class VNPAYReturnController {
                 if(u.isPresent()) {
                     CaringOrders caringOrder = icaringOrderRepository.findById(invoices.getOrders().getId());
                     caringOrder.setStatus(CaringOrderStatus.Paid.toString());
+                    caringOrder.getCareDateStatus().setPaymentDate(LocalDate.now());
                     icaringOrderRepository.save(caringOrder);
                     List<CaredKois> caredKoiList = iCaredKoiRepository.findByCaringOrder(caringOrder);
                     caredKoiList.forEach(koi->{
