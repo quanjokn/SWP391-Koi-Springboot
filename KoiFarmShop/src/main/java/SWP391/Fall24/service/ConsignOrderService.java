@@ -110,6 +110,7 @@ public class ConsignOrderService implements IConsignOrderService {
         consignOrderResponse.setCustomer(order.getUser());
         consignOrderResponse.setApprovalDate(order.getApprovalDate());
         consignOrderResponse.setExpiredDate(order.getExpiredDate());
+        
         consignOrderResponse.setStatus(order.getStatus());
         consignOrderResponse.setConsignDateStatus(order.getConsignDateStatus());
 
