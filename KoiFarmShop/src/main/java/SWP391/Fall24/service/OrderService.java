@@ -205,7 +205,7 @@ public class OrderService implements IOrderService {
         Optional<Users> opStaff = iUserRepository.findUsersById(staffId);
         Orders order = opOrder.get();
         order.setStaff(opStaff.get());
-        order.getOrderDateStatus().setResponseDate(LocalDate.now());
+
         iOrderRepository.save(order);
         return order;
     }
@@ -228,6 +228,7 @@ public class OrderService implements IOrderService {
             order.getOrderDateStatus().setDeliveryDate(LocalDate.now());
         }else if(status.toString().equals("Preparing")){
             statusOrder = "Đang Chuẩn Bị";
+            order.getOrderDateStatus().setResponseDate(LocalDate.now());
         }
         LocalDate date = LocalDate.now();
         emailService.sendMail(order.getCustomer().getEmail(), emailService.subjectOrder(order.getCustomer().getName()), emailService.messageOrder(date, order.getTotal(), order.getCustomer().getAddress(), statusOrder));
