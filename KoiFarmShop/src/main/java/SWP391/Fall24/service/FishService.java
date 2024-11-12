@@ -71,12 +71,20 @@ public class FishService implements IFishService {
         if(consignedKoiDTO.getCategory().equals("Koi")){
             Kois kois = new Kois();
             kois.setAge(consignedKoiDTO.getAge());
-            kois.setCertificate("/images/"+consignedKoiDTO.getCertificate());
+
+            String cef = consignedKoiDTO.getCertificate();
+            String certificate = cef.replace("C:\\fakepath\\", "/images/");
+            kois.setCertificate(certificate);
+
             kois.setCharacter(consignedKoiDTO.getCharacter());
             kois.setDescription(consignedKoiDTO.getDescription());
             kois.setHealthStatus(consignedKoiDTO.getHealthStatus());
             kois.setName(consignedKoiDTO.getName());
-            kois.setPhoto("/images/"+consignedKoiDTO.getPhoto());
+
+            String pho = consignedKoiDTO.getPhoto();
+            String photo = pho.replace("C:\\fakepath\\", "/images/");
+            kois.setPhoto(photo);
+            
             kois.setPrice(consignedKoiDTO.getPrice());
             kois.setQuantity(consignedKoiDTO.getQuantity());
             kois.setRation(consignedKoiDTO.getRation());
