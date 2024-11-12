@@ -30,6 +30,10 @@ public class ConsignOrders {
     @ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "staffID", nullable = true)
     private Users staff;
+    
+    @OneToOne
+    @JoinColumn
+    private ConsignDateStatus consignDateStatus = new ConsignDateStatus();
 
     @Column(name = "date", nullable = true)
     private LocalDate date;
