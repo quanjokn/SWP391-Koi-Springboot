@@ -4,11 +4,14 @@ import SWP391.Fall24.dto.FishAndPromotionDTO;
 import SWP391.Fall24.dto.FishDetailDTO;
 import SWP391.Fall24.dto.Manager.ProductSalesDTO;
 import SWP391.Fall24.dto.Top4FishDTO;
+import SWP391.Fall24.pojo.Evaluations;
 import SWP391.Fall24.pojo.Promotions;
 import SWP391.Fall24.repository.IEvaluationRepository;
 import SWP391.Fall24.service.FishService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

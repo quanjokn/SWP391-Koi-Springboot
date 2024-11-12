@@ -11,6 +11,7 @@ public enum ErrorCode {
     PASSWORD_ERROR(1007, "Password error"),
     CONFIRMED_PASSWORD_ERROR(1008, "Comfirmed password error"),
     FAIL_LOGIN(1009, "Login failed"),
+    FAIL_LOGIN_BANNED_ACCOUNT(1009, "Login failed because your account has been removed"),
     FAIL_OTP(1010, "OTP error"),
     FISH_NOT_EXISTED(1011, "Fish not existed"),
     KOI_NOT_EXISTED(1011, "Koi not existed"),
