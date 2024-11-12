@@ -61,8 +61,6 @@ public class OrderService implements IOrderService {
     @Autowired
     private EmailService emailService;
 
-    @Autowired
-    private ICaringOrderRepository carringOrderRepository;
 
     @Override
     public OrderDTO getOrderDetails(int orderId) {
@@ -90,6 +88,7 @@ public class OrderService implements IOrderService {
         orderDTO.setNote(order.getNote());
         orderDTO.setTotalQuantity(totalQuantity);
         orderDTO.setOrderDetailsDTO(orderDetailsDTOList);
+        orderDTO.setOrderDateStatus(order.getOrderDateStatus());
 
         return orderDTO;
     }
@@ -112,6 +111,7 @@ public class OrderService implements IOrderService {
         o.setDate(date);
         o.setCustomer(user);
         o.setPayment(placeOrderDTO.getPaymentMethod());
+        o.getOrderDateStatus().setOrderDate(LocalDate.now());
         List<CartItem> listCartItems = iCartItemRepository.findByCardId(cart.getId());
 
         List<FishDetailDTO> fishDetailDTOList = fishService.allFish();
@@ -139,6 +139,10 @@ public class OrderService implements IOrderService {
             od.setFishName(fishName);
             od.setPrice(c.getUnitPrice());
             od.setQuantity(c.getQuantity());
+
+
+
+
             if(users.getPoint()>200){
                 od.setTotal((float) (c.getTotalPrice()-(c.getTotalPrice()*0.1)));
                 od.setDiscount(0.1F);
@@ -181,7 +185,7 @@ public class OrderService implements IOrderService {
         List<Orders> listOrders = iOrderRepository.findAll();
         List<Orders> orders = new ArrayList<>();
 
-        for (Orders order : listOrders) {
+        for (Orders order : listOrders ) {
             if(order.getStaff()==null){
                 orders.add(order);
             }
@@ -201,6 +205,7 @@ public class OrderService implements IOrderService {
         Optional<Users> opStaff = iUserRepository.findUsersById(staffId);
         Orders order = opOrder.get();
         order.setStaff(opStaff.get());
+        order.getOrderDateStatus().setResponseDate(LocalDate.now());
         iOrderRepository.save(order);
         return order;
     }
@@ -211,12 +216,20 @@ public class OrderService implements IOrderService {
         Orders order = opOrder.get();
 
         order.setStatus(status.toString());
-        iOrderRepository.save(order);
+
         // send mail
         String statusOrder = "";
-        if(status.toString().equals("Completed")) statusOrder="Đã Hoàn Thành";
-        else if(status.toString().equals("Shipping")) statusOrder= "Đang Vận Chuyển";
-        else if(status.toString().equals("Preparing")) statusOrder = "Đang Chuẩn Bị";
+        if(status.toString().equals("Completed")){
+            statusOrder="Đã Hoàn Thành";
+            order.getOrderDateStatus().setCompleteDate(LocalDate.now());
+        }
+        else if(status.toString().equals("Shipping")){
+            statusOrder= "Đang Vận Chuyển";
+            order.getOrderDateStatus().setDeliveryDate(LocalDate.now());
+        }else if(status.toString().equals("Preparing")){
+            statusOrder = "Đang Chuẩn Bị";
+            order.getOrderDateStatus().setResponseDate(LocalDate.now());
+        }
         LocalDate date = LocalDate.now();
         emailService.sendMail(order.getCustomer().getEmail(), emailService.subjectOrder(order.getCustomer().getName()), emailService.messageOrder(date, order.getTotal(), order.getCustomer().getAddress(), statusOrder));
 
@@ -246,6 +259,7 @@ public class OrderService implements IOrderService {
                 } else throw new AppException(ErrorCode.OUT_OF_CATEGORY_FISH);
             }
         }
+        iOrderRepository.save(order);
         return order;
     }
     @Override
@@ -254,6 +268,7 @@ public class OrderService implements IOrderService {
         Orders order = opOrder.get();
         order.setStatus(OrderStatus.Rejected.toString());
         order.setNote(orderManagementDTO.getNote());
+        order.getOrderDateStatus().setRejectDate(LocalDate.now());
         //email
         LocalDate date = LocalDate.now();
         emailService.sendMail(order.getCustomer().getEmail(), emailService.subjectOrder(order.getCustomer().getName()), emailService.messageDecline(orderManagementDTO.getNote(), order.getId(), order.getCustomer().getName()));

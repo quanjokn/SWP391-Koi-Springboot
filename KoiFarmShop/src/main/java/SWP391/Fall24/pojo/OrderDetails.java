@@ -1,6 +1,5 @@
 package SWP391.Fall24.pojo;
 
-import SWP391.Fall24.pojo.Enum.FeedbackStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -56,6 +55,7 @@ public class OrderDetails {
 
     @Column(name = "photo" ,columnDefinition = "VARCHAR(255)")
     private String photo;
+
 
     @Override
     public boolean equals(Object o) {

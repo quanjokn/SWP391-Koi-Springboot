@@ -1,5 +1,6 @@
 package SWP391.Fall24.dto;
 
+import SWP391.Fall24.pojo.OrderDateStatus;
 import lombok.*;
 
 
@@ -15,7 +16,7 @@ public class OrderDetailsDTO {
     private String photo;
     private Boolean evaluationStatus;
 
-    public OrderDetailsDTO(int fishId, String fishName, int quantity, float unitPrice , float totalPrice , String photo, boolean evaluationStatus) {
+    public OrderDetailsDTO(int fishId, String fishName, int quantity, float unitPrice , float totalPrice , String photo, boolean evaluationStatus ) {
         this.fishId = fishId;
         this.fishName = fishName;
         this.quantity = quantity;

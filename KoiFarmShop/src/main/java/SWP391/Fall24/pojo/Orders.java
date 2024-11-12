@@ -48,6 +48,10 @@ public class Orders {
     @Column(columnDefinition = "NVARCHAR(4000)", nullable = true, length = 4000)
     private String note;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "dateId")
+    private OrderDateStatus orderDateStatus = new OrderDateStatus();
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
