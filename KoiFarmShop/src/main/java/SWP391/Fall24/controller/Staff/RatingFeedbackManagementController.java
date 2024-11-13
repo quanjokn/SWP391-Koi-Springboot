@@ -3,10 +3,7 @@ package SWP391.Fall24.controller.Staff;
 import SWP391.Fall24.dto.response.FeedbackApprovalResponse;
 import SWP391.Fall24.pojo.*;
 import SWP391.Fall24.pojo.Enum.FeedbackStatus;
-import SWP391.Fall24.repository.IEvaluationRepository;
-import SWP391.Fall24.repository.IOrderDetailRepository;
-import SWP391.Fall24.repository.IOrderRepository;
-import SWP391.Fall24.repository.IUserRepository;
+import SWP391.Fall24.repository.*;
 import SWP391.Fall24.service.FishService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +30,9 @@ public class RatingFeedbackManagementController {
     private FishService fishService;
 
     @Autowired
+    private IFishRepository iFishRepository;
+
+    @Autowired
     private IEvaluationRepository evaluationRepository;
 
     @GetMapping("/getList")
@@ -55,7 +55,7 @@ public class RatingFeedbackManagementController {
 
     @PostMapping("approval/{orderID}/{fishID}/{approval}")
     public String approval(@PathVariable("orderID") int orderID, @PathVariable("fishID") int fishID, @PathVariable("approval") int approval){
-        OrderDetails orderDetails = orderDetailRepository.findByOrdersIdAndFishesId(orderID, fishID);
+        OrderDetails orderDetails = orderDetailRepository.findOrderDetailsByOrdersIdAndFishesId(orderID, fishID);
         if(orderDetails != null){
             if(approval == 1){
                 orderDetails.setApprovalStatus(FeedbackStatus.Accepted.toString());
@@ -65,11 +65,11 @@ public class RatingFeedbackManagementController {
 
                 LocalDate date = LocalDate.now();
                 List<OrderDetails> orderDetailsList = orderDetailRepository.findByFishesIdAndApprovalStatus(fishID, FeedbackStatus.Accepted.toString());
-                float totalRating = 0 ;
+                Float totalRating = (float) 0;
                 for(OrderDetails od : orderDetailsList) {
                     totalRating += od.getRating();
                 }
-                float avgRating = totalRating / orderDetailsList.size();
+                Float avgRating = totalRating / orderDetailsList.size();
 
                 fishes.setRating(avgRating);
                 Evaluations evaluations = new Evaluations(fishes,date,users.get().getUserName(),orderDetails.getRating(),orderDetails.getFeedback());

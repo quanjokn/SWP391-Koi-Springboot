@@ -41,10 +41,10 @@ public class OrderDetails {
     @Column(nullable = false)
     private float total;
 
-    @Column
+    @Column(nullable = true)
     private float rating;
 
-    @Column(columnDefinition = "NVARCHAR(4000)")
+    @Column(columnDefinition = "NVARCHAR(4000)", nullable = true)
     private String feedback;
 
     @Column(name = "EvaluationStatus", nullable = true)
