@@ -37,7 +37,7 @@ public class Fishes {
     inverseJoinColumns = @JoinColumn(name = "speciesID"))
     private Set<Species> species = new HashSet<>();
 
-    @Column(name = "rating")
+    @Column(name = "rating", nullable = true)
     private Float rating;
 
 }

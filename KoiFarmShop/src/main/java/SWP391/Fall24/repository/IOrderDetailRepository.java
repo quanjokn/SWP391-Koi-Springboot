@@ -25,7 +25,7 @@ public interface IOrderDetailRepository extends JpaRepository<OrderDetails , Int
             , nativeQuery = true)
     List<Object[]> findTop4FishByQuantity();
 
-    OrderDetails findByOrdersIdAndFishesId(int orderId, int fishId);
+    OrderDetails findOrderDetailsByOrdersIdAndFishesId(int orderId, int fishId);
     List<OrderDetails> findByFishesIdAndApprovalStatus(int fishId, String approvalStatus);
 
 }
